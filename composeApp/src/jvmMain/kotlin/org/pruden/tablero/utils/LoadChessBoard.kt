@@ -31,8 +31,8 @@ fun loadChessBoard() {
                     val isBlackPiece = rowY < 2
 
                     val color = when{
-                        isBlackPiece -> org.pruden.tablero.models.Color.Black
-                        else -> org.pruden.tablero.models.Color.White
+                        isBlackPiece -> Color.Black
+                        else -> Color.White
                     }
 
                     val typePiece = when{

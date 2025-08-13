@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
+import androidx.compose.ui.graphics.graphicsLayer
 
 @Composable
 fun Cell(
@@ -56,18 +57,30 @@ fun Cell(
                 )
             }
     ) {
+
+
+        if (cell.pieceOnBox?.isSelected?.value == true) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.Green.copy(alpha = 0.5f))
+            )
+        }
+
         cell.pieceOnBox?.let {
             Image(
                 painter = painterResource(resource = it.png!!),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize().padding(6.dp))
+                modifier = Modifier.fillMaxSize().padding(6.dp)
+                    .graphicsLayer(alpha = if(it.isSelected.value) 0.5f else 1.0f)
+            )
         }
 
         if (Globals.possibleMoves.value.any { it.first == columnX && it.second == rowY }) {
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(20.dp) // tamaño del círculo
+                    .padding(20.dp)
                     .background(Color.Green, shape = CircleShape)
             )
         }

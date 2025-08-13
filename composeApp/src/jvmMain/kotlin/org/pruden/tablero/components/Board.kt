@@ -47,13 +47,20 @@ fun PaintChessBoardBoxes() {
                         rowY = rowY,
                         cell = Globals.chessBoard[rowY][columnX],
                         onClick = { cx, cy ->
+                            Globals.possibleMoves.value = emptyList()
+                            Globals.chessBoard.forEach { row ->
+                                row.forEach { box ->
+                                    box.pieceOnBox?.isSelected?.value = false
+                                }
+                            }
+
+
                             if (Globals.chessBoard[rowY][columnX].pieceOnBox != null) {
+                                Globals.chessBoard[rowY][columnX].pieceOnBox!!.isSelected.value = true
                                 Globals.possibleMoves.value = MoveCalculator.getPosibleMoves(
                                     Globals.chessBoard[rowY][columnX].pieceOnBox!!
                                 )
                             }
-
-
 
 
                             println("click ${Globals.chessBoard[cy][cx].boxNotation}")
