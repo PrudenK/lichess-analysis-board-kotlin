@@ -9,7 +9,8 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "TableroAjedrez",
-        state = rememberWindowState(width = 1400.dp, height = 1000.dp)
+        state = rememberWindowState(width = 1400.dp, height = 1000.dp),
+        resizable = false
     ) {
         App()
     }
