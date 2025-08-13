@@ -2,6 +2,7 @@ package org.pruden.tablero.utils
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
+import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import tableroajedrez.composeapp.generated.resources.Res
@@ -19,15 +20,15 @@ import tableroajedrez.composeapp.generated.resources.wQ
 import tableroajedrez.composeapp.generated.resources.wR
 
 fun loadChessBoard() {
-    repeat(Globals.BOX_HEIGHT) { y ->
-        repeat(Globals.BOX_WIDTH) { x ->
-            val notation = "${'a' + x}${8 - y}"
+    repeat(Globals.BOX_HEIGHT) { columnX ->
+        repeat(Globals.BOX_WIDTH) { rowY ->
+            val notation = "${'a' + columnX}${8 - rowY}"
 
-            Globals.chessBoard[x][y] = BoxModel(
+            Globals.chessBoard[rowY][columnX] = BoxModel(
                 boxNotation = notation,
-                color = if ((x + y) % 2 == 0) Globals.WhiteBox else Globals.BlackBox,
-                pieceOnBox = if(y >= 2 && y <= 5 ) null else {
-                    val isBlackPiece = y < 2
+                color = if ((columnX + rowY) % 2 == 0) Globals.WhiteBox else Globals.BlackBox,
+                pieceOnBox = if(rowY >= 2 && rowY <= 5 ) null else {
+                    val isBlackPiece = rowY < 2
 
                     val color = when{
                         isBlackPiece -> org.pruden.tablero.models.Color.Black
@@ -35,11 +36,11 @@ fun loadChessBoard() {
                     }
 
                     val typePiece = when{
-                        y == 1 || y == 6 -> PieceType.Pawn
-                        x == 0 || x == 7 -> PieceType.Rook
-                        x == 1 || x == 6 -> PieceType.Knight
-                        x == 2 || x == 5 -> PieceType.Bishop
-                        x == 3 -> PieceType.Queen
+                        rowY == 1 || rowY == 6 -> PieceType.Pawn
+                        columnX == 0 || columnX == 7 -> PieceType.Rook
+                        columnX == 1 || columnX == 6 -> PieceType.Knight
+                        columnX == 2 || columnX == 5 -> PieceType.Bishop
+                        columnX == 3 -> PieceType.Queen
                         else -> PieceType.King
                     }
 
@@ -53,13 +54,30 @@ fun loadChessBoard() {
                     }
 
                     Piece(
-                        id = if(isBlackPiece) x + y*8 else (x + y*8) - 32,
+                        id = if(isBlackPiece) columnX + rowY*8 else (columnX + rowY*8) - 32,
                         type = typePiece,
                         color = color,
-                        png = png
+                        png = png,
+                        position = Pair(columnX, rowY)
                     )
                 }
             )
         }
     }
+
+    Globals.chessBoard[2][0].pieceOnBox = Piece(
+        id = 999,
+        type = PieceType.Pawn,
+        color = Color.White ,
+        png = Res.drawable.wP,
+        position = Pair(0, 2)
+    )
+
+    Globals.chessBoard[2][2].pieceOnBox = Piece(
+        id = 9199,
+        type = PieceType.Pawn,
+        color = Color.Black,
+        png = Res.drawable.bP,
+        position = Pair(2, 2)
+    )
 }

@@ -2,6 +2,7 @@ package org.pruden.tablero.globals
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
 import tableroajedrez.composeapp.generated.resources.Res
@@ -18,4 +19,6 @@ object Globals {
     const val BOX_HEIGHT = 8
 
     val chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
+
+    val possibleMoves = mutableStateOf<List<Pair<Int, Int>>>(emptyList())
 }

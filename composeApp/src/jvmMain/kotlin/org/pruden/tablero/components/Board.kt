@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.utils.MoveCalculator
 import org.pruden.tablero.utils.loadChessBoard
 
 
@@ -38,19 +39,37 @@ fun PaintChessBoardBoxes() {
     Column(
         modifier = Modifier.padding(30.dp).border(4.dp, Color.Black).padding(4.dp),
     ) {
-        repeat(Globals.BOX_HEIGHT) { y ->
+        repeat(Globals.BOX_HEIGHT) { rowY ->
             Row {
-                repeat(Globals.BOX_WIDTH) { x ->
-                    Cell(x, y, Globals.chessBoard[x][y]) { cx, cy ->
+                repeat(Globals.BOX_WIDTH) { columnX ->
+                    Cell(
+                        columnX = columnX,
+                        rowY = rowY,
+                        cell = Globals.chessBoard[rowY][columnX],
+                        onClick = { cx, cy ->
+                            if (Globals.chessBoard[rowY][columnX].pieceOnBox != null) {
+                                Globals.possibleMoves.value = MoveCalculator.getPosibleMoves(
+                                    Globals.chessBoard[rowY][columnX].pieceOnBox!!
+                                )
+                            }
 
 
-                        println("click ${Globals.chessBoard[cx][cy].boxNotation}")
 
 
-                    }
+                            println("click ${Globals.chessBoard[cy][cx].boxNotation}")
+                        },
+                        onDrag = { x, y, offSet ->
+
+                        },
+                        onDrop = { x, y ->
+
+                        }
+                    )
                 }
             }
         }
     }
 }
+
+
 
