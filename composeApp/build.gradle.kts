@@ -32,6 +32,10 @@ kotlin {
 }
 
 
+compose.resources {
+    publicResClass = true
+}
+
 compose.desktop {
     application {
         mainClass = "org.pruden.tablero.MainKt"

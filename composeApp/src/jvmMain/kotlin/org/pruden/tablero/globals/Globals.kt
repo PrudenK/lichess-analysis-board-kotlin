@@ -17,5 +17,5 @@ object Globals {
     const val BOX_WIDTH = 8
     const val BOX_HEIGHT = 8
 
-    val chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel(box = @Composable fun (Modifier){}) } }
+    val chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
 }
