@@ -46,7 +46,29 @@ fun PaintChessBoardBoxes() {
                         columnX = columnX,
                         rowY = rowY,
                         cell = Globals.chessBoard[rowY][columnX],
-                        onClick = { cx, cy ->
+                        onClick = { clickedCol, clickedRow ->
+                            var moveWasDone = false
+
+                            // Realizar movimiento
+                            if (Globals.possibleMoves.value.contains(Pair(clickedCol, clickedRow))) {
+                                val selectedPiecePos = Globals.chessBoard
+                                    .flatMapIndexed { rowIndex, row ->
+                                        row.mapIndexedNotNull { colIndex, box ->
+                                            if (box.pieceOnBox?.isSelected?.value == true) Pair(colIndex, rowIndex) else null
+                                        }
+                                    }
+                                    .firstOrNull()
+
+                                if (selectedPiecePos != null) {
+                                    moveWasDone = true
+                                    val (selCol, selRow) = selectedPiecePos
+                                    Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
+                                    Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
+                                    Globals.chessBoard[selRow][selCol].pieceOnBox = null
+                                }
+                            }
+
+                            //Quitar selección
                             Globals.possibleMoves.value = emptyList()
                             Globals.chessBoard.forEach { row ->
                                 row.forEach { box ->
@@ -55,15 +77,17 @@ fun PaintChessBoardBoxes() {
                             }
 
 
-                            if (Globals.chessBoard[rowY][columnX].pieceOnBox != null) {
-                                Globals.chessBoard[rowY][columnX].pieceOnBox!!.isSelected.value = true
-                                Globals.possibleMoves.value = MoveCalculator.getPosibleMoves(
-                                    Globals.chessBoard[rowY][columnX].pieceOnBox!!
-                                )
+
+
+                            // Seleccionar pieza si hay una en la casilla clicada
+                            if(!moveWasDone) {
+                                if (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox != null) {
+                                    Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.isSelected.value = true
+                                    Globals.possibleMoves.value = MoveCalculator.getPosibleMoves(
+                                        Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
+                                    )
+                                }
                             }
-
-
-                            println("click ${Globals.chessBoard[cy][cx].boxNotation}")
                         },
                         onDrag = { x, y, offSet ->
 

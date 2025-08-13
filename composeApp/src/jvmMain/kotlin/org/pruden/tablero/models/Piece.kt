@@ -9,6 +9,6 @@ data class Piece(
     val type: PieceType,
     val color: Color,
     val png: DrawableResource? = null,
-    val position: Pair<Int, Int>,
+    var position: Pair<Int, Int>,
     var isSelected: MutableState<Boolean> = mutableStateOf(false)
 )

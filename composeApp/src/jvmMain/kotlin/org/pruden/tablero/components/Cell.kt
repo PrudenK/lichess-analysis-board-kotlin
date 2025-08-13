@@ -35,7 +35,9 @@ fun Cell(
             .size(Globals.BOX_SIZE.dp)
             .background(cell.color!!)
             .border(0.5.dp, Color.Black.copy(alpha = 0.5f))
-            .clickable { onClick(columnX, rowY) }
+            .clickable {
+                onClick(columnX, rowY)
+            }
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = {
