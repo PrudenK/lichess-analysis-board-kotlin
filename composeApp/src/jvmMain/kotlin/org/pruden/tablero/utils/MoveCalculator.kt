@@ -10,6 +10,7 @@ object MoveCalculator {
     fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {
         return when (piece.type) {
             PieceType.Pawn -> calculatePawnMoves(piece)
+            PieceType.Rook -> calculateRookMoves(piece)
             else -> emptyList()
         }
     }
@@ -69,6 +70,50 @@ object MoveCalculator {
                 if (pieceToCapture != null && pieceToCapture.color == Color.Black) {
                     result.add(Pair(col - 1, row - 1))
                 }
+            }
+        }
+
+        return result
+    }
+
+    private fun calculateRookMoves(piece: Piece): List<Pair<Int, Int>>{
+        val result = mutableListOf<Pair<Int, Int>>()
+
+        val col = piece.position.first
+        val row = piece.position.second
+
+        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
+        for (y in 0..7) {
+            for (x in 0..7) {
+                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
+                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
+                print(String.format("%-8s", "$imprimir $color"))
+            }
+            println()
+        }
+
+
+        val directions = listOf(
+            Pair(1, 0),
+            Pair(-1, 0),
+            Pair(0, 1),
+            Pair(0, -1)
+        )
+
+        for ((dx, dy) in directions) {
+            for (step in 1..7) {
+                try {
+                    val newCol = col + dx * step
+                    val newRow = row + dy * step
+                    if (isFreeCell(newCol, newRow)) {
+                        result.add(Pair(newCol, newRow))
+                    } else {
+                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
+                            result.add(Pair(newCol, newRow))
+                        }
+                        break
+                    }
+                } catch (_: Exception) {}
             }
         }
 

@@ -67,17 +67,17 @@ fun loadChessBoard() {
 
     Globals.chessBoard[2][0].pieceOnBox = Piece(
         id = 999,
-        type = PieceType.Pawn,
+        type = PieceType.Rook,
         color = Color.White ,
-        png = Res.drawable.wP,
+        png = Res.drawable.wR,
         position = Pair(0, 2)
     )
 
     Globals.chessBoard[4][2].pieceOnBox = Piece(
         id = 9199,
-        type = PieceType.Pawn,
+        type = PieceType.Rook,
         color = Color.Black,
-        png = Res.drawable.bP,
+        png = Res.drawable.bR,
         position = Pair(2, 4)
     )
 }
