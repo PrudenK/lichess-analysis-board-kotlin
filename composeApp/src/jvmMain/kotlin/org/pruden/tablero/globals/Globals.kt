@@ -21,4 +21,7 @@ object Globals {
     val chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
 
     val possibleMoves = mutableStateOf<List<Pair<Int, Int>>>(emptyList())
+
+    val isWhiteMove = mutableStateOf(true)
+    val isBoardLoaded = mutableStateOf(false)
 }
