@@ -4,16 +4,27 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
+import kotlin.math.log
 
 object MoveCalculator {
 
     fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {
         return when (piece.type) {
             PieceType.Pawn -> calculatePawnMoves(piece)
-            PieceType.Rook -> calculateRookMoves(piece)
-            PieceType.Bishop -> calculateBishopMoves(piece)
-            PieceType.Queen -> calculateQueenMoves(piece)
-            PieceType.King -> calculateKingMoves(piece)
+            PieceType.Rook -> calculateDirectionalMoves(piece, listOf(
+                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
+            ), 7)
+            PieceType.Bishop -> calculateDirectionalMoves(piece, listOf(
+                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1)
+            ), 7)
+            PieceType.Queen -> calculateDirectionalMoves(piece, listOf(
+                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1),
+                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
+            ), 7)
+            PieceType.King -> calculateDirectionalMoves(piece, listOf(
+                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1),
+                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
+            ), 1)
             PieceType.Knight -> calculateKnightMoves(piece)
             else -> emptyList()
         }
@@ -28,14 +39,7 @@ object MoveCalculator {
         val isBlack = piece.color == Color.Black
         val isFirstMove = if (isBlack) row == 1 else row == 6
 
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                print(String.format("%-8s", imprimir))
-            }
-            println()
-        }
+        logs(piece, col, row)
 
         if (isBlack) {
             if (row + 1 <= 7 && isFreeCell(col, row + 1)) {
@@ -80,32 +84,14 @@ object MoveCalculator {
         return result
     }
 
-    private fun calculateRookMoves(piece: Piece): List<Pair<Int, Int>>{
+    private fun calculateDirectionalMoves(piece: Piece, directions: List<Pair<Int, Int>>, maxSteps: Int): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
+        val (col, row) = piece.position
 
-        val col = piece.position.first
-        val row = piece.position.second
-
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
-
-
-        val directions = listOf(
-            Pair(1, 0),
-            Pair(-1, 0),
-            Pair(0, 1),
-            Pair(0, -1)
-        )
+        logs(piece, col, row)
 
         for ((dx, dy) in directions) {
-            for (step in 1..7) {
+            for (step in 1..maxSteps) {
                 try {
                     val newCol = col + dx * step
                     val newRow = row + dy * step
@@ -120,147 +106,8 @@ object MoveCalculator {
                 } catch (_: Exception) {}
             }
         }
-
         return result
     }
-
-    private fun calculateBishopMoves(piece: Piece): List<Pair<Int, Int>>{
-        val result = mutableListOf<Pair<Int, Int>>()
-
-        val col = piece.position.first
-        val row = piece.position.second
-
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
-
-        val directions = listOf(
-            Pair(1, 1),
-            Pair(-1, -1),
-            Pair(-1, 1),
-            Pair(1, -1)
-        )
-
-        for ((dx, dy) in directions) {
-            for (step in 1..7) {
-                try {
-                    val newCol = col + dx * step
-                    val newRow = row + dy * step
-                    if (isFreeCell(newCol, newRow)) {
-                        result.add(Pair(newCol, newRow))
-                    } else {
-                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
-                            result.add(Pair(newCol, newRow))
-                        }
-                        break
-                    }
-                } catch (_: Exception) {}
-            }
-        }
-
-        return result
-    }
-
-    private fun calculateQueenMoves(piece: Piece): List<Pair<Int, Int>>{
-        val result = mutableListOf<Pair<Int, Int>>()
-
-        val col = piece.position.first
-        val row = piece.position.second
-
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
-
-        val directions = listOf(
-            Pair(1, 1),
-            Pair(-1, -1),
-            Pair(-1, 1),
-            Pair(1, -1),
-            Pair(1, 0),
-            Pair(-1, 0),
-            Pair(0, 1),
-            Pair(0, -1)
-        )
-
-        for ((dx, dy) in directions) {
-            for (step in 1..7) {
-                try {
-                    val newCol = col + dx * step
-                    val newRow = row + dy * step
-                    if (isFreeCell(newCol, newRow)) {
-                        result.add(Pair(newCol, newRow))
-                    } else {
-                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
-                            result.add(Pair(newCol, newRow))
-                        }
-                        break
-                    }
-                } catch (_: Exception) {}
-            }
-        }
-
-        return result
-    }
-
-    private fun calculateKingMoves(piece: Piece): List<Pair<Int, Int>>{ // En el futuro controlar jaques enroque ...
-        val result = mutableListOf<Pair<Int, Int>>()
-
-        val col = piece.position.first
-        val row = piece.position.second
-
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
-
-        val directions = listOf(
-            Pair(1, 1),
-            Pair(-1, -1),
-            Pair(-1, 1),
-            Pair(1, -1),
-            Pair(1, 0),
-            Pair(-1, 0),
-            Pair(0, 1),
-            Pair(0, -1)
-        )
-
-        for ((dx, dy) in directions) {
-            for (step in 1..1) {
-                try {
-                    val newCol = col + dx * step
-                    val newRow = row + dy * step
-                    if (isFreeCell(newCol, newRow)) {
-                        result.add(Pair(newCol, newRow))
-                    } else {
-                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
-                            result.add(Pair(newCol, newRow))
-                        }
-                        break
-                    }
-                } catch (_: Exception) {}
-            }
-        }
-
-        return result
-    }
-
 
     private fun calculateKnightMoves(piece: Piece): List<Pair<Int, Int>>{
         val result = mutableListOf<Pair<Int, Int>>()
@@ -268,15 +115,7 @@ object MoveCalculator {
         val col = piece.position.first
         val row = piece.position.second
 
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
+        logs(piece, col, row)
 
         val directions = listOf(
             Pair(-2, -1),
@@ -306,7 +145,23 @@ object MoveCalculator {
         return result
     }
 
-        private fun isFreeCell(col: Int, row: Int): Boolean {
+    private fun isFreeCell(col: Int, row: Int): Boolean {
         return Globals.chessBoard[row][col].pieceOnBox == null
+    }
+
+    private fun logs(
+        piece: Piece,
+        col: Int,
+        row: Int,
+    ){
+        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
+        for (y in 0..7) {
+            for (x in 0..7) {
+                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
+                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
+                print(String.format("%-8s", "$imprimir $color"))
+            }
+            println()
+        }
     }
 }
