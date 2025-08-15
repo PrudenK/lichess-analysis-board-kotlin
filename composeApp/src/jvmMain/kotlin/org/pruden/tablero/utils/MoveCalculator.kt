@@ -4,27 +4,41 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
-import kotlin.math.log
 
 object MoveCalculator {
+
+    private val knightDirections = listOf(
+        Pair(-2, -1),
+        Pair(-1, -2),
+        Pair(1, -2),
+        Pair(-2, 1),
+        Pair(2, -1),
+        Pair(2, 1),
+        Pair(1, 2),
+        Pair(-1, 2)
+    )
+
+    private val rookDirections = listOf(
+        Pair(1, 0),
+        Pair(-1, 0),
+        Pair(0, 1),
+        Pair(0, -1)
+    )
+
+    private val bishopDirections = listOf(
+        Pair(1, 1),
+        Pair(-1, -1),
+        Pair(-1, 1),
+        Pair(1, -1)
+    )
 
     fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {
         return when (piece.type) {
             PieceType.Pawn -> calculatePawnMoves(piece)
-            PieceType.Rook -> calculateDirectionalMoves(piece, listOf(
-                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
-            ), 7)
-            PieceType.Bishop -> calculateDirectionalMoves(piece, listOf(
-                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1)
-            ), 7)
-            PieceType.Queen -> calculateDirectionalMoves(piece, listOf(
-                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1),
-                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
-            ), 7)
-            PieceType.King -> calculateDirectionalMoves(piece, listOf(
-                Pair(1, 1), Pair(-1, -1), Pair(-1, 1), Pair(1, -1),
-                Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)
-            ), 1)
+            PieceType.Rook -> calculateDirectionalMoves(piece, rookDirections, 7)
+            PieceType.Bishop -> calculateDirectionalMoves(piece, bishopDirections, 7)
+            PieceType.Queen -> calculateDirectionalMoves(piece, rookDirections + bishopDirections, 7)
+            PieceType.King -> calculateKingMoves(piece)
             PieceType.Knight -> calculateKnightMoves(piece)
             else -> emptyList()
         }
@@ -84,7 +98,36 @@ object MoveCalculator {
         return result
     }
 
-    private fun calculateDirectionalMoves(piece: Piece, directions: List<Pair<Int, Int>>, maxSteps: Int): List<Pair<Int, Int>> {
+    private fun calculateCellsControledByAPawn(piece: Piece): List<Pair<Int, Int>> {
+        val result = mutableListOf<Pair<Int, Int>>()
+
+        val (col, row) = piece.position
+        val isWhite = piece.color == Color.White
+
+        if(isWhite){
+            if(col == 0) {
+                result.add(Pair(col + 1, row - 1))
+            }else if(col == 7){
+                result.add(Pair(col - 1, row - 1))
+            }else{
+                result.add(Pair(col + 1, row - 1))
+                result.add(Pair(col - 1, row - 1))
+            }
+        }else{
+            if(col == 0) {
+                result.add(Pair(col + 1, row + 1))
+            }else if(col == 7){
+                result.add(Pair(col - 1, row + 1))
+            }else{
+                result.add(Pair(col + 1, row + 1))
+                result.add(Pair(col - 1, row + 1))
+            }
+        }
+
+        return result
+    }
+
+    private fun calculateDirectionalMoves(piece: Piece, directions: List<Pair<Int, Int>>, maxSteps: Int, onlyControlledCells : Boolean = false): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         val (col, row) = piece.position
 
@@ -98,7 +141,7 @@ object MoveCalculator {
                     if (isFreeCell(newCol, newRow)) {
                         result.add(Pair(newCol, newRow))
                     } else {
-                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
+                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color || onlyControlledCells) {
                             result.add(Pair(newCol, newRow))
                         }
                         break
@@ -109,6 +152,40 @@ object MoveCalculator {
         return result
     }
 
+    private fun calculateKingMoves(piece : Piece): List<Pair<Int, Int>> {
+        val cellsControledByOtherPieces = mutableSetOf<Pair<Int, Int>>()
+
+        for(i in 0..7){
+            for (j in 0..7) {
+
+                if(!Globals.chessBoard[i][j].isFreeCell() &&
+                    Globals.chessBoard[i][j].pieceOnBox?.color != piece.color
+                    ){
+
+                    val currentPiece = Globals.chessBoard[i][j].pieceOnBox!!
+                    println(currentPiece.type.toString() + " " + currentPiece.color+ " " + piece.color+ "  "+ currentPiece.position)
+
+
+                    val directions = when(currentPiece.type){
+                        PieceType.Pawn -> calculateCellsControledByAPawn(currentPiece)
+                        PieceType.Rook -> calculateDirectionalMoves(currentPiece, rookDirections, 7, true)
+                        PieceType.Bishop -> calculateDirectionalMoves(currentPiece, bishopDirections, 7, true)
+                        PieceType.Queen -> calculateDirectionalMoves(currentPiece, rookDirections + bishopDirections, 7, true)
+                        PieceType.King -> calculateDirectionalMoves(currentPiece, rookDirections + bishopDirections, 1, true)
+                        PieceType.Knight -> calculateKnightMoves(currentPiece)
+                        else -> {listOf(Pair(-1, -1))}
+                    }
+
+                    cellsControledByOtherPieces.addAll(directions)
+                }
+            }
+        }
+
+        val blackKingMoves = calculateDirectionalMoves(piece, rookDirections + bishopDirections, 1)
+
+        return blackKingMoves - cellsControledByOtherPieces
+    }
+
     private fun calculateKnightMoves(piece: Piece): List<Pair<Int, Int>>{
         val result = mutableListOf<Pair<Int, Int>>()
 
@@ -117,18 +194,7 @@ object MoveCalculator {
 
         logs(piece, col, row)
 
-        val directions = listOf(
-            Pair(-2, -1),
-            Pair(-1, -2),
-            Pair(1, -2),
-            Pair(-2, 1),
-            Pair(2, -1),
-            Pair(2, 1),
-            Pair(1, 2),
-            Pair(-1, 2)
-        )
-
-        for ((dx, dy) in directions) {
+        for ((dx, dy) in knightDirections) {
             try {
                 val newCol = col + dx
                 val newRow = row + dy

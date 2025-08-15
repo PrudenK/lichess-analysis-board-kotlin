@@ -11,4 +11,9 @@ data class Piece(
     val png: DrawableResource? = null,
     var position: Pair<Int, Int>,
     var isSelected: MutableState<Boolean> = mutableStateOf(false)
-)
+){
+    fun positionToChessNotation(): String {
+        val l = "abcdfgh"
+        return l[position.first].toString() + (position.second +1)
+    }
+}

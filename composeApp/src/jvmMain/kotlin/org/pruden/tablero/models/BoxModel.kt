@@ -5,5 +5,5 @@ data class BoxModel(
     val color: androidx.compose.ui.graphics.Color? = null,
     var pieceOnBox: Piece? = null
 ){
-
+    fun isFreeCell() = pieceOnBox == null
 }
