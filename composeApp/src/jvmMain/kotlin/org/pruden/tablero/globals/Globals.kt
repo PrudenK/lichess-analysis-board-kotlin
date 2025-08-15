@@ -25,6 +25,6 @@ object Globals {
     val isWhiteMove = mutableStateOf(true)
     val isBoardLoaded = mutableStateOf(false)
 
-    val whiteCastle = Triple(false, false, false) //White Rook King Rook
-    val blackCastle = Triple(false, false, false) //Black Rook King Rook
+    var whiteCastle = Triple(false, false, false) //White Rook King Rook
+    var blackCastle = Triple(false, false, false) //Black Rook King Rook
 }

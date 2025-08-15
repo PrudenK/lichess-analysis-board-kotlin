@@ -64,20 +64,4 @@ fun loadChessBoard() {
             )
         }
     }
-
-    Globals.chessBoard[2][0].pieceOnBox = Piece(
-        id = 999,
-        type = PieceType.Bishop,
-        color = Color.White ,
-        png = Res.drawable.wB,
-        position = Pair(0, 2)
-    )
-
-    Globals.chessBoard[5][2].pieceOnBox = Piece(
-        id = 9199,
-        type = PieceType.Bishop,
-        color = Color.Black,
-        png = Res.drawable.bB,
-        position = Pair(2, 5)
-    )
 }

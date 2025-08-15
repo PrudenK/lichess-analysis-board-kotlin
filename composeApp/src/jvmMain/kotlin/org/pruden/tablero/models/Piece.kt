@@ -13,7 +13,7 @@ data class Piece(
     var isSelected: MutableState<Boolean> = mutableStateOf(false)
 ){
     fun positionToChessNotation(): String {
-        val l = "abcdfgh"
-        return l[position.first].toString() + (position.second +1)
+        val l = "abcdefgh"
+        return l[position.first].toString() + (7 - position.second +1)
     }
 }

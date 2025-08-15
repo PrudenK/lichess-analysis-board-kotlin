@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.MoveCalculator
 import org.pruden.tablero.utils.loadChessBoard
 
@@ -94,6 +95,53 @@ fun PaintChessBoardBoxes() {
                                         Globals.chessBoard[selRow][selCol].pieceOnBox = null
 
                                         Globals.isWhiteMove.value = !Globals.isWhiteMove.value
+
+                                        // Castle
+                                        val movedPiece = Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
+                                        if(movedPiece.color == org.pruden.tablero.models.Color.White) {
+                                            if(movedPiece.type == PieceType.King) {
+                                                Globals.whiteCastle = Triple(false, true, false)
+                                            }else if(movedPiece.type == PieceType.Rook) {
+
+                                                Globals.whiteCastle = Triple(movedPiece.id == 24, Globals.whiteCastle.second, movedPiece.id == 31)
+                                            }
+                                        }else{
+                                            if(movedPiece.type == PieceType.King) {
+                                                Globals.blackCastle = Triple(false, true, false)
+                                            }else if(movedPiece.type == PieceType.Rook) {
+                                                Globals.blackCastle = Triple(movedPiece.id == 0, Globals.blackCastle.second, movedPiece.id == 7)
+                                            }
+                                        }
+
+                                        if(movedPiece.type == PieceType.King){
+                                            val startPos = Globals.chessBoard[selRow][selCol].boxNotation
+                                            val endPos = Globals.chessBoard[clickedRow][clickedCol].boxNotation
+                                            if(movedPiece.color == org.pruden.tablero.models.Color.White) {
+                                                if(startPos == "e1" && endPos == "g1") {
+                                                    val rook = Globals.chessBoard[7][7].pieceOnBox!!
+                                                    Globals.chessBoard[7][7].pieceOnBox = null
+                                                    Globals.chessBoard[7][5].pieceOnBox = rook
+                                                    rook.position = Pair(5,7)
+                                                }else if(startPos == "e1" && endPos == "c1") {
+                                                    val rook = Globals.chessBoard[7][0].pieceOnBox!!
+                                                    Globals.chessBoard[7][0].pieceOnBox = null
+                                                    Globals.chessBoard[7][3].pieceOnBox = rook
+                                                    rook.position = Pair(3,7)
+                                                }
+                                            }else{
+                                                if(startPos == "e8" && endPos == "g8") {
+                                                    val rook = Globals.chessBoard[0][7].pieceOnBox!!
+                                                    Globals.chessBoard[0][7].pieceOnBox = null
+                                                    Globals.chessBoard[0][5].pieceOnBox = rook
+                                                    rook.position = Pair(5,0)
+                                                }else if(startPos == "e8" && endPos == "c8") {
+                                                    val rook = Globals.chessBoard[0][0].pieceOnBox!!
+                                                    Globals.chessBoard[0][0].pieceOnBox = null
+                                                    Globals.chessBoard[0][3].pieceOnBox = rook
+                                                    rook.position = Pair(3,0)
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
