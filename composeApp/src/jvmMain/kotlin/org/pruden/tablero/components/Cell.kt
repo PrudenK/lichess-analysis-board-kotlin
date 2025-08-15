@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import androidx.compose.ui.graphics.graphicsLayer
+import org.pruden.tablero.utils.PromotionHandler
 
 @Composable
 fun Cell(
@@ -36,30 +37,32 @@ fun Cell(
             .background(cell.color!!)
             .border(0.5.dp, Color.Black.copy(alpha = 0.5f))
             .clickable {
-                onClick(columnX, rowY)
+                if(!cell.disable){
+                    onClick(columnX, rowY)
+                }
             }
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = {
-                        // Inicio del arrastre
-                        onClick(columnX, rowY) // opcional: seleccionar pieza
+                        if (!cell.disable) {
+                            onClick(columnX, rowY)
+                        }
                     },
                     onDrag = { change, dragAmount ->
-                        change.consume()
-                        // Movimiento mientras arrastras
-                        onDrag(columnX, rowY, dragAmount)
+                        if (!cell.disable) {
+                            change.consume()
+                            onDrag(columnX, rowY, dragAmount)
+                        }
                     },
                     onDragEnd = {
-                        // Soltaste la pieza
-                        onDrop(columnX, rowY)
-                    },
-                    onDragCancel = {
-                        // Cancelación (fuera del área, etc.)
+                        if (!cell.disable) {
+                            onDrop(columnX, rowY)
+                        }
                     }
                 )
             }
     ) {
-
+        PromotionHandler.applyPromotionFilter()
 
         if (cell.pieceOnBox?.isSelected?.value == true) {
             Box(

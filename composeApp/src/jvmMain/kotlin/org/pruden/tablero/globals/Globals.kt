@@ -1,11 +1,9 @@
 package org.pruden.tablero.globals
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
-import tableroajedrez.composeapp.generated.resources.Res
+import org.pruden.tablero.models.Piece
 
 object Globals {
     val isDarkMode = mutableStateOf(false)
@@ -18,7 +16,7 @@ object Globals {
     const val BOX_WIDTH = 8
     const val BOX_HEIGHT = 8
 
-    val chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
+    var chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
 
     val possibleMoves = mutableStateOf<List<Pair<Int, Int>>>(emptyList())
 
@@ -27,4 +25,14 @@ object Globals {
 
     var whiteCastle = Triple(false, false, false) //White Rook King Rook
     var blackCastle = Triple(false, false, false) //Black Rook King Rook
+
+    var promotionCol = 0
+    val isWhitePromotion = mutableStateOf(false)
+    val isBlackPromotion = mutableStateOf(false)
+
+    val promotionBuffer = mutableListOf<Piece?>()
+
+    var pawnPromoted: Piece? = null
+
+    val refreshBoard = mutableStateOf(false)
 }
