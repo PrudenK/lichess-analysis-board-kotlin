@@ -181,58 +181,12 @@ object MoveCalculator {
             }
         }
 
-        val blackKingMoves = calculateDirectionalMoves(piece, rookDirections + bishopDirections, 1).toMutableList()
+        val miKingMoves = calculateDirectionalMoves(piece, rookDirections + bishopDirections, 1).toMutableList()
 
-        // 0-0
-        if(piece.color == Color.White){
-            if(!Globals.whiteCastle.second){
-                if(!Globals.whiteCastle.third){
-                    if(Globals.chessBoard[7][5].isFreeCell() &&
-                        Globals.chessBoard[7][6].isFreeCell() &&
-                        !cellsControledByOtherPieces.contains(Pair(5, 7))
-                        )
-                    blackKingMoves += Pair(6, 7)
-                }
-            }
-        }else{
-            if(!Globals.blackCastle.second){
-                if(!Globals.blackCastle.third){
-                    if(Globals.chessBoard[0][5].isFreeCell() &&
-                        Globals.chessBoard[0][6].isFreeCell() &&
-                        !cellsControledByOtherPieces.contains(Pair(5, 0))
+        CastleHandler.addShortCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
+        CastleHandler.addLongCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
 
-                        )
-                        blackKingMoves += Pair(6, 0)
-                }
-            }
-        }
-
-        // 0-0-0
-        if(piece.color == Color.White){
-            if(!Globals.whiteCastle.second){
-                if(!Globals.whiteCastle.first){
-                    if(Globals.chessBoard[7][3].isFreeCell() &&
-                        Globals.chessBoard[7][2].isFreeCell() &&
-                        !cellsControledByOtherPieces.contains(Pair(2, 7))
-                    )
-                        blackKingMoves += Pair(2, 7)
-                }
-            }
-        }else{
-            if(!Globals.blackCastle.second){
-                if(!Globals.blackCastle.first){
-                    if(Globals.chessBoard[0][3].isFreeCell() &&
-                        Globals.chessBoard[0][2].isFreeCell() &&
-                        !cellsControledByOtherPieces.contains(Pair(2, 0))
-
-                    )
-                        blackKingMoves += Pair(2, 0)
-                }
-            }
-        }
-
-
-        return blackKingMoves - cellsControledByOtherPieces
+        return miKingMoves - cellsControledByOtherPieces
     }
 
     private fun calculateKnightMoves(piece: Piece): List<Pair<Int, Int>>{
