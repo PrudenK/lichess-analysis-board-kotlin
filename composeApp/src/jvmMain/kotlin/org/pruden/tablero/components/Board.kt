@@ -102,58 +102,10 @@ fun PaintChessBoardBoxes() {
                                     var moveWasDone = false
                                     var promoteDone = false
 
-                                    if(Globals.isWhitePromotion.value) {
-                                        println("$clickedCol, $clickedRow")
-                                        val promotionCol = Globals.promotionCol
-                                        val pawnPromoted = Globals.pawnPromoted!!
-
-
-                                        val piecePromoted = when(clickedRow){
-                                            1 -> PieceProvider.getWhiteKnight(pawnPromoted)
-                                            2 -> PieceProvider.getWhiteRook(pawnPromoted)
-                                            3 -> PieceProvider.getWhiteBishop(pawnPromoted)
-                                            else -> PieceProvider.getWhiteQueen(pawnPromoted)
-                                        }
-
-                                        Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
-                                        Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
-                                        Globals.chessBoard[2][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
-                                        Globals.chessBoard[3][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
-                                        Globals.promotionBuffer.clear()
-
-                                        CellHandler.setCellsDisable(false)
-
-                                        Globals.isWhitePromotion.value = false
+                                    if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
+                                        PromotionHandler.handlePromotionClick(clickedRow)
                                         promoteDone = true
-
                                         Globals.refreshBoard.value = !Globals.refreshBoard.value
-
-
-                                    }else if(Globals.isBlackPromotion.value) {
-                                        val promotionCol = Globals.promotionCol
-                                        val pawnPromoted = Globals.pawnPromoted!!
-
-
-                                        val piecePromoted = when(clickedRow){
-                                            6 -> PieceProvider.getBlackKnight(pawnPromoted)
-                                            5 -> PieceProvider.getBlackRook(pawnPromoted)
-                                            4 -> PieceProvider.getBlackBishop(pawnPromoted)
-                                            else -> PieceProvider.getBlackQueen(pawnPromoted)
-                                        }
-
-                                        Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
-                                        Globals.chessBoard[6][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
-                                        Globals.chessBoard[5][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
-                                        Globals.chessBoard[4][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
-                                        Globals.promotionBuffer.clear()
-
-                                        CellHandler.setCellsDisable(false)
-
-                                        Globals.isBlackPromotion.value = false
-                                        promoteDone = true
-
-                                        Globals.refreshBoard.value = !Globals.refreshBoard.value
-
                                     }
 
                                     // Realizar movimiento
@@ -180,57 +132,13 @@ fun PaintChessBoardBoxes() {
 
                                                 PromotionHandler.verifyPromotion(movedPiece)
 
-                                                val promotionCol = Globals.promotionCol
-
-                                                if(Globals.isWhitePromotion.value) {
-                                                    CellHandler.setCellsDisable(true)
-
-                                                    val c1 = Globals.chessBoard[0][promotionCol]
-                                                    val c2 = Globals.chessBoard[1][promotionCol]
-                                                    val c3 = Globals.chessBoard[2][promotionCol]
-                                                    val c4 = Globals.chessBoard[3][promotionCol]
-
-                                                    c1.disable = false
-                                                    c2.disable = false
-                                                    c3.disable = false
-                                                    c4.disable = false
-
-                                                    Globals.promotionBuffer.add(c2.pieceOnBox)
-                                                    Globals.promotionBuffer.add(c3.pieceOnBox)
-                                                    Globals.promotionBuffer.add(c4.pieceOnBox)
-
-                                                    c1.pieceOnBox = PieceProvider.getWhiteQueen(movedPiece)
-                                                    c2.pieceOnBox = PieceProvider.getWhiteKnight(movedPiece)
-                                                    c3.pieceOnBox = PieceProvider.getWhiteRook(movedPiece)
-                                                    c4.pieceOnBox = PieceProvider.getWhiteBishop(movedPiece)
-
-                                                    Globals.pawnPromoted = movedPiece
-                                                }else if(Globals.isBlackPromotion.value) {
-                                                    CellHandler.setCellsDisable(true)
-
-                                                    val c1 = Globals.chessBoard[7][promotionCol]
-                                                    val c2 = Globals.chessBoard[6][promotionCol]
-                                                    val c3 = Globals.chessBoard[5][promotionCol]
-                                                    val c4 = Globals.chessBoard[4][promotionCol]
-
-                                                    c1.disable = false
-                                                    c2.disable = false
-                                                    c3.disable = false
-                                                    c4.disable = false
-
-                                                    Globals.promotionBuffer.add(c2.pieceOnBox)
-                                                    Globals.promotionBuffer.add(c3.pieceOnBox)
-                                                    Globals.promotionBuffer.add(c4.pieceOnBox)
-
-                                                    c1.pieceOnBox = PieceProvider.getBlackQueen(movedPiece)
-                                                    c2.pieceOnBox = PieceProvider.getBlackKnight(movedPiece)
-                                                    c3.pieceOnBox = PieceProvider.getBlackRook(movedPiece)
-                                                    c4.pieceOnBox = PieceProvider.getBlackBishop(movedPiece)
-
-                                                    Globals.pawnPromoted = movedPiece
-                                                }else{
+                                                if (Globals.isWhitePromotion.value) {
+                                                    PromotionHandler.preparePromotionSelectionWhite(movedPiece)
+                                                } else if (Globals.isBlackPromotion.value) {
+                                                    PromotionHandler.preparePromotionSelectionBlack(movedPiece)
+                                                }
+                                                else{
                                                     Globals.isWhiteMove.value = !Globals.isWhiteMove.value
-
                                                 }
 
                                                 // Castle
@@ -249,9 +157,6 @@ fun PaintChessBoardBoxes() {
                                     }else{
                                         Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                     }
-
-
-
 
                                     if(!promoteDone) {
                                         //Quitar selección
