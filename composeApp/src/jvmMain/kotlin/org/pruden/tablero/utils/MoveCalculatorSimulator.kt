@@ -7,7 +7,7 @@ import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 
 object MoveCalculatorSimulator {
-    private fun calculateCellsControledByAPawnOnBoard(piece: Piece, board: List<List<BoxModel>>): List<Pair<Int, Int>> {
+    private fun calculateCellsControledByAPawnOnBoard(piece: Piece): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         val (col, row) = piece.position
         val isWhite = piece.color == Color.White
@@ -73,7 +73,7 @@ object MoveCalculatorSimulator {
                 val piece = board[row][col].pieceOnBox ?: continue
                 if (piece.color != color) {
                     val moves = when (piece.type) {
-                        PieceType.Pawn -> calculateCellsControledByAPawnOnBoard(piece, board)
+                        PieceType.Pawn -> calculateCellsControledByAPawnOnBoard(piece)
                         PieceType.Rook -> calculateDirectionalMovesOnBoard(piece, Globals.rookDirections, 7, true, board)
                         PieceType.Bishop -> calculateDirectionalMovesOnBoard(piece, Globals.bishopDirections, 7, true, board)
                         PieceType.Queen -> calculateDirectionalMovesOnBoard(piece, Globals.rookDirections + Globals.bishopDirections, 7, true, board)

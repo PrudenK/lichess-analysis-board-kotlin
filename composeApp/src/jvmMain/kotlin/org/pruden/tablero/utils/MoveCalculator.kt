@@ -26,6 +26,11 @@ object MoveCalculator {
             }
         }
 
+        // Filtra las clavadas
+        if (piece.type != PieceType.King) {
+            return moves.filter { move -> !wouldKingBeInCheckAfterMove(piece, move) }
+        }
+
         return moves
     }
 
