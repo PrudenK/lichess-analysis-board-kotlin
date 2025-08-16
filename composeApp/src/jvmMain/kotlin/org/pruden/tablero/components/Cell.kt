@@ -64,6 +64,7 @@ fun Cell(
     ) {
         PromotionHandler.applyPromotionFilter()
 
+        // Pieza seleccionada
         if (cell.pieceOnBox?.isSelected?.value == true) {
             Box(
                 Modifier
@@ -73,6 +74,7 @@ fun Cell(
         }
 
 
+        // Anterior movimiento
         val lm = Globals.lastMove.value
         val highlight = lm != null &&
                 ((columnX == lm.from.first && rowY == lm.from.second) ||
@@ -99,6 +101,17 @@ fun Cell(
                     .padding(20.dp)
                     .background(Color.Green, shape = CircleShape)
             )
+        }
+
+
+
+
+
+        // Check color
+        val isCheckedKingCell =
+            Globals.checkedKingPos.value?.let { it.first == columnX && it.second == rowY } == true
+        if (isCheckedKingCell) {
+            Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.4f)))
         }
     }
 }

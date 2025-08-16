@@ -1,47 +1,32 @@
 package org.pruden.tablero.utils
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 
 object MoveCalculator {
-
-    private val knightDirections = listOf(
-        Pair(-2, -1),
-        Pair(-1, -2),
-        Pair(1, -2),
-        Pair(-2, 1),
-        Pair(2, -1),
-        Pair(2, 1),
-        Pair(1, 2),
-        Pair(-1, 2)
-    )
-
-    private val rookDirections = listOf(
-        Pair(1, 0),
-        Pair(-1, 0),
-        Pair(0, 1),
-        Pair(0, -1)
-    )
-
-    private val bishopDirections = listOf(
-        Pair(1, 1),
-        Pair(-1, -1),
-        Pair(-1, 1),
-        Pair(1, -1)
-    )
-
     fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {
-        return when (piece.type) {
+        val moves = when (piece.type) {
             PieceType.Pawn -> calculatePawnMoves(piece)
-            PieceType.Rook -> calculateDirectionalMoves(piece, rookDirections, 7)
-            PieceType.Bishop -> calculateDirectionalMoves(piece, bishopDirections, 7)
-            PieceType.Queen -> calculateDirectionalMoves(piece, rookDirections + bishopDirections, 7)
+            PieceType.Rook -> calculateDirectionalMoves(piece, Globals.rookDirections, 7)
+            PieceType.Bishop -> calculateDirectionalMoves(piece, Globals.bishopDirections, 7)
+            PieceType.Queen -> calculateDirectionalMoves(piece, Globals.rookDirections + Globals.bishopDirections, 7)
             PieceType.King -> calculateKingMoves(piece)
             PieceType.Knight -> calculateKnightMoves(piece)
             else -> emptyList()
         }
+
+        if ((piece.color == Color.White && Globals.whiteIsChecked.value) ||
+            (piece.color == Color.Black && Globals.blackIsChecked.value)
+        ) {
+            return moves.filter { move ->
+                !wouldKingBeInCheckAfterMove(piece, move)
+            }
+        }
+
+        return moves
     }
 
     private fun calculatePawnMoves(piece: Piece): List<Pair<Int, Int>> {
@@ -144,7 +129,9 @@ object MoveCalculator {
                         if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color || onlyControlledCells) {
                             result.add(Pair(newCol, newRow))
                         }
-                        break
+                        if(!(onlyControlledCells && Globals.chessBoard[newRow][newCol].pieceOnBox?.type == PieceType.King)) { // for -> Rook Kink freeCell(X) (X is not available)
+                            break
+                        }
                     }
                 } catch (_: Exception) {}
             }
@@ -153,35 +140,9 @@ object MoveCalculator {
     }
 
     private fun calculateKingMoves(piece : Piece): List<Pair<Int, Int>> {
-        val cellsControledByOtherPieces = mutableSetOf<Pair<Int, Int>>()
+        val cellsControledByOtherPieces = calculateCellsControledByOponent(piece.color)
 
-        for(i in 0..7){
-            for (j in 0..7) {
-
-                if(!Globals.chessBoard[i][j].isFreeCell() &&
-                    Globals.chessBoard[i][j].pieceOnBox?.color != piece.color
-                    ){
-
-                    val currentPiece = Globals.chessBoard[i][j].pieceOnBox!!
-                    println(currentPiece.type.toString() + " " + currentPiece.color+ " " + piece.color+ "  "+ currentPiece.position)
-
-
-                    val directions = when(currentPiece.type){
-                        PieceType.Pawn -> calculateCellsControledByAPawn(currentPiece)
-                        PieceType.Rook -> calculateDirectionalMoves(currentPiece, rookDirections, 7, true)
-                        PieceType.Bishop -> calculateDirectionalMoves(currentPiece, bishopDirections, 7, true)
-                        PieceType.Queen -> calculateDirectionalMoves(currentPiece, rookDirections + bishopDirections, 7, true)
-                        PieceType.King -> calculateDirectionalMoves(currentPiece, rookDirections + bishopDirections, 1, true)
-                        PieceType.Knight -> calculateKnightMoves(currentPiece)
-                        else -> {listOf(Pair(-1, -1))}
-                    }
-
-                    cellsControledByOtherPieces.addAll(directions)
-                }
-            }
-        }
-
-        val miKingMoves = calculateDirectionalMoves(piece, rookDirections + bishopDirections, 1).toMutableList()
+        val miKingMoves = calculateDirectionalMoves(piece, Globals.rookDirections + Globals.bishopDirections, 1).toMutableList()
 
         CastleHandler.addShortCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
         CastleHandler.addLongCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
@@ -197,7 +158,7 @@ object MoveCalculator {
 
         logs(piece, col, row)
 
-        for ((dx, dy) in knightDirections) {
+        for ((dx, dy) in Globals.knightDirections) {
             try {
                 val newCol = col + dx
                 val newRow = row + dy
@@ -213,6 +174,66 @@ object MoveCalculator {
 
         return result
     }
+
+    fun calculateCellsControledByOponent(color: Color): MutableSet<Pair<Int, Int>>{
+        val cellsControledByOtherPieces = mutableSetOf<Pair<Int, Int>>()
+
+        for(i in 0..7){
+            for (j in 0..7) {
+
+                if(!Globals.chessBoard[i][j].isFreeCell() &&
+                    Globals.chessBoard[i][j].pieceOnBox?.color != color
+                ){
+
+                    val currentPiece = Globals.chessBoard[i][j].pieceOnBox!!
+                    println(currentPiece.type.toString() + " " + currentPiece.color+ " " + color+ "  "+ currentPiece.position)
+
+
+                    val directions = when(currentPiece.type){
+                        PieceType.Pawn -> calculateCellsControledByAPawn(currentPiece)
+                        PieceType.Rook -> calculateDirectionalMoves(currentPiece, Globals.rookDirections, 7, true)
+                        PieceType.Bishop -> calculateDirectionalMoves(currentPiece, Globals.bishopDirections, 7, true)
+                        PieceType.Queen -> calculateDirectionalMoves(currentPiece, Globals.rookDirections + Globals.bishopDirections, 7, true)
+                        PieceType.King -> calculateDirectionalMoves(currentPiece, Globals.rookDirections + Globals.bishopDirections, 1, true)
+                        PieceType.Knight -> calculateKnightMoves(currentPiece)
+                        else -> {listOf(Pair(-1, -1))}
+                    }
+
+                    cellsControledByOtherPieces.addAll(directions)
+                }
+            }
+        }
+        return cellsControledByOtherPieces
+    }
+
+    private fun wouldKingBeInCheckAfterMove(piece: Piece, move: Pair<Int, Int>): Boolean {
+        // Copiar tablero (clonado profundo de BoxModel y Piece)
+        val boardCopy = Globals.chessBoard.map { row ->
+            row.map { it.copy(pieceOnBox = it.pieceOnBox?.copy(position = it.pieceOnBox!!.position.copy())) }.toMutableList()
+        }.toMutableList()
+
+        // Posiciones inicial y final
+        val (fromCol, fromRow) = piece.position
+        val (toCol, toRow) = move
+
+        // Mover pieza en la copia
+        boardCopy[toRow][toCol].pieceOnBox = boardCopy[fromRow][fromCol].pieceOnBox
+        boardCopy[toRow][toCol].pieceOnBox?.position = Pair(toCol, toRow)
+        boardCopy[fromRow][fromCol].pieceOnBox = null
+
+        // Encontrar rey del mismo color
+        val king = boardCopy.flatten().first { it.pieceOnBox?.color == piece.color && it.pieceOnBox?.type == PieceType.King }.pieceOnBox!!
+
+        // Calcular casillas controladas por el oponente en la copia
+        val cellsControlled = MoveCalculatorSimulator.calculateCellsControledByOponentOnBoard(
+            boardCopy,
+            if (piece.color == Color.White) Color.White else Color.Black
+        )
+
+        // Ver si el rey sigue en jaque
+        return cellsControlled.contains(king.position)
+    }
+
 
     private fun isFreeCell(col: Int, row: Int): Boolean {
         return Globals.chessBoard[row][col].pieceOnBox == null

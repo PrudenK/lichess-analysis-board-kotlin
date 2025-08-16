@@ -7,6 +7,33 @@ import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 
 object Globals {
+
+    val knightDirections = listOf(
+        Pair(-2, -1),
+        Pair(-1, -2),
+        Pair(1, -2),
+        Pair(-2, 1),
+        Pair(2, -1),
+        Pair(2, 1),
+        Pair(1, 2),
+        Pair(-1, 2)
+    )
+
+    val rookDirections = listOf(
+        Pair(1, 0),
+        Pair(-1, 0),
+        Pair(0, 1),
+        Pair(0, -1)
+    )
+
+    val bishopDirections = listOf(
+        Pair(1, 1),
+        Pair(-1, -1),
+        Pair(-1, 1),
+        Pair(1, -1)
+    )
+
+
     val isDarkMode = mutableStateOf(false)
 
     val WhiteBox = Color(0xFFF0D9B5)
@@ -38,4 +65,8 @@ object Globals {
     val refreshBoard = mutableStateOf(false)
 
     val lastMove = mutableStateOf<LastMove?>(null)
+
+    val checkedKingPos = mutableStateOf<Pair<Int,Int>?>(null)
+    val whiteIsChecked = mutableStateOf(false)
+    val blackIsChecked = mutableStateOf(false)
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.utils.CastleHandler
+import org.pruden.tablero.utils.CellHandler
 import org.pruden.tablero.utils.History
 import org.pruden.tablero.utils.MoveCalculator
 import org.pruden.tablero.utils.PromotionHandler
@@ -35,6 +36,16 @@ fun ChessBoard() {
                                     var moveWasDone = false
                                     var promoteDone = false
                                     var promoteCanceled = false
+
+
+
+                                    // Checks
+
+
+
+
+
+
 
                                     if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
                                         promoteCanceled = PromotionHandler.handlePromotionClick(clickedRow, clickedCol)
@@ -130,6 +141,21 @@ fun ChessBoard() {
                                                     )
                                                 }
                                             }
+                                        }
+
+                                        // Comprobar si hay jaque
+                                        if (Globals.isWhiteMove.value) {
+                                            val attacked = MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.White)
+                                            val wKing = CellHandler.getKingByColor(org.pruden.tablero.models.Color.White)
+                                            val inCheck = attacked.contains(wKing.position)
+                                            Globals.whiteIsChecked.value = inCheck
+                                            Globals.checkedKingPos.value = if (inCheck) wKing.position else null
+                                        } else {
+                                            val attacked = MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.Black)
+                                            val bKing = CellHandler.getKingByColor(org.pruden.tablero.models.Color.Black)
+                                            val inCheck = attacked.contains(bKing.position)
+                                            Globals.blackIsChecked.value = inCheck
+                                            Globals.checkedKingPos.value = if (inCheck) bKing.position else null
                                         }
                                     }
                                 },
