@@ -144,8 +144,12 @@ object MoveCalculator {
 
         val miKingMoves = calculateDirectionalMoves(piece, Globals.rookDirections + Globals.bishopDirections, 1).toMutableList()
 
-        CastleHandler.addShortCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
-        CastleHandler.addLongCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
+        if ((piece.color == Color.White && !Globals.whiteIsChecked.value) ||
+            (piece.color == Color.Black && !Globals.blackIsChecked.value)
+        ){
+            CastleHandler.addShortCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
+            CastleHandler.addLongCastleMoveIfAvailable(piece, cellsControledByOtherPieces, miKingMoves)
+        }
 
         return miKingMoves - cellsControledByOtherPieces
     }
