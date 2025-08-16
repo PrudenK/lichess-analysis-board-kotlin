@@ -69,4 +69,7 @@ object Globals {
     val checkedKingPos = mutableStateOf<Pair<Int,Int>?>(null)
     val whiteIsChecked = mutableStateOf(false)
     val blackIsChecked = mutableStateOf(false)
+    var posiblePassant = false
+    var colPassant = -1
+    var enPassantCell = Pair(-1, -1)
 }

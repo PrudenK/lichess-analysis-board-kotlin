@@ -43,8 +43,6 @@ object MoveCalculator {
         val isBlack = piece.color == Color.Black
         val isFirstMove = if (isBlack) row == 1 else row == 6
 
-        logs(piece, col, row)
-
         if (isBlack) {
             if (row + 1 <= 7 && isFreeCell(col, row + 1)) {
                 result.add(Pair(col, row + 1))
@@ -64,6 +62,14 @@ object MoveCalculator {
                     result.add(Pair(col - 1, row + 1))
                 }
             }
+
+            if(row == 4 && Globals.posiblePassant){
+                if(col == Globals.colPassant + 1 || col == Globals.colPassant -1){
+                    val enPassantCell = Pair(Globals.colPassant, row + 1)
+                    result.add(enPassantCell)
+                    Globals.enPassantCell = enPassantCell
+                }
+            }
         } else {
             if (row - 1 >= 0 && isFreeCell(col, row - 1)) {
                 result.add(Pair(col, row - 1))
@@ -81,6 +87,14 @@ object MoveCalculator {
                 val pieceToCapture = Globals.chessBoard[row - 1][col - 1].pieceOnBox
                 if (pieceToCapture != null && pieceToCapture.color == Color.Black) {
                     result.add(Pair(col - 1, row - 1))
+                }
+            }
+
+            if(row == 3 && Globals.posiblePassant){
+                if(col == Globals.colPassant + 1 || col == Globals.colPassant -1){
+                    val enPassantCell = Pair(Globals.colPassant, row - 1)
+                    result.add(enPassantCell)
+                    Globals.enPassantCell = enPassantCell
                 }
             }
         }
@@ -120,8 +134,6 @@ object MoveCalculator {
     private fun calculateDirectionalMoves(piece: Piece, directions: List<Pair<Int, Int>>, maxSteps: Int, onlyControlledCells : Boolean = false): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         val (col, row) = piece.position
-
-        logs(piece, col, row)
 
         for ((dx, dy) in directions) {
             for (step in 1..maxSteps) {
@@ -165,8 +177,6 @@ object MoveCalculator {
         val col = piece.position.first
         val row = piece.position.second
 
-        logs(piece, col, row)
-
         for ((dx, dy) in Globals.knightDirections) {
             try {
                 val newCol = col + dx
@@ -195,8 +205,6 @@ object MoveCalculator {
                 ){
 
                     val currentPiece = Globals.chessBoard[i][j].pieceOnBox!!
-                    println(currentPiece.type.toString() + " " + currentPiece.color+ " " + color+ "  "+ currentPiece.position)
-
 
                     val directions = when(currentPiece.type){
                         PieceType.Pawn -> calculateCellsControledByAPawn(currentPiece)
@@ -246,21 +254,5 @@ object MoveCalculator {
 
     private fun isFreeCell(col: Int, row: Int): Boolean {
         return Globals.chessBoard[row][col].pieceOnBox == null
-    }
-
-    private fun logs(
-        piece: Piece,
-        col: Int,
-        row: Int,
-    ){
-        println("${piece.id}  Columna(X):$col   Fila(Y):$row")
-        for (y in 0..7) {
-            for (x in 0..7) {
-                val imprimir = Globals.chessBoard[y][x].pieceOnBox?.type ?: "null"
-                val color = if(Globals.chessBoard[y][x].pieceOnBox?.color == Color.Black) "B" else if (Globals.chessBoard[y][x].pieceOnBox?.color == Color.White) "W" else "X"
-                print(String.format("%-8s", "$imprimir $color"))
-            }
-            println()
-        }
     }
 }

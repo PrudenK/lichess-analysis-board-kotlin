@@ -1,0 +1,95 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x0000000000000000, pid=27516, tid=28204
+#
+# JRE version: OpenJDK Runtime Environment JBR-21.0.7+9-895.130-jcef (21.0.7+9) (build 21.0.7+9-b895.130)
+# Java VM: OpenJDK 64-Bit Server VM JBR-21.0.7+9-895.130-jcef (21.0.7+9-b895.130, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# Problematic frame:
+# C  [atio6axx.dll+0x72f546]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   https://youtrack.jetbrains.com/issues/JBR
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dskiko.renderApi=OPENGL -Dcompose.reload.orchestration.port=58619 -Dcompose.reload.pidFile=C:\Users\Pruden\Desktop\TableroAjedrez\TableroAjedrez\composeApp\build\run\jvmMain\jvmMain.pid -Dcompose.reload.argfile=C:\Users\Pruden\Desktop\TableroAjedrez\TableroAjedrez\composeApp\build\run\jvmMain\jvmMain.argfile -Dcompose.reload.mainClass=org.pruden.tablero.MainKt -Dcompose.reload.buildSystem=Gradle -Dorg.gradle.java.home=C:\Users\Pruden\.jdks\ms-21.0.7 -Dgradle.build.root=C:\Users\Pruden\Desktop\TableroAjedrez\TableroAjedrez -Dgradle.build.project=:composeApp -Dgradle.build.task=hotReloadJvmMain -Dcompose.reload.build.continuous=true -Dcompose.reload.devToolsEnabled=true -Dcompose.reload.devToolsHeadless=false -Dcompose.reload.devToolsTransparencyEnabled=true -Dcompose.reload.devToolsDetached=false -Dcompose.reload.parentPid=25368 -Dcompose.reload.launchMode=GradleBlocking -Dcompose.reload.logLevel=Info -Dcompose.reload.logStdout=false -Dcompose.reload.resourcesDirtyResolverEnabled=false org.jetbrains.compose.devtools.Main
+
+Host: AMD Ryzen 7 8845HS w/ Radeon 780M Graphics     , 16 cores, 31G,  Windows 11 , 64 bit Build 26100 (10.0.26100.4484)
+Time: Sat Aug 16 20:13:28 2025 Hora de verano romance elapsed time: 52.896487 seconds (0d 0h 0m 52s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001c1cc5091b0):  JavaThread "AWT-EventQueue-0"        [_thread_in_native, id=28204, stack(0x0000006163a00000,0x0000006163b00000) (1024K)]
+
+Stack: [0x0000006163a00000,0x0000006163b00000],  sp=0x0000006163aff180,  free space=1020k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+J 3669  org.jetbrains.skiko.redrawer.WindowsOpenGLRedrawerKt.makeCurrent(JJ)V (0 bytes) @ 0x000001c1f6349e9c [0x000001c1f6349e40+0x000000000000005c]
+J 6250 c2 org.jetbrains.skiko.redrawer.WindowsOpenGLRedrawer$Companion$frameDispatcher$1.invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object; (379 bytes) @ 0x000001c1f65d5cf8 [0x000001c1f65d55c0+0x0000000000000738]
+J 6406 c2 org.jetbrains.skiko.FrameDispatcher$job$1.invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object; (156 bytes) @ 0x000001c1f669e4f0 [0x000001c1f669e200+0x00000000000002f0]
+J 4449 c2 kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(Ljava/lang/Object;)V (124 bytes) @ 0x000001c1f6385ea4 [0x000001c1f6385e40+0x0000000000000064]
+J 6210 c2 kotlinx.coroutines.DispatchedTask.run()V (387 bytes) @ 0x000001c1f65a7b24 [0x000001c1f65a7760+0x00000000000003c4]
+J 4988 c2 java.awt.EventQueue.dispatchEvent(Ljava/awt/AWTEvent;)V java.desktop (80 bytes) @ 0x000001c1f63c1bf4 [0x000001c1f63c1620+0x00000000000005d4]
+J 5089 c2 java.awt.EventDispatchThread.pumpOneEventForFilters(I)V java.desktop (106 bytes) @ 0x000001c1f63e9a40 [0x000001c1f63e9680+0x00000000000003c0]
+J 6484% c2 java.awt.EventDispatchThread.pumpEventsForFilter(ILjava/awt/Conditional;Ljava/awt/EventFilter;)V java.desktop (47 bytes) @ 0x000001c1f6723e5c [0x000001c1f6723dc0+0x000000000000009c]
+j  java.awt.EventDispatchThread.pumpEventsForHierarchy(ILjava/awt/Conditional;Ljava/awt/Component;)V+11 java.desktop
+j  java.awt.EventDispatchThread.pumpEvents(ILjava/awt/Conditional;)V+4 java.desktop
+j  java.awt.EventDispatchThread.pumpEvents(Ljava/awt/Conditional;)V+3 java.desktop
+j  java.awt.EventDispatchThread.run()V+18 java.desktop
+v  ~StubRoutines::call_stub 0x000001c1f5ad10e7
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), data execution prevention violation at address 0x0000000000000000
+
+
+Registers:
+RAX=0x000001c1dd8aeb70, RBX=0x000001c1dc3f1080, RCX=0x000001c1dc07a6a8, RDX=0x0000000000000000
+RSP=0x0000006163aff178, RBP=0x0000000000010001, RSI=0x000000060cb625d0, RDI=0x000001c1dc07a6a8
+R8 =0x000001c1db304c50, R9 =0x000001c1dc3f1080, R10=0x00007ffda0926dfe, R11=0x0000006163aff1f8
+R12=0x0000000000000000, R13=0x00000000c196bb5c, R14=0x0000000000000000, R15=0x000001c1cc5091b0
+RIP=0x0000000000000000, EFLAGS=0x0000000000010202
+
+XMM[0]=0x0000000000000000 0x0000000000000000
+XMM[1]=0x000000010000001c 0x0000004300000002
+XMM[2]=0x0000000000000000 0x3ff0000000000000
+XMM[3]=0x0000000000000000 0x3ff8000000000000
+XMM[4]=0x00000000ff000000 0x4212000041e00000
+XMM[5]=0x00824b70ba080000 0x0002000000030000
+XMM[6]=0x0000000000000000 0x0000000042100000
+XMM[7]=0x0000000000000000 0x0000000040f00000
+XMM[8]=0x0000000000000000 0x0000000041000000
+XMM[9]=0x0000000000000000 0x0000000042100000
+XMM[10]=0x0000000000000000 0x00000000a53a89a0
+XMM[11]=0x0000000000000000 0x87a78be41ee2c9b4
+XMM[12]=0x0000000000000000 0x00000000973b3dd0
+XMM[13]=0x0000000000000000 0x0000000000000000
+XMM[14]=0x0000000000000000 0x0000000000000000
+XMM[15]=0x0000000000000000 0x000000004447cccd
+  MXCSR=0x00001fa5
+
+
+Register to memory mapping:
+
+RAX=0x000001c1dd8aeb70 points into unknown readable memory: 0x000001c1d1831370 | 70 13 83 d1 c1 01 00 00
+RBX=0x000001c1dc3f1080 points into unknown readable memory: 0x00007ffd4ae699b8 | b8 99 e6 4a fd 7f 00 00
+RCX=0x000001c1dc07a6a8 points into unknown readable memory: 0x000001c1d1831370 | 70 13 83 d1 c1 01 00 00
+RDX=0x0 is null
+RSP=0x0000006163aff178 is pointing into the stack for thread: 0x000001c1cc5091b0
+RBP=0x0000000000010001 is an unknown value
+RSI=0x000000060cb625d0 is an oop: kotlin.sequences.FilteringSequence$iterator$1 
+{0x000000060cb625d0} - klass: 'kotlin/sequences/FilteringSequence$iterator$1'
+ - ---- fields (total size 4 words):
+ - private 'nextState' 'I' @12  -1 (0xffffffff)
+ - private final 'iterator' 'Ljava/util/Iterator;' @16  a 'kotlin/sequences/FilteringSequence$iterator$1'{0x000000060cb625f0} (0xc196c4be)
+ - private 'nextItem' 'Ljava/lang/Object;' @20  null (0x00000000)
+ - final synthetic 'this$0' 'Lkotlin/sequences/FilteringSequence;' @24  a 'kotlin/sequences/FilteringSequence'{0x000000060bc0a948} (0xc1781529)
+RDI=0x000001c1dc07a6a8 points into unknown readable memory: 0x000001c1d1831370 | 70 13 83 d1 c1 01 00 00
+R8 =0x000001c1db304c50 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+R9 =0x000001c1dc3f1080 points into unknown readable memory: 0x00007ffd4ae699b8 | b8 99 e6 4a fd 7f 00 00
+R10=0x00007ffda0926dfe jvm.dll
