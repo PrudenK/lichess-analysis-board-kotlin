@@ -1,91 +1,23 @@
 package org.pruden.tablero.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.NonCancellable.key
-import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.Piece
-import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.CastleHandler
-import org.pruden.tablero.utils.CellHandler
+import org.pruden.tablero.utils.History
 import org.pruden.tablero.utils.MoveCalculator
-import org.pruden.tablero.utils.PieceProvider
 import org.pruden.tablero.utils.PromotionHandler
-import org.pruden.tablero.utils.loadChessBoard
-import tableroajedrez.composeapp.generated.resources.Res
-import tableroajedrez.composeapp.generated.resources.bB
-import tableroajedrez.composeapp.generated.resources.bN
-import tableroajedrez.composeapp.generated.resources.bQ
-import tableroajedrez.composeapp.generated.resources.bR
-import tableroajedrez.composeapp.generated.resources.wB
-import tableroajedrez.composeapp.generated.resources.wN
-import tableroajedrez.composeapp.generated.resources.wQ
-import tableroajedrez.composeapp.generated.resources.wR
-import java.lang.Thread.sleep
 
 
 @Composable
-fun ChessBoard(
-    modifier: Modifier,
-) {
-    if (!Globals.isBoardLoaded.value) {
-        loadChessBoard()
-        Globals.isBoardLoaded.value = true
-    }
-
-    Box(
-        modifier = modifier
-            .padding(50.dp)
-            .background(Color.Black.copy(alpha = 0.6f)),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-                .background(Color.White),
-        ) {
-            Row {
-                PaintChessBoardBoxes()
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Juegan ${if (Globals.isWhiteMove.value) "Blancas" else "Negras"}",
-                        fontSize = 24.sp,
-                        modifier = Modifier.padding(top = 24.dp),
-                    )
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun PaintChessBoardBoxes() {
+fun ChessBoard() {
     if(Globals.isBoardLoaded.value) {
         key(Globals.refreshBoard.value) {
             Column(
@@ -101,9 +33,10 @@ fun PaintChessBoardBoxes() {
                                 onClick = { clickedCol, clickedRow ->
                                     var moveWasDone = false
                                     var promoteDone = false
+                                    var promoteCanceled = false
 
                                     if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
-                                        PromotionHandler.handlePromotionClick(clickedRow)
+                                        promoteCanceled = PromotionHandler.handlePromotionClick(clickedRow, clickedCol)
                                         promoteDone = true
                                         Globals.refreshBoard.value = !Globals.refreshBoard.value
                                     }
@@ -123,6 +56,11 @@ fun PaintChessBoardBoxes() {
                                                 moveWasDone = true
                                                 val (selCol, selRow) = selectedPiecePos
 
+
+                                                History.push(selCol, selRow, clickedCol, clickedRow)
+                                                Globals.lastPieceStartPos = Globals.chessBoard[selRow][selCol].pieceOnBox!!.position
+
+
                                                 Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
                                                 Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
                                                 Globals.chessBoard[selRow][selCol].pieceOnBox = null
@@ -136,13 +74,11 @@ fun PaintChessBoardBoxes() {
                                                     PromotionHandler.preparePromotionSelectionWhite(movedPiece)
                                                 } else if (Globals.isBlackPromotion.value) {
                                                     PromotionHandler.preparePromotionSelectionBlack(movedPiece)
-                                                }
-                                                else{
+                                                }else{
                                                     Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                                 }
 
                                                 // Castle
-
                                                 CastleHandler.disableCastleIfKingOrRookMoved(movedPiece = movedPiece)
 
                                                 CastleHandler.moveRookOnCastle(
@@ -155,10 +91,12 @@ fun PaintChessBoardBoxes() {
                                             }
                                         }
                                     }else{
-                                        Globals.isWhiteMove.value = !Globals.isWhiteMove.value
+                                        if(!promoteCanceled){
+                                            Globals.isWhiteMove.value = !Globals.isWhiteMove.value
+                                        }
                                     }
 
-                                    if(!promoteDone) {
+                                    if(!promoteDone || promoteCanceled) {
                                         //Quitar selección
                                         Globals.possibleMoves.value = emptyList()
                                         Globals.chessBoard.forEach { row ->
@@ -196,64 +134,6 @@ fun PaintChessBoardBoxes() {
                 }
             }
 
-        }
-        if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
-            //PromotionMenuAtSquare()
-        }
-
-    }
-}
-
-
-
-@Composable
-fun PromotionMenuAtSquare() {
-    val col = Globals.promotionCol
-    val row = if (Globals.isWhitePromotion.value) 0 else 7
-    val pieces = if (Globals.isWhitePromotion.value) {
-        listOf(
-            PieceType.Queen to Res.drawable.wQ,
-            PieceType.Knight to Res.drawable.wN,
-            PieceType.Rook to Res.drawable.wR,
-            PieceType.Bishop to Res.drawable.wB
-        )
-    } else {
-        listOf(
-            PieceType.Queen to Res.drawable.bQ,
-            PieceType.Knight to Res.drawable.bN,
-            PieceType.Rook to Res.drawable.bR,
-            PieceType.Bishop to Res.drawable.bB
-        )
-    }
-
-    Box(
-        modifier = Modifier
-            .offset(
-                x = (col * Globals.BOX_SIZE).dp,
-                y = (if (Globals.isWhitePromotion.value) 0 else (row - 3) * Globals.BOX_SIZE).dp
-            )
-    ) {
-        Column {
-            pieces.forEach { (type, icon) ->
-                Image(
-                    painter = painterResource(icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(Globals.BOX_SIZE.dp)
-                        .clickable {
-                            val piece = Piece(
-                                id = 1,
-                                type = type,
-                                color = if (Globals.isWhitePromotion.value) org.pruden.tablero.models.Color.White else org.pruden.tablero.models.Color.Black,
-                                png = icon,
-                                position = Pair(col, row)
-                            )
-                            Globals.chessBoard[row][col].pieceOnBox = piece
-                            Globals.isWhitePromotion.value = false
-                            Globals.isBlackPromotion.value = false
-                        }
-                )
-            }
         }
     }
 }

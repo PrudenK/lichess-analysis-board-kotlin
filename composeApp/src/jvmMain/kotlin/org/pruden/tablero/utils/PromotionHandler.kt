@@ -11,7 +11,6 @@ import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 
 object PromotionHandler {
-
     @Composable
     fun applyPromotionFilter() {
         if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
@@ -39,59 +38,72 @@ object PromotionHandler {
         }
     }
 
-    fun handlePromotionClick(clickedRow: Int) {
+    fun handlePromotionClick(clickedRow: Int, clickedCol: Int) : Boolean {
+        var promoteCanceled = false
         if (Globals.isWhitePromotion.value) {
-            applyPromotionChoiceWhite(clickedRow)
+            promoteCanceled = applyPromotionChoiceWhite(clickedRow, clickedCol)
         } else if (Globals.isBlackPromotion.value) {
-            applyPromotionChoiceBlack(clickedRow)
+            promoteCanceled = applyPromotionChoiceBlack(clickedRow, clickedCol)
         }
+
+        return promoteCanceled
     }
 
-    private fun applyPromotionChoiceWhite(clickedRow: Int) {
+    private fun applyPromotionChoiceWhite(clickedRow: Int, clickedCol: Int): Boolean {
         val promotionCol = Globals.promotionCol
         val pawnPromoted = Globals.pawnPromoted!!
+        var promoteCanceled = false
 
-        val piecePromoted = when (clickedRow) {
-            1 -> PieceProvider.getWhiteKnight(pawnPromoted)
-            2 -> PieceProvider.getWhiteRook(pawnPromoted)
-            3 -> PieceProvider.getWhiteBishop(pawnPromoted)
-            else -> PieceProvider.getWhiteQueen(pawnPromoted)
+        if(clickedRow > 3 || clickedCol != promotionCol) {
+            History.undo()
+            pawnPromoted.position = Globals.lastPieceStartPos
+            promoteCanceled = true
+        }else{
+            val piecePromoted = when (clickedRow) {
+                1 -> PieceProvider.getWhiteKnight(pawnPromoted)
+                2 -> PieceProvider.getWhiteRook(pawnPromoted)
+                3 -> PieceProvider.getWhiteBishop(pawnPromoted)
+                else -> PieceProvider.getWhiteQueen(pawnPromoted)
+            }
+            Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
         }
-
-        Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
         Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
         Globals.chessBoard[2][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[3][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()
 
-        CellHandler.setCellsDisable(false)
         Globals.isWhitePromotion.value = false
+        return promoteCanceled
     }
 
-    private fun applyPromotionChoiceBlack(clickedRow: Int) {
+    private fun applyPromotionChoiceBlack(clickedRow: Int, clickedCol: Int): Boolean {
         val promotionCol = Globals.promotionCol
         val pawnPromoted = Globals.pawnPromoted!!
+        var promoteCanceled = false
 
-        val piecePromoted = when (clickedRow) {
-            6 -> PieceProvider.getBlackKnight(pawnPromoted)
-            5 -> PieceProvider.getBlackRook(pawnPromoted)
-            4 -> PieceProvider.getBlackBishop(pawnPromoted)
-            else -> PieceProvider.getBlackQueen(pawnPromoted)
+        if(clickedRow < 4 || clickedCol != promotionCol) {
+            History.undo()
+            pawnPromoted.position = Globals.lastPieceStartPos
+            promoteCanceled = true
+        }else{
+            val piecePromoted = when (clickedRow) {
+                6 -> PieceProvider.getBlackKnight(pawnPromoted)
+                5 -> PieceProvider.getBlackRook(pawnPromoted)
+                4 -> PieceProvider.getBlackBishop(pawnPromoted)
+                else -> PieceProvider.getBlackQueen(pawnPromoted)
+            }
+            Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
         }
-
-        Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
         Globals.chessBoard[6][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
         Globals.chessBoard[5][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[4][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()
 
-        CellHandler.setCellsDisable(false)
         Globals.isBlackPromotion.value = false
+        return promoteCanceled
     }
 
     fun preparePromotionSelectionWhite(movedPiece: Piece) {
-        CellHandler.setCellsDisable(true)
-
         val promotionCol = Globals.promotionCol
 
         val c1 = Globals.chessBoard[0][promotionCol]
@@ -117,8 +129,6 @@ object PromotionHandler {
     }
 
     fun preparePromotionSelectionBlack(movedPiece: Piece) {
-        CellHandler.setCellsDisable(true)
-
         val promotionCol = Globals.promotionCol
 
         val c1 = Globals.chessBoard[7][promotionCol]

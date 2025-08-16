@@ -17,7 +17,6 @@ object Globals {
     const val BOX_HEIGHT = 8
 
     var chessBoard = Array(BOX_HEIGHT) { Array(BOX_WIDTH) { BoxModel() } }
-
     val possibleMoves = mutableStateOf<List<Pair<Int, Int>>>(emptyList())
 
     val isWhiteMove = mutableStateOf(true)
@@ -33,6 +32,7 @@ object Globals {
     val promotionBuffer = mutableListOf<Piece?>()
 
     var pawnPromoted: Piece? = null
+    var lastPieceStartPos = Pair(-1, -1)
 
     val refreshBoard = mutableStateOf(false)
 }
