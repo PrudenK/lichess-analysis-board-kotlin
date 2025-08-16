@@ -1,8 +1,11 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.chessBoard
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
+import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.promotion.PromotionHandler
 
 object ChessBoardActionHandler {
     fun removePieceSelection(){
@@ -76,8 +79,8 @@ object ChessBoardActionHandler {
     ){
         if (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox != null) {
             if(
-                (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.color == org.pruden.tablero.models.Color.White && Globals.isWhiteMove.value)
-                || (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.color == org.pruden.tablero.models.Color.Black && !Globals.isWhiteMove.value)
+                (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.color == Color.White && Globals.isWhiteMove.value)
+                || (Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.color == Color.Black && !Globals.isWhiteMove.value)
             ) {
                 Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.isSelected.value = true
                 Globals.possibleMoves.value = MoveCalculator.getPosibleMoves(
@@ -89,14 +92,14 @@ object ChessBoardActionHandler {
 
     fun verifyIfCheck(){
         if (Globals.isWhiteMove.value) {
-            val attacked = MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.White)
-            val wKing = CellHandler.getKingByColor(org.pruden.tablero.models.Color.White)
+            val attacked = MoveCalculator.calculateCellsControledByOponent(Color.White)
+            val wKing = CellHandler.getKingByColor(Color.White)
             val inCheck = attacked.contains(wKing.position)
             Globals.whiteIsChecked.value = inCheck
             Globals.checkedKingPos.value = if (inCheck) wKing.position else null
         } else {
-            val attacked = MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.Black)
-            val bKing = CellHandler.getKingByColor(org.pruden.tablero.models.Color.Black)
+            val attacked = MoveCalculator.calculateCellsControledByOponent(Color.Black)
+            val bKing = CellHandler.getKingByColor(Color.Black)
             val inCheck = attacked.contains(bKing.position)
             Globals.blackIsChecked.value = inCheck
             Globals.checkedKingPos.value = if (inCheck) bKing.position else null

@@ -1,10 +1,10 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.moves
 
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.utils.castle.CastleHandler
 
 object MoveCalculator {
     fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {

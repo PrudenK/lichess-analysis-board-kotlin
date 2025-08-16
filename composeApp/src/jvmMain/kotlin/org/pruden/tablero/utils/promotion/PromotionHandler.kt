@@ -1,4 +1,4 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.promotion
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,6 +10,7 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.utils.moves.History
 
 object PromotionHandler {
     @Composable

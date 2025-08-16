@@ -1,4 +1,4 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.chessBoard
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color

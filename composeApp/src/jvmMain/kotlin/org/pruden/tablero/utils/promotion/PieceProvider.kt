@@ -1,4 +1,4 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.promotion
 
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType

@@ -20,7 +20,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import androidx.compose.ui.graphics.graphicsLayer
-import org.pruden.tablero.utils.PromotionHandler
+import org.pruden.tablero.utils.promotion.PromotionHandler
 
 @Composable
 fun Cell(

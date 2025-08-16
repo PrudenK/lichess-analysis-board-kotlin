@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.utils.loadChessBoard
+import org.pruden.tablero.utils.chessBoard.loadChessBoard
 
 
 @Composable

@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.utils.CastleHandler
-import org.pruden.tablero.utils.ChessBoardActionHandler
-import org.pruden.tablero.utils.History
-import org.pruden.tablero.utils.PromotionHandler
+import org.pruden.tablero.utils.castle.CastleHandler
+import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
+import org.pruden.tablero.utils.moves.History
+import org.pruden.tablero.utils.promotion.PromotionHandler
 
 
 @Composable
@@ -55,9 +55,14 @@ fun ChessBoard() {
 
                                                 val movedPiece = ChessBoardActionHandler.movePiece(clickedRow, clickedCol, selRow, selCol)
 
+                                                if(movedPiece.color == org.pruden.tablero.models.Color.White) {
+
+                                                }else{
+
+                                                }
+
                                                 ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
-                                                // Castle
                                                 CastleHandler.disableCastleIfKingOrRookMoved(movedPiece)
                                                 CastleHandler.moveRookOnCastle(movedPiece, selRow, selCol, clickedRow,clickedCol)
                                             }

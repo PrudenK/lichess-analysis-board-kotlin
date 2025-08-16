@@ -1,10 +1,9 @@
-package org.pruden.tablero.utils
+package org.pruden.tablero.utils.castle
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
-import kotlin.collections.plusAssign
 
 object CastleHandler {
     fun moveRookOnCastle(
@@ -17,7 +16,7 @@ object CastleHandler {
         if(movedPiece.type == PieceType.King){
             val startPos = Globals.chessBoard[selRow][selCol].boxNotation
             val endPos = Globals.chessBoard[clickedRow][clickedCol].boxNotation
-            if(movedPiece.color == org.pruden.tablero.models.Color.White) {
+            if(movedPiece.color == Color.White) {
                 if(startPos == "e1" && endPos == "g1") {
                     val rook = Globals.chessBoard[7][7].pieceOnBox!!
                     Globals.chessBoard[7][7].pieceOnBox = null
