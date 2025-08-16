@@ -4,8 +4,10 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
+import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.promotion.PromotionHandler
+import kotlin.math.abs
 
 object ChessBoardActionHandler {
     fun removePieceSelection(){
@@ -103,6 +105,33 @@ object ChessBoardActionHandler {
             val inCheck = attacked.contains(bKing.position)
             Globals.blackIsChecked.value = inCheck
             Globals.checkedKingPos.value = if (inCheck) bKing.position else null
+        }
+    }
+
+    fun enPassantCalculations(
+        movedPiece: Piece,
+        clickedRow: Int,
+        clickedCol: Int,
+        selRow: Int,
+        selCol: Int,
+    ){
+        if(Globals.posiblePassant){
+            if(Pair(clickedCol, clickedRow) == Globals.enPassantCell) {
+                val offset = if(Globals.isWhiteMove.value) -1 else 1
+
+                val (row, col) = Globals.enPassantCell
+                Globals.chessBoard[col - offset][row].pieceOnBox = null
+                Globals.refreshBoard.value = !Globals.refreshBoard.value
+            }
+        }
+
+        Globals.posiblePassant = false
+
+        if(movedPiece.type == PieceType.Pawn){
+            if(abs(selRow - clickedRow) == 2){
+                Globals.posiblePassant = true
+                Globals.colPassant = selCol
+            }
         }
     }
 }

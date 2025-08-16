@@ -10,12 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.castle.CastleHandler
 import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.moves.History
 import org.pruden.tablero.utils.promotion.PromotionHandler
-import kotlin.math.abs
 
 
 @Composable
@@ -57,24 +55,7 @@ fun ChessBoard() {
 
                                                 val movedPiece = ChessBoardActionHandler.movePiece(clickedRow, clickedCol, selRow, selCol)
 
-                                                if(Globals.posiblePassant){
-                                                    if(Pair(clickedCol, clickedRow) == Globals.enPassantCell) {
-                                                        val offset = if(Globals.isWhiteMove.value) -1 else 1
-
-                                                        val (row, col) = Globals.enPassantCell
-                                                        Globals.chessBoard[col - offset][row].pieceOnBox = null
-                                                        Globals.refreshBoard.value = !Globals.refreshBoard.value
-                                                    }
-                                                }
-
-                                                Globals.posiblePassant = false
-
-                                                if(movedPiece.type == PieceType.Pawn){
-                                                    if(abs(selRow - clickedRow) == 2){
-                                                        Globals.posiblePassant = true
-                                                        Globals.colPassant = selCol
-                                                    }
-                                                }
+                                                ChessBoardActionHandler.enPassantCalculations(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
                                                 ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
