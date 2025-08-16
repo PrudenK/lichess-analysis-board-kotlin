@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 
@@ -56,6 +57,9 @@ object PromotionHandler {
 
         if(clickedRow > 3 || clickedCol != promotionCol) {
             History.undo()
+            Globals.lastMove.value = History.peek()?.let {
+                LastMove(from = Pair(it.fromCol, it.fromRow), to = Pair(it.toCol, it.toRow))
+            }
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
         }else{
@@ -83,6 +87,9 @@ object PromotionHandler {
 
         if(clickedRow < 4 || clickedCol != promotionCol) {
             History.undo()
+            Globals.lastMove.value = History.peek()?.let {
+                LastMove(from = Pair(it.fromCol, it.fromRow), to = Pair(it.toCol, it.toRow))
+            }
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
         }else{

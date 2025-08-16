@@ -3,6 +3,7 @@ package org.pruden.tablero.globals
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
+import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 
 object Globals {
@@ -35,4 +36,6 @@ object Globals {
     var lastPieceStartPos = Pair(-1, -1)
 
     val refreshBoard = mutableStateOf(false)
+
+    val lastMove = mutableStateOf<LastMove?>(null)
 }

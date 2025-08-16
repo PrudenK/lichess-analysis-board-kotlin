@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.utils.CastleHandler
 import org.pruden.tablero.utils.History
 import org.pruden.tablero.utils.MoveCalculator
@@ -61,6 +62,12 @@ fun ChessBoard() {
                                                 Globals.lastPieceStartPos = Globals.chessBoard[selRow][selCol].pieceOnBox!!.position
 
 
+                                                Globals.lastMove.value = LastMove(
+                                                    from = Pair(selCol, selRow),
+                                                    to = Pair(clickedCol, clickedRow)
+                                                )
+
+
                                                 Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
                                                 Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
                                                 Globals.chessBoard[selRow][selCol].pieceOnBox = null
@@ -75,6 +82,10 @@ fun ChessBoard() {
                                                 } else if (Globals.isBlackPromotion.value) {
                                                     PromotionHandler.preparePromotionSelectionBlack(movedPiece)
                                                 }else{
+                                                    Globals.lastMove.value = LastMove(
+                                                        from = Pair(selCol, selRow),
+                                                        to = Pair(clickedCol, clickedRow)
+                                                    )
                                                     Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                                 }
 

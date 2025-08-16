@@ -72,6 +72,17 @@ fun Cell(
             )
         }
 
+
+        val lm = Globals.lastMove.value
+        val highlight = lm != null &&
+                ((columnX == lm.from.first && rowY == lm.from.second) ||
+                        (columnX == lm.to.first && rowY == lm.to.second))
+
+        if (highlight) {
+            Box(Modifier.fillMaxSize().background(Color.Green.copy(alpha = 0.2f)))
+        }
+
+
         cell.pieceOnBox?.let {
             Image(
                 painter = painterResource(resource = it.png!!),
