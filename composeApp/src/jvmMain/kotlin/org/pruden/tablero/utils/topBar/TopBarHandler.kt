@@ -1,7 +1,9 @@
 package org.pruden.tablero.utils.topBar
 
+import androidx.compose.runtime.mutableStateOf
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
+import org.pruden.tablero.models.Color
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
 
 object TopBarHandler {
@@ -39,9 +41,30 @@ object TopBarHandler {
         Globals.result.value = -1
         Globals.isGameOver.value = false
 
+        Globals.movesBuffer.value = mutableListOf()
+
         loadChessBoard()
 
         Globals.refreshBoard.value = !Globals.refreshBoard.value
         Globals.isBoardLoaded.value = true
     }
+
+    fun printBoard() {
+        println("_______________________________________________________________________________________________________")
+
+        for (i in 0..7) {
+            for (j in 0..7) {
+                val piece = Globals.chessBoard[i][j].pieceOnBox
+                val text = if (piece != null) {
+                    val color = if (piece.color == Color.White) "W" else "B"
+                    "${piece.type}($color)"
+                } else {
+                    " . "
+                }
+                print(text.padEnd(12))
+            }
+            println()
+        }
+    }
+
 }

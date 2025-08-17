@@ -13,6 +13,8 @@ import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.History
 
 object PromotionHandler {
+    var selCol = -1
+
     @Composable
     fun applyPromotionFilter() {
         if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
@@ -55,8 +57,11 @@ object PromotionHandler {
         val promotionCol = Globals.promotionCol
         val pawnPromoted = Globals.pawnPromoted!!
         var promoteCanceled = false
+        var promotionWithCapture = true
 
         if(clickedRow > 3 || clickedCol != promotionCol) {
+            if(promotionCol == selCol) promotionWithCapture = false
+
             History.undo()
             Globals.lastMove.value = History.peek()?.let {
                 LastMove(from = Pair(it.fromCol, it.fromRow), to = Pair(it.toCol, it.toRow))
@@ -72,7 +77,10 @@ object PromotionHandler {
             }
             Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
         }
-        Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
+        if(promotionWithCapture) {
+            Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
+        }
+
         Globals.chessBoard[2][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[3][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()
@@ -85,12 +93,16 @@ object PromotionHandler {
         val promotionCol = Globals.promotionCol
         val pawnPromoted = Globals.pawnPromoted!!
         var promoteCanceled = false
+        var promotionWithCapture = true
 
         if(clickedRow < 4 || clickedCol != promotionCol) {
+            if(promotionCol == selCol) promotionWithCapture = false
+
             History.undo()
             Globals.lastMove.value = History.peek()?.let {
                 LastMove(from = Pair(it.fromCol, it.fromRow), to = Pair(it.toCol, it.toRow))
             }
+
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
         }else{
@@ -102,7 +114,10 @@ object PromotionHandler {
             }
             Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
         }
-        Globals.chessBoard[6][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
+
+        if(promotionWithCapture){
+            Globals.chessBoard[6][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
+        }
         Globals.chessBoard[5][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[4][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()

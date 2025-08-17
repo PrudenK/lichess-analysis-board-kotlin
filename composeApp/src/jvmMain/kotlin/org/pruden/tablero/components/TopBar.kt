@@ -29,9 +29,11 @@ fun TopBar(){
             Text("Reiniciar tablero")
         }
         TextButton(
-            onClick = {},
+            onClick = {
+                TopBarHandler.printBoard()
+            },
         ){
-            Text("adsfa")
+            Text("Print")
         }
 
         TextButton(

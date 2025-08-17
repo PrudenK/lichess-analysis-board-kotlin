@@ -31,6 +31,28 @@ object ChessBoardActionHandler {
         return Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
     }
 
+    /*
+        fun movePiece(
+        clickedRow: Int,
+        clickedCol: Int,
+        selRow: Int,
+        selCol: Int,
+    ): Piece{
+        val clickedCell = Globals.chessBoard[clickedRow][clickedCol].copy()
+
+        Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
+        Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
+
+        val movedPiece = Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
+        NotationHandler.addMoveToBuffer(movedPiece, clickedCell)
+
+
+        Globals.chessBoard[selRow][selCol].pieceOnBox = null
+
+        return movedPiece
+    }
+     */
+
     fun saveLastMove(
         clickedRow: Int,
         clickedCol: Int,
@@ -61,6 +83,8 @@ object ChessBoardActionHandler {
         selCol: Int,
     ){
         PromotionHandler.verifyPromotion(movedPiece)
+
+        PromotionHandler.selCol = selCol
 
         if (Globals.isWhitePromotion.value) {
             PromotionHandler.preparePromotionSelectionWhite(movedPiece)

@@ -1,5 +1,6 @@
 package org.pruden.tablero.globals
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
@@ -76,4 +77,6 @@ object Globals {
     val result = mutableStateOf<Int>(-1) // 0(wWin), 1(bWin), 2(draw, stalemate), 3(draw, death position)
 
     val isGameOver = mutableStateOf(false)
+
+    val movesBuffer = mutableStateOf(mutableListOf<String>())
 }

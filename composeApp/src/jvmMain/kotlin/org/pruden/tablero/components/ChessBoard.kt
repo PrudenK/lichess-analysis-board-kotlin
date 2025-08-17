@@ -13,6 +13,7 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.castle.CastleHandler
 import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.moves.History
+import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import org.pruden.tablero.utils.result.ResultHandler
 
