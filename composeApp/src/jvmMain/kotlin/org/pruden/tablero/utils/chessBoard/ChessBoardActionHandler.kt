@@ -6,6 +6,7 @@ import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import kotlin.math.abs
 
@@ -25,19 +26,6 @@ object ChessBoardActionHandler {
         selRow: Int,
         selCol: Int,
     ): Piece{
-        Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
-        Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
-        Globals.chessBoard[selRow][selCol].pieceOnBox = null
-        return Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
-    }
-
-    /*
-        fun movePiece(
-        clickedRow: Int,
-        clickedCol: Int,
-        selRow: Int,
-        selCol: Int,
-    ): Piece{
         val clickedCell = Globals.chessBoard[clickedRow][clickedCol].copy()
 
         Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
@@ -51,7 +39,6 @@ object ChessBoardActionHandler {
 
         return movedPiece
     }
-     */
 
     fun saveLastMove(
         clickedRow: Int,
