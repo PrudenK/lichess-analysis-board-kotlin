@@ -56,7 +56,7 @@ fun ContentMain(
 
                     Row {
                         Text(
-                            text = "Resultado ${ResultHandler.getResultToString()}",
+                            text = "Resultado: ${ResultHandler.getResultToString()}",
                             fontSize = 20.sp,
                             modifier = Modifier.padding(top = 12.dp),
                         )
