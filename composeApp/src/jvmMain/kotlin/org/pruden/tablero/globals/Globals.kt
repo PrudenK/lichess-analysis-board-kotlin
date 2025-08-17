@@ -73,5 +73,7 @@ object Globals {
     var colPassant = -1
     var enPassantCell = Pair(-1, -1)
 
-    var result = mutableStateOf<Int>(-1) // 0(wWin), 1(bWin), 2(draw, stalemate), 3(draw, material insuficiente)
+    val result = mutableStateOf<Int>(-1) // 0(wWin), 1(bWin), 2(draw, stalemate), 3(draw, death position)
+
+    val isGameOver = mutableStateOf(false)
 }

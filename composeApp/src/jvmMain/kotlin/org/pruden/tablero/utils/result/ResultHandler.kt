@@ -22,30 +22,28 @@ object ResultHandler {
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.White)
 
             if (moves.isEmpty()) {
-                Globals.result.value = 1
+                manageResult(1)
             }
         }else if(Globals.blackIsChecked.value){
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.Black)
 
             if (moves.isEmpty()) {
-                Globals.result.value = 0
+                manageResult(0)
             }
         }else{
             if(Globals.isWhiteMove.value){
                 val moves = MoveCalculator.getAllPossibleMovesByColor(Color.White)
 
                 if (moves.isEmpty()) {
-                    Globals.result.value = 2
+                    manageResult(2)
                 }
             }else{
                 val moves = MoveCalculator.getAllPossibleMovesByColor(Color.Black)
 
                 if (moves.isEmpty()) {
-                    Globals.result.value = 2
+                    manageResult(2)
                 }
             }
-
-
         }
 
         calculateDeadPosition()
@@ -77,14 +75,18 @@ object ResultHandler {
         val total = knights + bishopsOnWhite + bishopsOnBlack
 
         if (total == 0) {
-            Globals.result.value = 3
+            manageResult(3)
         } else if (total == 1 && knights == 1) {
-            Globals.result.value = 3 // rey+caballo
+            manageResult(3) // rey+caballo
         } else if (total == 1 && (bishopsOnWhite == 1 || bishopsOnBlack == 1)) {
-            Globals.result.value = 3 // rey+alfil
+            manageResult(3) // rey+alfil
         } else if (knights == 0 && (bishopsOnWhite == 0 || bishopsOnBlack == 0)) {
-            Globals.result.value = 3 // solo alfiles en un mismo color
+            manageResult(3) // solo alfiles en un mismo color
         }
     }
 
+    private fun manageResult(i: Int){
+        Globals.result.value = i
+        Globals.isGameOver.value = true
+    }
 }

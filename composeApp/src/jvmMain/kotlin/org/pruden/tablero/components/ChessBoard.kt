@@ -32,55 +32,57 @@ fun ChessBoard() {
                                 rowY = rowY,
                                 cell = Globals.chessBoard[rowY][columnX],
                                 onClick = { clickedCol, clickedRow ->
-                                    var moveWasDone = false
-                                    var promoteDone = false
-                                    var promoteCanceled = false
+                                    if(!Globals.isGameOver.value) {
+                                        var moveWasDone = false
+                                        var promoteDone = false
+                                        var promoteCanceled = false
 
-                                    if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
-                                        promoteCanceled = PromotionHandler.handlePromotionClick(clickedRow, clickedCol)
-                                        promoteDone = true
-                                        Globals.refreshBoard.value = !Globals.refreshBoard.value
-                                    }
+                                        if (Globals.isWhitePromotion.value || Globals.isBlackPromotion.value) {
+                                            promoteCanceled = PromotionHandler.handlePromotionClick(clickedRow, clickedCol)
+                                            promoteDone = true
+                                            Globals.refreshBoard.value = !Globals.refreshBoard.value
+                                        }
 
-                                    if(!promoteDone) {
-                                        if (Globals.possibleMoves.value.contains(Pair(clickedCol, clickedRow))) {
-                                            val selectedPiecePos = ChessBoardActionHandler.getSelectedPiecePos()
+                                        if(!promoteDone) {
+                                            if (Globals.possibleMoves.value.contains(Pair(clickedCol, clickedRow))) {
+                                                val selectedPiecePos = ChessBoardActionHandler.getSelectedPiecePos()
 
-                                            if (selectedPiecePos != null) {
-                                                moveWasDone = true
-                                                val (selCol, selRow) = selectedPiecePos
+                                                if (selectedPiecePos != null) {
+                                                    moveWasDone = true
+                                                    val (selCol, selRow) = selectedPiecePos
 
-                                                History.push(selCol, selRow, clickedCol, clickedRow)
+                                                    History.push(selCol, selRow, clickedCol, clickedRow)
 
-                                                ChessBoardActionHandler.saveLastMove(clickedRow, clickedCol, selRow, selCol)
+                                                    ChessBoardActionHandler.saveLastMove(clickedRow, clickedCol, selRow, selCol)
 
-                                                val movedPiece = ChessBoardActionHandler.movePiece(clickedRow, clickedCol, selRow, selCol)
+                                                    val movedPiece = ChessBoardActionHandler.movePiece(clickedRow, clickedCol, selRow, selCol)
 
-                                                ChessBoardActionHandler.enPassantCalculations(movedPiece, clickedRow, clickedCol, selRow, selCol)
+                                                    ChessBoardActionHandler.enPassantCalculations(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
-                                                ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
+                                                    ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
-                                                CastleHandler.disableCastleIfKingOrRookMoved(movedPiece)
-                                                CastleHandler.moveRookOnCastle(movedPiece, selRow, selCol, clickedRow,clickedCol)
+                                                    CastleHandler.disableCastleIfKingOrRookMoved(movedPiece)
+                                                    CastleHandler.moveRookOnCastle(movedPiece, selRow, selCol, clickedRow,clickedCol)
+                                                }
+                                            }
+                                        }else{
+                                            if(!promoteCanceled){
+                                                Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                             }
                                         }
-                                    }else{
-                                        if(!promoteCanceled){
-                                            Globals.isWhiteMove.value = !Globals.isWhiteMove.value
-                                        }
-                                    }
 
-                                    if(!promoteDone || promoteCanceled) {
-                                        ChessBoardActionHandler.removePieceSelection()
+                                        if(!promoteDone || promoteCanceled) {
+                                            ChessBoardActionHandler.removePieceSelection()
 
-                                        if(!moveWasDone) {
-                                            ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
+                                            if(!moveWasDone) {
+                                                ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
+                                            }
+
+                                            ChessBoardActionHandler.verifyIfCheck()
                                         }
 
-                                        ChessBoardActionHandler.verifyIfCheck()
+                                        ResultHandler.calculateResultAfterMove()
                                     }
-
-                                    ResultHandler.calculateResultAfterMove()
                                 },
                                 onDrag = { x, y, offSet ->
 
