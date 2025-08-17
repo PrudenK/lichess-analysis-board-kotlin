@@ -11,6 +11,7 @@ import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.History
+import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.result.ResultHandler
 
 object PromotionHandler {
@@ -69,6 +70,8 @@ object PromotionHandler {
             }
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
+
+            NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
                 1 -> PieceProvider.getWhiteKnight(pawnPromoted)
@@ -77,6 +80,8 @@ object PromotionHandler {
                 else -> PieceProvider.getWhiteQueen(pawnPromoted)
             }
             Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
+
+            NotationHandler.appendPromotion(piecePromoted.type)
         }
         if(promotionWithCapture) {
             Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
@@ -106,6 +111,8 @@ object PromotionHandler {
 
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
+
+            NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
                 6 -> PieceProvider.getBlackKnight(pawnPromoted)
@@ -114,6 +121,8 @@ object PromotionHandler {
                 else -> PieceProvider.getBlackQueen(pawnPromoted)
             }
             Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
+
+            NotationHandler.appendPromotion(piecePromoted.type)
         }
 
         if(promotionWithCapture){

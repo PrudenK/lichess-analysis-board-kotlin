@@ -8,6 +8,7 @@ import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
+import org.w3c.dom.Notation
 import kotlin.math.abs
 
 object ChessBoardActionHandler {
@@ -28,11 +29,13 @@ object ChessBoardActionHandler {
     ): Piece{
         val clickedCell = Globals.chessBoard[clickedRow][clickedCol].copy()
 
+        val fromCell = Globals.chessBoard[selRow][selCol].boxNotation
+
         Globals.chessBoard[clickedRow][clickedCol].pieceOnBox = Globals.chessBoard[selRow][selCol].pieceOnBox
         Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
 
         val movedPiece = Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
-        NotationHandler.addMoveToBuffer(movedPiece, clickedCell)
+        NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
 
 
         Globals.chessBoard[selRow][selCol].pieceOnBox = null
@@ -103,21 +106,22 @@ object ChessBoardActionHandler {
         }
     }
 
-    fun verifyIfCheck(){
+    fun verifyIfCheck() {
         if (Globals.isWhiteMove.value) {
             val attacked = MoveCalculator.calculateCellsControledByOponent(Color.White)
-            val wKing = CellHandler.getKingByColor(Color.White)
-            val inCheck = attacked.contains(wKing.position)
+            val k = CellHandler.getKingByColor(Color.White)
+            val inCheck = attacked.contains(k.position)
             Globals.whiteIsChecked.value = inCheck
-            Globals.checkedKingPos.value = if (inCheck) wKing.position else null
+            Globals.checkedKingPos.value = if (inCheck) k.position else null
         } else {
             val attacked = MoveCalculator.calculateCellsControledByOponent(Color.Black)
-            val bKing = CellHandler.getKingByColor(Color.Black)
-            val inCheck = attacked.contains(bKing.position)
+            val k = CellHandler.getKingByColor(Color.Black)
+            val inCheck = attacked.contains(k.position)
             Globals.blackIsChecked.value = inCheck
-            Globals.checkedKingPos.value = if (inCheck) bKing.position else null
+            Globals.checkedKingPos.value = if (inCheck) k.position else null
         }
     }
+
 
     fun enPassantCalculations(
         movedPiece: Piece,

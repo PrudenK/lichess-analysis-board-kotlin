@@ -4,6 +4,7 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.notation.NotationHandler
 
 
 object ResultHandler {
@@ -86,6 +87,9 @@ object ResultHandler {
     }
 
     private fun manageResult(i: Int){
+        if(i == 0 || i == 1){
+            NotationHandler.appendMate()
+        }
         Globals.result.value = i
         Globals.isGameOver.value = true
     }
