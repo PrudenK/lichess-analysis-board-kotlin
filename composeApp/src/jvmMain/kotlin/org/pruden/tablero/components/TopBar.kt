@@ -11,6 +11,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.pruden.tablero.utils.topBar.TopBarHandler
 
 @Composable
 fun TopBar(){
@@ -21,9 +22,11 @@ fun TopBar(){
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         TextButton(
-            onClick = {},
+            onClick = {
+                TopBarHandler.restartBoard()
+            },
         ){
-            Text("adsfa")
+            Text("Reiniciar tablero")
         }
         TextButton(
             onClick = {},

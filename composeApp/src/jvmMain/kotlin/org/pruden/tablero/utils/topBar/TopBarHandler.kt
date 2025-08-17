@@ -1,0 +1,47 @@
+package org.pruden.tablero.utils.topBar
+
+import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.BoxModel
+import org.pruden.tablero.utils.chessBoard.loadChessBoard
+
+object TopBarHandler {
+    fun restartBoard() {
+        Globals.isDarkMode.value = false
+
+        Globals.chessBoard = Array(Globals.BOX_HEIGHT) { Array(Globals.BOX_WIDTH) { BoxModel() } }
+        Globals.possibleMoves.value = emptyList()
+
+        Globals.isWhiteMove.value = true
+        Globals.isBoardLoaded.value = false
+
+        Globals.whiteCastle = Triple(false, false, false)
+        Globals.blackCastle = Triple(false, false, false)
+
+        Globals.promotionCol = 0
+        Globals.isWhitePromotion.value = false
+        Globals.isBlackPromotion.value = false
+
+        Globals.promotionBuffer.clear()
+        Globals.pawnPromoted = null
+        Globals.lastPieceStartPos = Pair(-1, -1)
+
+        Globals.refreshBoard.value = false
+
+        Globals.lastMove.value = null
+
+        Globals.checkedKingPos.value = null
+        Globals.whiteIsChecked.value = false
+        Globals.blackIsChecked.value = false
+        Globals.posiblePassant = false
+        Globals.colPassant = -1
+        Globals.enPassantCell = Pair(-1, -1)
+
+        Globals.result.value = -1
+        Globals.isGameOver.value = false
+
+        loadChessBoard()
+
+        Globals.refreshBoard.value = !Globals.refreshBoard.value
+        Globals.isBoardLoaded.value = true
+    }
+}

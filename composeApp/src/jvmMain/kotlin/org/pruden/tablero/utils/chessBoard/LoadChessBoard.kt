@@ -27,7 +27,7 @@ fun loadChessBoard() {
             Globals.chessBoard[rowY][columnX] = BoxModel(
                 boxNotation = notation,
                 color = if ((columnX + rowY) % 2 == 0) Globals.WhiteBox else Globals.BlackBox,
-                pieceOnBox = if(rowY >= 1 && rowY <= 6 ) null else {
+                pieceOnBox = if(rowY >= 2 && rowY <= 5 ) null else {
                     val isBlackPiece = rowY < 2
 
                     val color = when{
