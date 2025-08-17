@@ -251,6 +251,22 @@ object MoveCalculator {
         return cellsControlled.contains(king.position)
     }
 
+    fun getAllPossibleMovesByColor(color: Color): List<Pair<Int, Int>> {
+        val moves = mutableListOf<Pair<Int, Int>>()
+
+        for(i in 0..7){
+            for (j in 0..7) {
+                if(!Globals.chessBoard[i][j].isFreeCell() &&
+                    Globals.chessBoard[i][j].pieceOnBox?.color == color
+                ) {
+                    moves += getPosibleMoves(Globals.chessBoard[i][j].pieceOnBox!!)
+                }
+            }
+        }
+
+        return moves
+    }
+
 
     private fun isFreeCell(col: Int, row: Int): Boolean {
         return Globals.chessBoard[row][col].pieceOnBox == null

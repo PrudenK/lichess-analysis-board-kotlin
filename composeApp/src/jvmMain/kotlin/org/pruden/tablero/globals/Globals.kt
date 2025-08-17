@@ -72,4 +72,6 @@ object Globals {
     var posiblePassant = false
     var colPassant = -1
     var enPassantCell = Pair(-1, -1)
+
+    var result = mutableStateOf<Int>(-1) // 0(wWin), 1(bWin), 2(draw)
 }
