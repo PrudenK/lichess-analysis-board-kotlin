@@ -14,6 +14,9 @@ object ResultHandler {
             1 -> "Black wins"
             2 -> "Draw by stalemate"
             3 -> "Draw by death position"
+            4 -> "Draw by fifty-move rule"
+            5 -> "Draw by seventy-five-move rule"
+
             else -> ""
         }
     }
@@ -47,8 +50,21 @@ object ResultHandler {
             }
         }
 
+        if(isFiftyReclaimable()){
+            // TODO activar boton para reclamar
+            // manageResult(4)
+        }
+
+        if(isSeventyFiveAuto()){
+            manageResult(5)
+        }
+
+
         calculateDeadPosition()
     }
+
+    fun isFiftyReclaimable() = Globals.halfMoves >= 100
+    fun isSeventyFiveAuto() = Globals.halfMoves >= 150
 
     fun calculateDeadPosition() {
         var knights = 0

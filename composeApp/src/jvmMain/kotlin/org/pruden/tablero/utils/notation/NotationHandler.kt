@@ -14,10 +14,23 @@ object NotationHandler {
     fun addMoveToBuffer(piece: Piece, fromCell: String, clickedCell: BoxModel) {
         val from = Globals.lastPieceStartPos
         val to = piece.position
+        val capture = isCapture(piece, from, to, clickedCell)
+
+
+
+        if (capture || piece.type == PieceType.Pawn) {
+            Globals.halfMoves = 0
+        }else{
+            Globals.halfMoves += 1
+        }
+
+
         castleSanIfAny(piece, from, to)?.let {
             Globals.movesBuffer.value.add(it); return
         }
-        val capture = isCapture(piece, from, to, clickedCell)
+
+
+
         val san = if (piece.type == PieceType.Pawn) {
             val dest = square(to)
             if (capture) "${fromCell[0]}x$dest" else dest

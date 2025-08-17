@@ -79,4 +79,6 @@ object Globals {
     val isGameOver = mutableStateOf(false)
 
     val movesBuffer = mutableStateOf(mutableListOf<String>())
+
+    var halfMoves = 0
 }
