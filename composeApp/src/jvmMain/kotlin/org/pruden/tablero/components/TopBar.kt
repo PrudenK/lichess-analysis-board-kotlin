@@ -11,6 +11,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.topBar.TopBarHandler
 
 @Composable
@@ -37,9 +38,11 @@ fun TopBar(){
         }
 
         TextButton(
-            onClick = {},
+            onClick = {
+                println(MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.Black).map { positionToChessNotation(it) })
+            },
         ){
-            Text("adsfa")
+            Text("Help")
         }
 
         TextButton(
@@ -48,4 +51,8 @@ fun TopBar(){
             Text("adsfa")
         }
     }
+}
+fun positionToChessNotation(position: Pair<Int, Int>): String {
+    val l = "abcdefgh"
+    return l[position.first].toString() + (7 - position.second +1)
 }

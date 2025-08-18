@@ -1,5 +1,6 @@
 package org.pruden.tablero.utils.notation
 
+import org.pruden.tablero.components.TopBar
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
@@ -7,6 +8,7 @@ import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.chessBoard.CellHandler
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.topBar.TopBarHandler
 import kotlin.math.abs
 
 object NotationHandler {
@@ -57,8 +59,8 @@ object NotationHandler {
         Globals.movesBuffer.value.add("$last=$t")
     }
 
-    fun annotateCheckIfAny() {
-        val side = if (Globals.isWhiteMove.value) Color.White else Color.Black
+    fun annotateCheckIfAny(promoted: Boolean = false) {
+        val side = if (if(promoted) !Globals.isWhiteMove.value else Globals.isWhiteMove.value) Color.White else Color.Black
         val attacked = MoveCalculator.calculateCellsControledByOponent(side)
         val king = CellHandler.getKingByColor(side)
         if (attacked.contains(king.position)) appendCheck()

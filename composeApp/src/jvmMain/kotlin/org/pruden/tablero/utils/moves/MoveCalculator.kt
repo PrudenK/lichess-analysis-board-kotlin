@@ -146,7 +146,7 @@ object MoveCalculator {
                         if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color || onlyControlledCells) {
                             result.add(Pair(newCol, newRow))
                         }
-                        if(!(onlyControlledCells && Globals.chessBoard[newRow][newCol].pieceOnBox?.type == PieceType.King)) { // for -> Rook Kink freeCell(X) (X is not available)
+                        if(!(onlyControlledCells && (Globals.chessBoard[newRow][newCol].pieceOnBox?.type == PieceType.King && Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color))) { // for -> Rook Kink freeCell(X) (X is not available)
                             break
                         }
                     }

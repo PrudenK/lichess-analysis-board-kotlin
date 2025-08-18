@@ -16,6 +16,7 @@ import org.pruden.tablero.utils.moves.History
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import org.pruden.tablero.utils.result.ResultHandler
+import org.pruden.tablero.utils.topBar.TopBarHandler
 
 
 @Composable
@@ -42,6 +43,8 @@ fun ChessBoard() {
                                             promoteCanceled = PromotionHandler.handlePromotionClick(clickedRow, clickedCol)
                                             promoteDone = true
                                             Globals.refreshBoard.value = !Globals.refreshBoard.value
+
+                                            if(!promoteCanceled) NotationHandler.annotateCheckIfAny(true)
                                         }
 
                                         if(!promoteDone) {

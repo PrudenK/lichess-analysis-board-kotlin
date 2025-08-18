@@ -42,6 +42,7 @@ object TopBarHandler {
         Globals.isGameOver.value = false
 
         Globals.movesBuffer.value = mutableListOf()
+        Globals.halfMoves = 0
 
         loadChessBoard()
 
