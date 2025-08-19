@@ -89,6 +89,8 @@ fun ChessBoard() {
                                             ChessBoardActionHandler.verifyIfCheck()
                                         }
 
+
+                                        Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
                                         ResultHandler.calculateResultAfterMove()
                                     }
                                 },

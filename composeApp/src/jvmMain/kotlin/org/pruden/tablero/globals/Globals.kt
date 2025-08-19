@@ -81,4 +81,6 @@ object Globals {
     val movesBuffer = mutableStateOf(mutableListOf<String>())
 
     var halfMoves = 0
+
+    val refreshMovesPanel = mutableStateOf(false)
 }
