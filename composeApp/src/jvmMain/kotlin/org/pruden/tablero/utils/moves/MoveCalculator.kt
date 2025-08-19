@@ -1,20 +1,26 @@
 package org.pruden.tablero.utils.moves
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.castle.CastleHandler
+import org.pruden.tablero.utils.topBar.TopBarHandler
 
 object MoveCalculator {
-    fun getPosibleMoves(piece: Piece): List<Pair<Int, Int>> {
+    fun getPosibleMoves(
+        piece: Piece,
+        pieceToIgnore: Piece? = null,
+        chessBoard: Array<Array<BoxModel>> = Globals.chessBoard
+    ): List<Pair<Int, Int>> {
         val moves = when (piece.type) {
             PieceType.Pawn -> calculatePawnMoves(piece)
-            PieceType.Rook -> calculateDirectionalMoves(piece, Globals.rookDirections, 7)
-            PieceType.Bishop -> calculateDirectionalMoves(piece, Globals.bishopDirections, 7)
-            PieceType.Queen -> calculateDirectionalMoves(piece, Globals.rookDirections + Globals.bishopDirections, 7)
+            PieceType.Rook -> calculateDirectionalMoves(piece, Globals.rookDirections, 7,chessBoard = chessBoard)
+            PieceType.Bishop -> calculateDirectionalMoves(piece, Globals.bishopDirections, 7,chessBoard = chessBoard)
+            PieceType.Queen -> calculateDirectionalMoves(piece, Globals.rookDirections + Globals.bishopDirections, 7,chessBoard = chessBoard)
             PieceType.King -> calculateKingMoves(piece)
-            PieceType.Knight -> calculateKnightMoves(piece)
+            PieceType.Knight -> calculateKnightMoves(piece, pieceToIgnore)
             else -> emptyList()
         }
 
@@ -131,7 +137,13 @@ object MoveCalculator {
         return result
     }
 
-    private fun calculateDirectionalMoves(piece: Piece, directions: List<Pair<Int, Int>>, maxSteps: Int, onlyControlledCells : Boolean = false): List<Pair<Int, Int>> {
+    private fun calculateDirectionalMoves(
+        piece: Piece,
+        directions: List<Pair<Int, Int>>,
+        maxSteps: Int,
+        onlyControlledCells : Boolean = false,
+        chessBoard: Array<Array<BoxModel>> = Globals.chessBoard
+    ): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         val (col, row) = piece.position
 
@@ -140,13 +152,16 @@ object MoveCalculator {
                 try {
                     val newCol = col + dx * step
                     val newRow = row + dy * step
-                    if (isFreeCell(newCol, newRow)) {
+                    if (isFreeCell(newCol, newRow, chessBoard)) {
                         result.add(Pair(newCol, newRow))
                     } else {
-                        if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color || onlyControlledCells) {
+                        if (chessBoard[newRow][newCol].pieceOnBox?.color != piece.color || onlyControlledCells) {
                             result.add(Pair(newCol, newRow))
                         }
-                        if(!(onlyControlledCells && (Globals.chessBoard[newRow][newCol].pieceOnBox?.type == PieceType.King && Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color))) { // for -> Rook Kink freeCell(X) (X is not available)
+
+                        if(!(onlyControlledCells && (chessBoard[newRow][newCol].pieceOnBox?.type == PieceType.King
+                                    && chessBoard[newRow][newCol].pieceOnBox?.color != piece.color)))
+                        { // for -> Rook Kink freeCell(X) (X is not available)
                             break
                         }
                     }
@@ -171,7 +186,7 @@ object MoveCalculator {
         return miKingMoves - cellsControledByOtherPieces
     }
 
-    private fun calculateKnightMoves(piece: Piece): List<Pair<Int, Int>>{
+    private fun calculateKnightMoves(piece: Piece, pieceToIgnore: Piece? = null): List<Pair<Int, Int>>{
         val result = mutableListOf<Pair<Int, Int>>()
 
         val col = piece.position.first
@@ -184,7 +199,8 @@ object MoveCalculator {
                 if (isFreeCell(newCol, newRow)) {
                     result.add(Pair(newCol, newRow))
                 } else {
-                    if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color) {
+                    if (Globals.chessBoard[newRow][newCol].pieceOnBox?.color != piece.color ||
+                        (pieceToIgnore != null && Globals.chessBoard[newRow][newCol].pieceOnBox == pieceToIgnore)) {
                         result.add(Pair(newCol, newRow))
                     }
                 }
@@ -268,7 +284,7 @@ object MoveCalculator {
     }
 
 
-    private fun isFreeCell(col: Int, row: Int): Boolean {
-        return Globals.chessBoard[row][col].pieceOnBox == null
+    private fun isFreeCell(col: Int, row: Int, board: Array<Array<BoxModel>> = Globals.chessBoard): Boolean {
+        return board[row][col].pieceOnBox == null
     }
 }

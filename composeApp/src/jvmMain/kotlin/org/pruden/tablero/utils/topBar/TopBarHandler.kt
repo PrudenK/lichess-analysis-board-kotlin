@@ -50,12 +50,12 @@ object TopBarHandler {
         Globals.isBoardLoaded.value = true
     }
 
-    fun printBoard() {
+    fun printBoard(board: Array<Array<BoxModel>> = Globals.chessBoard) {
         println("_______________________________________________________________________________________________________")
 
         for (i in 0..7) {
             for (j in 0..7) {
-                val piece = Globals.chessBoard[i][j].pieceOnBox
+                val piece = board[i][j].pieceOnBox
                 val text = if (piece != null) {
                     val color = if (piece.color == Color.White) "W" else "B"
                     "${piece.type}($color)"

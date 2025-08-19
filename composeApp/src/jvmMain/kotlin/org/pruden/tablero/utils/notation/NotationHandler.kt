@@ -10,6 +10,7 @@ import org.pruden.tablero.utils.moves.MoveCalculator
 import kotlin.math.abs
 
 object NotationHandler {
+    lateinit var boardBeforeMoves: Array<Array<BoxModel>>
 
     fun addMoveToBuffer(piece: Piece, fromCell: String, clickedCell: BoxModel) {
         val from = Globals.lastPieceStartPos
@@ -29,16 +30,15 @@ object NotationHandler {
             Globals.movesBuffer.value.add(it); return
         }
 
-
-
         val moveNotation = if (piece.type == PieceType.Pawn) {
             val dest = square(to)
             if (capture) "${fromCell[0]}x$dest" else dest
         } else {
             val letter = letterOfAPiece(piece)
-            val dis = disambiguation(piece, to, from)
             val dest = square(to)
             val cap = if (capture) "x" else ""
+            val dis = disambiguation(piece, fromCell)
+
             "$letter$dis$cap$dest"
         }
         Globals.movesBuffer.value.add(moveNotation)
@@ -99,27 +99,41 @@ object NotationHandler {
         return false
     }
 
+    private fun disambiguation(piece: Piece, fromCell: String): String {
+        var dis = ""
+        val pieces = CellHandler.findPiecesInBoard(piece, boardBeforeMoves)
 
-    // TODO: Para mañana
-    private fun disambiguation(piece: Piece, to: Pair<Int,Int>, from: Pair<Int,Int>): String {
-        val candidates = mutableListOf<Pair<Int,Int>>()
-        for (r in 0..7) for (c in 0..7) {
-            val p = Globals.chessBoard[r][c].pieceOnBox ?: continue
-            if (p === piece) continue
-            if (p.color != piece.color) continue
-            if (p.type != piece.type) continue
-            if (MoveCalculator.getPosibleMoves(p).contains(to)) candidates.add(Pair(c, r))
+        if(pieces.isNotEmpty()) {
+            val busyRow = pieces.any{
+                MoveCalculator.getPosibleMoves(it, piece, chessBoard = boardBeforeMoves)
+                    .contains(piece.position)
+                        && fileChar(it.position.first) == fromCell[0]
+            }
+
+            val busyCol = pieces.any{
+                MoveCalculator.getPosibleMoves(it, piece, chessBoard = boardBeforeMoves)
+                    .contains(piece.position)
+                        && rankChar(it.position.second) == fromCell[1]
+            }
+
+            if(!busyCol && !busyRow){
+                val busyCell = pieces.find{
+                    MoveCalculator.getPosibleMoves(it, piece, chessBoard = boardBeforeMoves).contains(piece.position)
+                }
+
+                var d = ""
+                if(busyCell != null){
+                    d = fromCell[0].toString()
+                }
+
+                dis = d
+            }else{
+                dis = "${if(busyCol) fromCell[0] else ""}${if(busyRow) fromCell[1] else ""}"
+            }
         }
-        if (candidates.isEmpty()) return ""
-        val shareFile = candidates.any { it.first == from.first }
-        val shareRank = candidates.any { it.second == from.second }
-        return when {
-            !shareFile -> fileChar(from.first).toString()
-            !shareRank -> rankChar(from.second).toString()
-            else -> fileChar(from.first).toString() + rankChar(from.second)
-        }
+
+        return dis
     }
-
 
     private fun square(pos: Pair<Int,Int>) = "${fileChar(pos.first)}${rankChar(pos.second)}"
     private fun fileChar(col: Int) = ('a'.code + col).toChar()

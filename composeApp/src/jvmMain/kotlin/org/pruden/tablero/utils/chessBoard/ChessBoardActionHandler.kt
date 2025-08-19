@@ -28,6 +28,8 @@ object ChessBoardActionHandler {
         selRow: Int,
         selCol: Int,
     ): Piece{
+        NotationHandler.boardBeforeMoves = CellHandler.copyBoard(Globals.chessBoard)
+
         val clickedCell = Globals.chessBoard[clickedRow][clickedCol].copy()
 
         val fromCell = Globals.chessBoard[selRow][selCol].boxNotation
@@ -37,12 +39,7 @@ object ChessBoardActionHandler {
 
         val movedPiece = Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
 
-        println("_________________________")
-
-
-
         Globals.chessBoard[selRow][selCol].pieceOnBox = null
-        TopBarHandler.printBoard()
         NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
 
         return movedPiece
