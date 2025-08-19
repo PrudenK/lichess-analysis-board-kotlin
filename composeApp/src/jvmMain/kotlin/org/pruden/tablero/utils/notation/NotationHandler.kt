@@ -1,6 +1,5 @@
 package org.pruden.tablero.utils.notation
 
-import org.pruden.tablero.components.TopBar
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
@@ -8,7 +7,6 @@ import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.chessBoard.CellHandler
 import org.pruden.tablero.utils.moves.MoveCalculator
-import org.pruden.tablero.utils.topBar.TopBarHandler
 import kotlin.math.abs
 
 object NotationHandler {
@@ -33,7 +31,7 @@ object NotationHandler {
 
 
 
-        val san = if (piece.type == PieceType.Pawn) {
+        val moveNotation = if (piece.type == PieceType.Pawn) {
             val dest = square(to)
             if (capture) "${fromCell[0]}x$dest" else dest
         } else {
@@ -43,7 +41,7 @@ object NotationHandler {
             val cap = if (capture) "x" else ""
             "$letter$dis$cap$dest"
         }
-        Globals.movesBuffer.value.add(san)
+        Globals.movesBuffer.value.add(moveNotation)
     }
 
     fun appendPromotion(type: PieceType) {

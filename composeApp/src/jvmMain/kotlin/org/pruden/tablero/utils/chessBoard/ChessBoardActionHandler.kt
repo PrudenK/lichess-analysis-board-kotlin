@@ -8,6 +8,7 @@ import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
+import org.pruden.tablero.utils.topBar.TopBarHandler
 import org.w3c.dom.Notation
 import kotlin.math.abs
 
@@ -35,10 +36,14 @@ object ChessBoardActionHandler {
         Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!.position = Pair(clickedCol, clickedRow)
 
         val movedPiece = Globals.chessBoard[clickedRow][clickedCol].pieceOnBox!!
-        NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
+
+        println("_________________________")
+
 
 
         Globals.chessBoard[selRow][selCol].pieceOnBox = null
+        TopBarHandler.printBoard()
+        NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
 
         return movedPiece
     }

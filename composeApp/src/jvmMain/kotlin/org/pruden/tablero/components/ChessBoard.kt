@@ -65,10 +65,11 @@ fun ChessBoard() {
 
                                                     ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
 
-                                                    NotationHandler.annotateCheckIfAny()
 
                                                     CastleHandler.disableCastleIfKingOrRookMoved(movedPiece)
                                                     CastleHandler.moveRookOnCastle(movedPiece, selRow, selCol, clickedRow,clickedCol)
+
+                                                    NotationHandler.annotateCheckIfAny()
                                                 }
                                             }
                                         }else{
