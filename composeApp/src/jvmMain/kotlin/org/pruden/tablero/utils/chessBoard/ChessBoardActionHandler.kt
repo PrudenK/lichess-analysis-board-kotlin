@@ -1,11 +1,13 @@
 package org.pruden.tablero.utils.chessBoard
 
+import org.pruden.tablero.components.positionToChessNotation
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.notation.FenConverter
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import org.pruden.tablero.utils.topBar.TopBarHandler
@@ -41,6 +43,7 @@ object ChessBoardActionHandler {
 
         Globals.chessBoard[selRow][selCol].pieceOnBox = null
         NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
+        Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
 
         return movedPiece
     }
@@ -145,10 +148,29 @@ object ChessBoardActionHandler {
         Globals.posiblePassant = false
 
         if(movedPiece.type == PieceType.Pawn){
-            if(abs(selRow - clickedRow) == 2){
-                Globals.posiblePassant = true
-                Globals.colPassant = selCol
+            val colCandidates = if(selCol == 0){
+                listOf(1)
+            }else if(selCol == 7){
+                listOf(6)
+            }else{
+                listOf(selCol + 1, selCol - 1)
             }
+
+
+            if(abs(selRow - clickedRow) == 2){
+                for(c in colCandidates){
+                    if(Globals.chessBoard[clickedRow][c].pieceOnBox?.type == PieceType.Pawn
+                        && Globals.chessBoard[clickedRow][c].pieceOnBox?.color != movedPiece.color){
+                        Globals.posiblePassant = true
+                        Globals.colPassant = selCol
+                        Globals.fenEnPassant = positionToChessNotation(Pair(selCol, clickedRow + if(Globals.isWhiteMove.value) 1 else  -1))
+                    }
+                }
+            }
+        }
+
+        if(!Globals.posiblePassant){
+            Globals.fenEnPassant = "-"
         }
     }
 }

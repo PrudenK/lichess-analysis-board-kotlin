@@ -1,6 +1,7 @@
 package org.pruden.tablero.utils.castle
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
@@ -60,6 +61,26 @@ object CastleHandler {
             }else if(movedPiece.type == PieceType.Rook) {
                 Globals.blackCastle = Triple(movedPiece.id == 0, Globals.blackCastle.second, movedPiece.id == 7)
             }
+        }
+
+        updateCastlingRights()
+    }
+
+    fun updateCastlingRights(board: Array<Array<BoxModel>> = Globals.chessBoard) {
+        // negras
+        if (board[0][0].pieceOnBox?.type != PieceType.Rook) {
+            Globals.blackCastle = Triple(true, Globals.blackCastle.second, Globals.blackCastle.third)
+        }
+        if (board[0][7].pieceOnBox?.type != PieceType.Rook) {
+            Globals.blackCastle = Triple(Globals.blackCastle.first, Globals.blackCastle.second, true)
+        }
+
+        // blancas
+        if (board[7][0].pieceOnBox?.type != PieceType.Rook) {
+            Globals.whiteCastle = Triple(true, Globals.whiteCastle.second, Globals.whiteCastle.third)
+        }
+        if (board[7][7].pieceOnBox?.type != PieceType.Rook) {
+            Globals.whiteCastle = Triple(Globals.whiteCastle.first, Globals.whiteCastle.second, true)
         }
     }
 

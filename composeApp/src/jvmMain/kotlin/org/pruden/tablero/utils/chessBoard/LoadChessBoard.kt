@@ -5,6 +5,7 @@ import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.utils.notation.FenConverter
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.bB
 import tableroajedrez.composeapp.generated.resources.bK
@@ -64,4 +65,6 @@ fun loadChessBoard() {
             )
         }
     }
+
+    Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen(start = true))
 }

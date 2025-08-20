@@ -83,4 +83,7 @@ object Globals {
     var halfMoves = 0
 
     val refreshMovesPanel = mutableStateOf(false)
+
+    var fenEnPassant = "-"
+    var fenPositionsBuffer = mutableListOf<String>()
 }
