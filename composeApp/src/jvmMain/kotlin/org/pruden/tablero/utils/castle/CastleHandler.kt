@@ -47,19 +47,26 @@ object CastleHandler {
 
     fun disableCastleIfKingOrRookMoved(
         movedPiece: Piece,
+        selRow: Int,
+        selCol: Int,
     ){
         if(movedPiece.color == Color.White) {
             if(movedPiece.type == PieceType.King) {
                 Globals.whiteCastle = Triple(false, true, false)
             }else if(movedPiece.type == PieceType.Rook) {
+                val qRookMoved = Globals.chessBoard[selRow][selCol].boxNotation == "a1"
+                val kRookMoved = Globals.chessBoard[selRow][selCol].boxNotation == "h1"
 
-                Globals.whiteCastle = Triple(movedPiece.id == 24, Globals.whiteCastle.second, movedPiece.id == 31)
+                Globals.whiteCastle = Triple(qRookMoved, Globals.whiteCastle.second, kRookMoved)
             }
         }else{
             if(movedPiece.type == PieceType.King) {
                 Globals.blackCastle = Triple(false, true, false)
             }else if(movedPiece.type == PieceType.Rook) {
-                Globals.blackCastle = Triple(movedPiece.id == 0, Globals.blackCastle.second, movedPiece.id == 7)
+                val qRookMoved = Globals.chessBoard[selRow][selCol].boxNotation == "a8"
+                val kRookMoved = Globals.chessBoard[selRow][selCol].boxNotation == "h8"
+
+                Globals.blackCastle = Triple(qRookMoved, Globals.blackCastle.second, kRookMoved)
             }
         }
 

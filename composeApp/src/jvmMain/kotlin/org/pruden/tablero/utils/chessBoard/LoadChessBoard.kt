@@ -55,7 +55,6 @@ fun loadChessBoard() {
                     }
 
                     Piece(
-                        id = if(isBlackPiece) columnX + rowY*8 else (columnX + rowY*8) - 32,
                         type = typePiece,
                         color = color,
                         png = png,

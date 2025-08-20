@@ -14,7 +14,6 @@ import tableroajedrez.composeapp.generated.resources.wR
 
 object PieceProvider {
     fun getWhiteQueen(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Queen,
         color = pawn.color,
         position = pawn.position,
@@ -22,7 +21,6 @@ object PieceProvider {
     )
 
     fun getWhiteRook(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Rook,
         color = pawn.color,
         position = pawn.position,
@@ -30,7 +28,6 @@ object PieceProvider {
     )
 
     fun getWhiteBishop(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Bishop,
         color = pawn.color,
         position = pawn.position,
@@ -38,7 +35,6 @@ object PieceProvider {
     )
 
     fun getWhiteKnight(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Knight,
         color = pawn.color,
         position = pawn.position,
@@ -46,7 +42,6 @@ object PieceProvider {
     )
 
     fun getBlackQueen(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Queen,
         color = pawn.color,
         position = pawn.position,
@@ -54,7 +49,6 @@ object PieceProvider {
     )
 
     fun getBlackRook(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Rook,
         color = pawn.color,
         position = pawn.position,
@@ -62,7 +56,6 @@ object PieceProvider {
     )
 
     fun getBlackBishop(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Bishop,
         color = pawn.color,
         position = pawn.position,
@@ -70,7 +63,6 @@ object PieceProvider {
     )
 
     fun getBlackKnight(pawn: Piece) = Piece(
-        id = pawn.id,
         type = PieceType.Knight,
         color = pawn.color,
         position = pawn.position,
