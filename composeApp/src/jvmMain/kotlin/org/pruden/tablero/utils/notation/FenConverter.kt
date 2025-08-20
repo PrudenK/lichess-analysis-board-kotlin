@@ -31,7 +31,7 @@ object FenConverter {
 
         result = result.dropLast(1)
 
-        result = result + " ${if(Globals.isWhiteMove.value) if(start) "w" else "b" else "w"} "
+        result = result + " ${if(Globals.isWhiteMove.value) "w" else "b"} "
 
         result += castle()
 

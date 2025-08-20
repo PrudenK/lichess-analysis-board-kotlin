@@ -43,7 +43,6 @@ object ChessBoardActionHandler {
 
         Globals.chessBoard[selRow][selCol].pieceOnBox = null
         NotationHandler.addMoveToBuffer(movedPiece, fromCell, clickedCell)
-        Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
 
         return movedPiece
     }
@@ -148,12 +147,10 @@ object ChessBoardActionHandler {
         Globals.posiblePassant = false
 
         if(movedPiece.type == PieceType.Pawn){
-            val colCandidates = if(selCol == 0){
-                listOf(1)
-            }else if(selCol == 7){
-                listOf(6)
-            }else{
-                listOf(selCol + 1, selCol - 1)
+            val colCandidates = when (selCol) {
+                0 -> listOf(1)
+                7 -> listOf(6)
+                else -> listOf(selCol + 1, selCol - 1)
             }
 
 

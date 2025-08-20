@@ -68,18 +68,19 @@ object CastleHandler {
 
     fun updateCastlingRights(board: Array<Array<BoxModel>> = Globals.chessBoard) {
         // negras
-        if (board[0][0].pieceOnBox?.type != PieceType.Rook) {
+        if (board[0][0].pieceOnBox?.type != PieceType.Rook || board[0][0].pieceOnBox?.color != Color.Black) {
             Globals.blackCastle = Triple(true, Globals.blackCastle.second, Globals.blackCastle.third)
         }
-        if (board[0][7].pieceOnBox?.type != PieceType.Rook) {
+        if (board[0][7].pieceOnBox?.type != PieceType.Rook || board[0][7].pieceOnBox?.color != Color.Black) {
             Globals.blackCastle = Triple(Globals.blackCastle.first, Globals.blackCastle.second, true)
         }
 
         // blancas
-        if (board[7][0].pieceOnBox?.type != PieceType.Rook) {
+        if (board[7][0].pieceOnBox?.type != PieceType.Rook || board[7][0].pieceOnBox?.color != Color.White) {
+            println("asdfadfadsf")
             Globals.whiteCastle = Triple(true, Globals.whiteCastle.second, Globals.whiteCastle.third)
         }
-        if (board[7][7].pieceOnBox?.type != PieceType.Rook) {
+        if (board[7][7].pieceOnBox?.type != PieceType.Rook || board[7][7].pieceOnBox?.color != Color.White) {
             Globals.whiteCastle = Triple(Globals.whiteCastle.first, Globals.whiteCastle.second, true)
         }
     }
