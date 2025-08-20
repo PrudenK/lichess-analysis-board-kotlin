@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -77,9 +78,6 @@ fun MovesPanel() {
                             .verticalScroll(scrollState)
                     ) {
 
-
-
-
                         Divider(color = movesColor.copy(alpha = 0.5f))
 
                         for ((i, moves) in pairedMoves.withIndex()) {
@@ -105,22 +103,24 @@ fun MovesPanel() {
                                     modifier = Modifier.fillMaxHeight()
                                 )
 
-                                Spacer(Modifier.width(10.dp))
-
                                 TextWithHover(
                                     text = white,
-                                    modifier = Modifier.weight(1f).padding(start = 4.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                    modifier = Modifier.weight(1f),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
+                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
                                 )
 
                                 TextWithHover(
                                     text = black,
-                                    modifier = Modifier.weight(1f).padding(start = 4.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                    modifier = Modifier.weight(1f).padding(end = 8.dp),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
+                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
                                 )
                             }
+
+                            Divider(color = movesColor.copy(alpha = 0.5f))
 
                         }
                     }
@@ -195,11 +195,8 @@ fun MovesPanel() {
                                 modifier = Modifier.size(24.dp)
                             )
                         }
-
-
                     }
                 }
-
             }
         }
     }
@@ -208,17 +205,18 @@ fun MovesPanel() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextWithHover(
-    modifier: Modifier,
+    text: String,
+    modifier: Modifier = Modifier,
     hoverColor: Color,
     textColor: Color,
-    text: String,
-){
+    padding: PaddingValues = PaddingValues(all = 0.dp)
+) {
     val isHovered = remember { mutableStateOf(false) }
     Text(
         text = text,
         modifier = modifier
-            .fillMaxSize()
             .background(if (isHovered.value && text.isNotEmpty()) hoverColor else Color.Transparent)
+            .padding(padding)
             .pointerMoveFilter(
                 onEnter = {
                     isHovered.value = true
@@ -232,3 +230,4 @@ fun TextWithHover(
         color = textColor
     )
 }
+
