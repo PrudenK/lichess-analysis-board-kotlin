@@ -78,7 +78,6 @@ object Globals {
 
     val isGameOver = mutableStateOf(false)
 
-    val movesBuffer = mutableStateOf(mutableListOf<String>())
     val movesBufferNotation = mutableStateOf(mutableListOf<NotationMove>())
 
 

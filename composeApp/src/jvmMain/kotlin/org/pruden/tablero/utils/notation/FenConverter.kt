@@ -39,7 +39,7 @@ object FenConverter {
 
         result += " ${Globals.halfMoves}"
 
-        result += " ${Globals.movesBuffer.value.size / 2 + 1}"
+        result += " ${Globals.movesBufferNotation.value.size / 2 + 1}"
 
         return result
     }

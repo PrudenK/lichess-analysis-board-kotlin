@@ -6,7 +6,7 @@ import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
 
-    fun setBoardFromFen(fen: String = "rnbqk2r/1ppp1ppp/p4n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b kq - 1 5") {
+    fun setBoardFromFen(fen: String = "rn1q3r/p2p1ppp/p1pb3n/3b1Q2/3B4/P6P/RP3PP1/1Nk1K2R w K - 2 18") {
         val spaceParts = fen.split(" ")
         val boardRows = spaceParts[0].split("/").toMutableList()
 

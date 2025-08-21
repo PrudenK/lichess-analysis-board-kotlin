@@ -24,7 +24,7 @@ object NotationHandler {
 
 
         castleSanIfAny(piece, from, to)?.let {
-            Globals.movesBuffer.value.add(it); return
+            NotationMovesHandler.addNotationMove(it); return
         }
 
         val san = if (piece.type == PieceType.Pawn) {
@@ -38,14 +38,11 @@ object NotationHandler {
 
             "$letter$dis$cap$dest"
         }
-        Globals.movesBuffer.value.add(san)
-
 
         NotationMovesHandler.addNotationMove(san)
     }
 
     fun appendPromotion(type: PieceType) {
-        if (Globals.movesBuffer.value.isEmpty()) return
         val t = when (type) {
             PieceType.Queen -> "Q"
             PieceType.Rook -> "R"
@@ -53,8 +50,6 @@ object NotationHandler {
             PieceType.Knight -> "N"
             else -> return
         }
-        val last = Globals.movesBuffer.value.removeLast()
-        Globals.movesBuffer.value.add("$last=$t")
         NotationMovesHandler.modifyLastMoveNotation("=$t")
     }
 
@@ -65,20 +60,14 @@ object NotationHandler {
         if (attacked.contains(king.position)) appendCheck()
     }
     private fun appendCheck() {
-        if (Globals.movesBuffer.value.isEmpty()) return
-        val last = Globals.movesBuffer.value.removeLast()
-        Globals.movesBuffer.value.add("$last+")
         NotationMovesHandler.modifyLastMoveNotation("+")
     }
 
     fun appendMate() {
-        if (Globals.movesBuffer.value.isEmpty()) return
-        val last = Globals.movesBuffer.value.removeLast().replace("+", "")
-        Globals.movesBuffer.value.add("$last#")
         NotationMovesHandler.modifyLastMoveNotation("#")
     }
 
-    fun removeLastMove() = Globals.movesBuffer.value.removeLast()
+    fun removeLastMove() = Globals.movesBufferNotation.value.removeLast()
 
     private fun letterOfAPiece(piece: Piece): String = when (piece.type) {
         PieceType.King -> "K"

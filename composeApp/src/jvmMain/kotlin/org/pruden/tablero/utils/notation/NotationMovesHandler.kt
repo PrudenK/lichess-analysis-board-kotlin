@@ -29,7 +29,7 @@ object NotationMovesHandler {
         val lastMove = Globals.movesBufferNotation.value.last()
 
         if(adder == "#"){
-            lastMove.san.replace("+", "")
+            lastMove.san = lastMove.san.replace("+", "")
         }
 
         lastMove.san += adder
