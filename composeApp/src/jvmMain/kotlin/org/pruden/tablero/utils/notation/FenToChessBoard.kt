@@ -2,10 +2,7 @@ package org.pruden.tablero.utils.notation
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.globals.Globals.BOX_HEIGHT
-import org.pruden.tablero.globals.Globals.BOX_WIDTH
-import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.utils.promotion.PieceProvider
-import javax.swing.text.Position
 
 object FenToChessBoard {
 

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.LastMove
+import org.pruden.tablero.models.NotationMove
 import org.pruden.tablero.models.Piece
 
 object Globals {
@@ -78,6 +79,8 @@ object Globals {
     val isGameOver = mutableStateOf(false)
 
     val movesBuffer = mutableStateOf(mutableListOf<String>())
+    val movesBufferNotation = mutableStateOf(mutableListOf<NotationMove>())
+
 
     var halfMoves = 0
 

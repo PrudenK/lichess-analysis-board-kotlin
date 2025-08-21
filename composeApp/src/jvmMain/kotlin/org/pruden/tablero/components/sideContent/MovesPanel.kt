@@ -54,9 +54,7 @@ fun MovesPanel() {
 
 
 
-    val pairedMoves: List<String> = Globals.movesBuffer.value
-        .chunked(2)
-        .map { it.joinToString(" ") }
+    val pairs = Globals.movesBufferNotation.value.chunked(2)
 
     key(Globals.refreshMovesPanel.value) {
         Row(
@@ -80,10 +78,9 @@ fun MovesPanel() {
 
                         Divider(color = movesColor.copy(alpha = 0.5f))
 
-                        for ((i, moves) in pairedMoves.withIndex()) {
-                            val parts = moves.split(" ")
-                            val white = parts[0]
-                            val black = parts.getOrNull(1) ?: ""
+                        for ((i, pair) in pairs.withIndex()) {
+                            val whiteSan = pair.getOrNull(0)?.san.orEmpty()
+                            val blackSan = pair.getOrNull(1)?.san.orEmpty()
 
                             Row(
                                 modifier = Modifier.fillMaxWidth()
@@ -104,7 +101,7 @@ fun MovesPanel() {
                                 )
 
                                 TextWithHover(
-                                    text = white,
+                                    text = whiteSan,
                                     modifier = Modifier.weight(1f),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
@@ -112,7 +109,7 @@ fun MovesPanel() {
                                 )
 
                                 TextWithHover(
-                                    text = black,
+                                    text = blackSan,
                                     modifier = Modifier.weight(1f).padding(end = 8.dp),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,

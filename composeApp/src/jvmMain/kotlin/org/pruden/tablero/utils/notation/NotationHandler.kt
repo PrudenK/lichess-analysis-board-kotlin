@@ -1,10 +1,7 @@
 package org.pruden.tablero.utils.notation
 
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.BoxModel
-import org.pruden.tablero.models.Color
-import org.pruden.tablero.models.Piece
-import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.models.*
 import org.pruden.tablero.utils.chessBoard.CellHandler
 import org.pruden.tablero.utils.moves.MoveCalculator
 import kotlin.math.abs
@@ -30,7 +27,7 @@ object NotationHandler {
             Globals.movesBuffer.value.add(it); return
         }
 
-        val moveNotation = if (piece.type == PieceType.Pawn) {
+        val san = if (piece.type == PieceType.Pawn) {
             val dest = square(to)
             if (capture) "${fromCell[0]}x$dest" else dest
         } else {
@@ -41,7 +38,10 @@ object NotationHandler {
 
             "$letter$dis$cap$dest"
         }
-        Globals.movesBuffer.value.add(moveNotation)
+        Globals.movesBuffer.value.add(san)
+
+
+        NotationMovesHandler.addNotationMove(san)
     }
 
     fun appendPromotion(type: PieceType) {
@@ -55,6 +55,7 @@ object NotationHandler {
         }
         val last = Globals.movesBuffer.value.removeLast()
         Globals.movesBuffer.value.add("$last=$t")
+        NotationMovesHandler.modifyLastMoveNotation("=$t")
     }
 
     fun annotateCheckIfAny(promoted: Boolean = false) {
@@ -67,17 +68,19 @@ object NotationHandler {
         if (Globals.movesBuffer.value.isEmpty()) return
         val last = Globals.movesBuffer.value.removeLast()
         Globals.movesBuffer.value.add("$last+")
+        NotationMovesHandler.modifyLastMoveNotation("+")
     }
 
     fun appendMate() {
         if (Globals.movesBuffer.value.isEmpty()) return
         val last = Globals.movesBuffer.value.removeLast().replace("+", "")
         Globals.movesBuffer.value.add("$last#")
+        NotationMovesHandler.modifyLastMoveNotation("#")
     }
 
     fun removeLastMove() = Globals.movesBuffer.value.removeLast()
 
-    fun letterOfAPiece(piece: Piece): String = when (piece.type) {
+    private fun letterOfAPiece(piece: Piece): String = when (piece.type) {
         PieceType.King -> "K"
         PieceType.Queen -> "Q"
         PieceType.Rook -> "R"
