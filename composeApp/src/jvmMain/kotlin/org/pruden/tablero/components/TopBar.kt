@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.notation.FenToChessBoard
 import org.pruden.tablero.utils.topBar.TopBarHandler
 
 @Composable
@@ -55,6 +56,14 @@ fun TopBar(){
             },
         ){
             Text("Fen")
+        }
+
+        TextButton(
+            onClick = {
+                FenToChessBoard.setBoardFromFen()
+            },
+        ){
+            Text("LoadFen")
         }
     }
 }

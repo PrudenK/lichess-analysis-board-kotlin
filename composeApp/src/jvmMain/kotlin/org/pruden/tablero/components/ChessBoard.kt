@@ -14,6 +14,7 @@ import org.pruden.tablero.utils.castle.CastleHandler
 import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.moves.History
 import org.pruden.tablero.utils.notation.FenConverter
+import org.pruden.tablero.utils.notation.FenToChessBoard
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import org.pruden.tablero.utils.result.ResultHandler
@@ -90,6 +91,8 @@ fun ChessBoard() {
                                                 ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
                                             }else if(!Globals.isWhitePromotion.value && !Globals.isBlackPromotion.value){
                                                 Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
+                                                println(FenConverter.chessBoardToFen())
+                                                FenToChessBoard.setBoardFromFen(FenConverter.chessBoardToFen())
                                             }
 
                                             ChessBoardActionHandler.verifyIfCheck()

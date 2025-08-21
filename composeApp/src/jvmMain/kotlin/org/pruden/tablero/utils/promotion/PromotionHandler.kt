@@ -74,10 +74,10 @@ object PromotionHandler {
             NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
-                1 -> PieceProvider.getWhiteKnight(pawnPromoted)
-                2 -> PieceProvider.getWhiteRook(pawnPromoted)
-                3 -> PieceProvider.getWhiteBishop(pawnPromoted)
-                else -> PieceProvider.getWhiteQueen(pawnPromoted)
+                1 -> PieceProvider.getWhiteKnight(pawnPromoted.position)
+                2 -> PieceProvider.getWhiteRook(pawnPromoted.position)
+                3 -> PieceProvider.getWhiteBishop(pawnPromoted.position)
+                else -> PieceProvider.getWhiteQueen(pawnPromoted.position)
             }
             Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
 
@@ -115,10 +115,10 @@ object PromotionHandler {
             NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
-                6 -> PieceProvider.getBlackKnight(pawnPromoted)
-                5 -> PieceProvider.getBlackRook(pawnPromoted)
-                4 -> PieceProvider.getBlackBishop(pawnPromoted)
-                else -> PieceProvider.getBlackQueen(pawnPromoted)
+                6 -> PieceProvider.getBlackKnight(pawnPromoted.position)
+                5 -> PieceProvider.getBlackRook(pawnPromoted.position)
+                4 -> PieceProvider.getBlackBishop(pawnPromoted.position)
+                else -> PieceProvider.getBlackQueen(pawnPromoted.position)
             }
             Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
 
@@ -153,10 +153,10 @@ object PromotionHandler {
         Globals.promotionBuffer.add(c3.pieceOnBox)
         Globals.promotionBuffer.add(c4.pieceOnBox)
 
-        c1.pieceOnBox = PieceProvider.getWhiteQueen(movedPiece)
-        c2.pieceOnBox = PieceProvider.getWhiteKnight(movedPiece)
-        c3.pieceOnBox = PieceProvider.getWhiteRook(movedPiece)
-        c4.pieceOnBox = PieceProvider.getWhiteBishop(movedPiece)
+        c1.pieceOnBox = PieceProvider.getWhiteQueen(movedPiece.position)
+        c2.pieceOnBox = PieceProvider.getWhiteKnight(movedPiece.position)
+        c3.pieceOnBox = PieceProvider.getWhiteRook(movedPiece.position)
+        c4.pieceOnBox = PieceProvider.getWhiteBishop(movedPiece.position)
 
         Globals.pawnPromoted = movedPiece
     }
@@ -178,10 +178,10 @@ object PromotionHandler {
         Globals.promotionBuffer.add(c3.pieceOnBox)
         Globals.promotionBuffer.add(c4.pieceOnBox)
 
-        c1.pieceOnBox = PieceProvider.getBlackQueen(movedPiece)
-        c2.pieceOnBox = PieceProvider.getBlackKnight(movedPiece)
-        c3.pieceOnBox = PieceProvider.getBlackRook(movedPiece)
-        c4.pieceOnBox = PieceProvider.getBlackBishop(movedPiece)
+        c1.pieceOnBox = PieceProvider.getBlackQueen(movedPiece.position)
+        c2.pieceOnBox = PieceProvider.getBlackKnight(movedPiece.position)
+        c3.pieceOnBox = PieceProvider.getBlackRook(movedPiece.position)
+        c4.pieceOnBox = PieceProvider.getBlackBishop(movedPiece.position)
 
         Globals.pawnPromoted = movedPiece
     }

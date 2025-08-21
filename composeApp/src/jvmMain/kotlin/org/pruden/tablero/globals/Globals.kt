@@ -1,6 +1,5 @@
 package org.pruden.tablero.globals
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import org.pruden.tablero.models.BoxModel
