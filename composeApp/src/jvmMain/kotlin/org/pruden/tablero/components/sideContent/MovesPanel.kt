@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.utils.moves.MovesManager
 import org.pruden.tablero.utils.notation.FenToChessBoard
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.moves_all
@@ -147,10 +148,7 @@ fun MovesPanel() {
                     ) {
                         IconButton(
                             onClick = {
-                                val list = Globals.movesBufferNotation.value
-                                if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
-                                FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
-                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
+                                MovesManager.goToStart()
                             }
                         ) {
                             Icon(
@@ -163,24 +161,7 @@ fun MovesPanel() {
 
                         IconButton(
                             onClick = {
-                                val list = Globals.movesBufferNotation.value
-                                if (list.isEmpty()) return@IconButton
-                                val idx = list.indexOfFirst { it.isActualMove }
-                                when {
-                                    idx > 0 -> {
-                                        list[idx].isActualMove = false
-                                        list[idx - 1].isActualMove = true
-                                        FenToChessBoard.setBoardFromFen(list[idx - 1].fen)
-                                    }
-                                    idx == 0 -> {
-                                        list[0].isActualMove = false
-                                        FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
-                                    }
-                                    idx == -1 -> {
-                                        FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
-                                    }
-                                }
-                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
+                                MovesManager.stepBack()
                             }
                         ) {
                             Icon(
@@ -193,24 +174,7 @@ fun MovesPanel() {
 
                         IconButton(
                             onClick = {
-                                val list = Globals.movesBufferNotation.value
-                                if (list.isEmpty()) return@IconButton
-                                val idx = list.indexOfFirst { it.isActualMove }
-                                when {
-                                    idx == -1 -> {
-                                        list[0].isActualMove = true
-                                        FenToChessBoard.setBoardFromFen(list[0].fen)
-                                    }
-                                    idx < list.lastIndex -> {
-                                        list[idx].isActualMove = false
-                                        list[idx + 1].isActualMove = true
-                                        FenToChessBoard.setBoardFromFen(list[idx + 1].fen)
-                                    }
-                                    else -> {
-                                        FenToChessBoard.setBoardFromFen(list[idx].fen)
-                                    }
-                                }
-                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
+                                MovesManager.stepForward()
                             }
                         ) {
                             Icon(
@@ -223,16 +187,7 @@ fun MovesPanel() {
 
                         IconButton(
                             onClick = {
-                                val list = Globals.movesBufferNotation.value
-                                if (list.isEmpty()) {
-                                    FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
-                                } else {
-                                    list.forEach { it.isActualMove = false }
-                                    val last = list.last()
-                                    last.isActualMove = true
-                                    FenToChessBoard.setBoardFromFen(last.fen)
-                                }
-                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
+                                MovesManager.goToEnd()
                             }
                         ) {
                             Icon(
