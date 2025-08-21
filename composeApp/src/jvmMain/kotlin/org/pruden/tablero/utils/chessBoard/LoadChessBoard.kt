@@ -65,5 +65,5 @@ fun loadChessBoard() {
         }
     }
 
-    Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen(start = true))
+    Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
 }

@@ -8,7 +8,7 @@ import org.pruden.tablero.models.PieceType
 
 object FenConverter {
 
-    fun chessBoardToFen(chessBoard: Array<Array<BoxModel>> = Globals.chessBoard, start: Boolean = false): String{
+    fun chessBoardToFen(chessBoard: Array<Array<BoxModel>> = Globals.chessBoard): String{
         var result = ""
         for (row in chessBoard) {
             var empty = 0

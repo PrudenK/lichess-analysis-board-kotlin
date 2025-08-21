@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.utils.notation.FenToChessBoard
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.moves_all
 import tableroajedrez.composeapp.generated.resources.moves_one
@@ -82,6 +83,9 @@ fun MovesPanel() {
                             val whiteSan = pair.getOrNull(0)?.san.orEmpty()
                             val blackSan = pair.getOrNull(1)?.san.orEmpty()
 
+                            val isThisWhiteMove = pair.getOrNull(0)?.isActualMove ?: false
+                            val isThisBlackMove = pair.getOrNull(1)?.isActualMove ?: false
+
                             Row(
                                 modifier = Modifier.fillMaxWidth()
                                     .height(IntrinsicSize.Min),
@@ -105,7 +109,8 @@ fun MovesPanel() {
                                     modifier = Modifier.weight(1f),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
-                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                    isThisMove = isThisWhiteMove
                                 )
 
                                 TextWithHover(
@@ -113,7 +118,8 @@ fun MovesPanel() {
                                     modifier = Modifier.weight(1f).padding(end = 8.dp),
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
-                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                    isThisMove = isThisBlackMove
                                 )
                             }
 
@@ -139,11 +145,12 @@ fun MovesPanel() {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                     ) {
-
-
                         IconButton(
                             onClick = {
-
+                                val list = Globals.movesBufferNotation.value
+                                if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
+                                FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
                             }
                         ) {
                             Icon(
@@ -156,7 +163,24 @@ fun MovesPanel() {
 
                         IconButton(
                             onClick = {
-
+                                val list = Globals.movesBufferNotation.value
+                                if (list.isEmpty()) return@IconButton
+                                val idx = list.indexOfFirst { it.isActualMove }
+                                when {
+                                    idx > 0 -> {
+                                        list[idx].isActualMove = false
+                                        list[idx - 1].isActualMove = true
+                                        FenToChessBoard.setBoardFromFen(list[idx - 1].fen)
+                                    }
+                                    idx == 0 -> {
+                                        list[0].isActualMove = false
+                                        FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                                    }
+                                    idx == -1 -> {
+                                        FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                                    }
+                                }
+                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
                             }
                         ) {
                             Icon(
@@ -169,20 +193,46 @@ fun MovesPanel() {
 
                         IconButton(
                             onClick = {
-
+                                val list = Globals.movesBufferNotation.value
+                                if (list.isEmpty()) return@IconButton
+                                val idx = list.indexOfFirst { it.isActualMove }
+                                when {
+                                    idx == -1 -> {
+                                        list[0].isActualMove = true
+                                        FenToChessBoard.setBoardFromFen(list[0].fen)
+                                    }
+                                    idx < list.lastIndex -> {
+                                        list[idx].isActualMove = false
+                                        list[idx + 1].isActualMove = true
+                                        FenToChessBoard.setBoardFromFen(list[idx + 1].fen)
+                                    }
+                                    else -> {
+                                        FenToChessBoard.setBoardFromFen(list[idx].fen)
+                                    }
+                                }
+                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
                             }
                         ) {
                             Icon(
                                 painter = painterResource(resource = Res.drawable.moves_one),
                                 contentDescription = null,
                                 tint = movesColor,
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(24.dp)
                             )
                         }
 
                         IconButton(
                             onClick = {
-
+                                val list = Globals.movesBufferNotation.value
+                                if (list.isEmpty()) {
+                                    FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                                } else {
+                                    list.forEach { it.isActualMove = false }
+                                    val last = list.last()
+                                    last.isActualMove = true
+                                    FenToChessBoard.setBoardFromFen(last.fen)
+                                }
+                                Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
                             }
                         ) {
                             Icon(
@@ -192,6 +242,7 @@ fun MovesPanel() {
                                 modifier = Modifier.size(24.dp)
                             )
                         }
+
                     }
                 }
             }
@@ -206,13 +257,14 @@ fun TextWithHover(
     modifier: Modifier = Modifier,
     hoverColor: Color,
     textColor: Color,
-    padding: PaddingValues = PaddingValues(all = 0.dp)
+    padding: PaddingValues = PaddingValues(all = 0.dp),
+    isThisMove: Boolean = false
 ) {
     val isHovered = remember { mutableStateOf(false) }
     Text(
         text = text,
         modifier = modifier
-            .background(if (isHovered.value && text.isNotEmpty()) hoverColor else Color.Transparent)
+            .background(if (isHovered.value && text.isNotEmpty()) hoverColor else if(isThisMove) hoverColor.copy(0.5f) else Color.Transparent)
             .padding(padding)
             .pointerMoveFilter(
                 onEnter = {
