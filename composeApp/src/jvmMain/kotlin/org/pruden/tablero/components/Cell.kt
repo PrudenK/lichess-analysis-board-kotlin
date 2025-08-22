@@ -75,13 +75,15 @@ fun Cell(
 
 
         // Anterior movimiento
-        val lm = Globals.lastMove.value
-        val highlight = lm != null &&
-                ((columnX == lm.from.first && rowY == lm.from.second) ||
-                        (columnX == lm.to.first && rowY == lm.to.second))
+        val actualMove = Globals.movesBufferNotation.value.find { it.isActualMove }
+        if(actualMove != null){
+            val lm = actualMove.toLastMove()
+            val highlight = ((columnX == lm.from.first && rowY == lm.from.second) ||
+                            (columnX == lm.to.first && rowY == lm.to.second))
 
-        if (highlight) {
-            Box(Modifier.fillMaxSize().background(Color.Green.copy(alpha = 0.2f)))
+            if (highlight) {
+                Box(Modifier.fillMaxSize().background(Color.Green.copy(alpha = 0.2f)))
+            }
         }
 
 

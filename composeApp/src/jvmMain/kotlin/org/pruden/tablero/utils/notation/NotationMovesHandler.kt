@@ -6,7 +6,7 @@ import org.pruden.tablero.models.NotationMove
 object NotationMovesHandler {
 
 
-    fun addNotationMove(san: String){
+    fun addNotationMove(san: String, from: Pair<Int, Int>, to: Pair<Int, Int>) {
         for (m in Globals.movesBufferNotation.value){
             m.isActualMove = false
         }
@@ -16,7 +16,9 @@ object NotationMovesHandler {
         val move = NotationMove(
             san = san,
             fen = fen,
-            isActualMove = true
+            isActualMove = true,
+            from = from,
+            to = to
         )
 
         Globals.movesBufferNotation.value.add(move)

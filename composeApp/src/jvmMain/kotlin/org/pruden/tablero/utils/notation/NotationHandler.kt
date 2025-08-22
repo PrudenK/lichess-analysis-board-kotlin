@@ -24,7 +24,7 @@ object NotationHandler {
 
 
         castleSanIfAny(piece, from, to)?.let {
-            NotationMovesHandler.addNotationMove(it); return
+            NotationMovesHandler.addNotationMove(it, from, to); return
         }
 
         val san = if (piece.type == PieceType.Pawn) {
@@ -39,7 +39,7 @@ object NotationHandler {
             "$letter$dis$cap$dest"
         }
 
-        NotationMovesHandler.addNotationMove(san)
+        NotationMovesHandler.addNotationMove(san, from, to)
     }
 
     fun appendPromotion(type: PieceType) {
