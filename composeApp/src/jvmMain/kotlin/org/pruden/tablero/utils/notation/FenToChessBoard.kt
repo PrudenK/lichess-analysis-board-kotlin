@@ -2,6 +2,7 @@ package org.pruden.tablero.utils.notation
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.globals.Globals.BOX_HEIGHT
+import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
@@ -78,6 +79,8 @@ object FenToChessBoard {
 
         Globals.fenEnPassant = spaceParts[3]
         Globals.halfMoves = spaceParts[4].toInt()
+
+        ChessBoardActionHandler.verifyIfCheck()
 
         Globals.refreshBoard.value = !Globals.refreshBoard.value
     }

@@ -60,7 +60,7 @@ fun TopBar(){
 
         TextButton(
             onClick = {
-                FenToChessBoard.setBoardFromFen("rnbqk2r/ppppbppp/4pn2/8/8/4PN2/PPPPBPPP/RNBQ1RK1 b kq - 3 4")
+                FenToChessBoard.setBoardFromFen("6nr/p2n1pPp/p1p5/8/3pq3/b2P4/brP2PP1/1kBQK1R1 w - - 0 14")
             },
         ){
             Text("LoadFen")

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -110,8 +111,8 @@ fun Cell(
 
 
         // Check color
-        val isCheckedKingCell =
-            Globals.checkedKingPos.value?.let { it.first == columnX && it.second == rowY } == true
+        val isCheckedKingCell = Globals.checkedKingPos.value?.let { it.first == columnX && it.second == rowY } == true
+
         if (isCheckedKingCell) {
             Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.4f)))
         }

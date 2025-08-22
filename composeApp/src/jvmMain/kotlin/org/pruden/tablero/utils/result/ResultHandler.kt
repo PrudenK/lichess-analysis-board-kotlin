@@ -22,19 +22,30 @@ object ResultHandler {
     }
 
     fun calculateResultAfterMove(){
+        println(111111)
+
+        // Nota quedan separadas las condiciones para que si el jugador A está en jaque y se cubre
+        // con una pieza realizando una descubierta terminando en mate funcione
+
         if(Globals.whiteIsChecked.value){
+            println(222222)
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.White)
 
             if (moves.isEmpty()) {
                 manageResult(1)
             }
-        }else if(Globals.blackIsChecked.value){
+        }
+
+        if(Globals.blackIsChecked.value){
+            println(3333)
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.Black)
 
             if (moves.isEmpty()) {
                 manageResult(0)
             }
-        }else{
+        }
+
+        if(!Globals.whiteIsChecked.value && !Globals.blackIsChecked.value){
             if(Globals.isWhiteMove.value){
                 val moves = MoveCalculator.getAllPossibleMovesByColor(Color.White)
 
