@@ -1,8 +1,6 @@
 package org.pruden.tablero.components.sideContent
 
-import androidx.compose.foundation.LocalScrollbarStyle
-import androidx.compose.foundation.VerticalScrollbar
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -111,7 +106,10 @@ fun MovesPanel() {
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
                                     padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                                    isThisMove = isThisWhiteMove
+                                    isThisMove = isThisWhiteMove,
+                                    onClick = {
+                                        MovesManager.goToClickedMove(pair[0])
+                                    }
                                 )
 
                                 TextWithHover(
@@ -120,7 +118,12 @@ fun MovesPanel() {
                                     textColor = movesColor,
                                     hoverColor = hoverColor,
                                     padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                                    isThisMove = isThisBlackMove
+                                    isThisMove = isThisBlackMove,
+                                    onClick = {
+                                        if(pair.getOrNull(1) != null) {
+                                            MovesManager.goToClickedMove(pair[1])
+                                        }
+                                    }
                                 )
                             }
 
@@ -213,7 +216,8 @@ fun TextWithHover(
     hoverColor: Color,
     textColor: Color,
     padding: PaddingValues = PaddingValues(all = 0.dp),
-    isThisMove: Boolean = false
+    isThisMove: Boolean = false,
+    onClick: () -> Unit = { }
 ) {
     val isHovered = remember { mutableStateOf(false) }
     Text(
@@ -230,7 +234,9 @@ fun TextWithHover(
                     isHovered.value = false
                     false
                 }
-            ),
+            ).clickable {
+                onClick()
+            },
         color = textColor
     )
 }

@@ -1,22 +1,21 @@
 package org.pruden.tablero.utils.moves
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.NotationMove
 import org.pruden.tablero.utils.notation.FenToChessBoard
 
 object MovesManager {
 
     private val initialPos = Globals.initialFenPos
-
+    private val list = Globals.movesBufferNotation.value
 
     fun goToStart() {
-        val list = Globals.movesBufferNotation.value
-        if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
+        setAllMovesNotActual()
         FenToChessBoard.setBoardFromFen(initialPos)
         toggleRefresh()
     }
 
     fun stepBack() {
-        val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
@@ -41,7 +40,6 @@ object MovesManager {
     }
 
     fun stepForward() {
-        val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
@@ -66,16 +64,27 @@ object MovesManager {
     }
 
     fun goToEnd() {
-        val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
         } else {
-            list.forEach { it.isActualMove = false }
+            setAllMovesNotActual()
             val last = list.last()
             last.isActualMove = true
             FenToChessBoard.setBoardFromFen(last.fen)
         }
         toggleRefresh()
+    }
+
+    fun goToClickedMove(move: NotationMove){
+        setAllMovesNotActual()
+
+        move.isActualMove = true
+        FenToChessBoard.setBoardFromFen(move.fen)
+        toggleRefresh()
+    }
+
+    private fun setAllMovesNotActual() {
+        if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
     }
 
     private fun toggleRefresh() {
