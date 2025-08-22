@@ -64,6 +64,4 @@ fun loadChessBoard() {
             )
         }
     }
-
-    //Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
 }

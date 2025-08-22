@@ -7,7 +7,7 @@ import org.pruden.tablero.utils.notation.FenToChessBoard
 object MovesManager {
 
     private val initialPos = Globals.initialFenPos
-    private val list = Globals.movesBufferNotation.value
+    private val list: MutableList<NotationMove> get() = Globals.movesBufferNotation.value
 
     fun goToStart() {
         setAllMovesNotActual()

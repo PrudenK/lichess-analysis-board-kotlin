@@ -4,6 +4,7 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
+import org.pruden.tablero.utils.moves.MovesManager
 
 object TopBarHandler {
     fun restartBoard() {
@@ -42,6 +43,8 @@ object TopBarHandler {
 
         Globals.movesBufferNotation.value = mutableListOf()
         Globals.halfMoves = 0
+
+        Globals.fenEnPassant = "-"
 
         loadChessBoard()
 
