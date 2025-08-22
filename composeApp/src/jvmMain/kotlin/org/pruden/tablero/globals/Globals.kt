@@ -2,6 +2,7 @@ package org.pruden.tablero.globals
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.NotationMove
@@ -40,6 +41,8 @@ object Globals {
     val WhiteBox = Color(0xFFF0D9B5)
     val BlackBox = Color(0xFFB58863)
 
+
+    val boardHeightDp = mutableStateOf(0.dp)
 
     const val BOX_SIZE = 80
     const val BOX_WIDTH = 8

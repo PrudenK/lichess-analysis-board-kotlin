@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.castle.CastleHandler
 import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.moves.History
-import org.pruden.tablero.utils.notation.FenConverter
-import org.pruden.tablero.utils.notation.FenToChessBoard
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.notation.NotationMovesHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
@@ -25,8 +25,21 @@ import org.pruden.tablero.utils.result.ResultHandler
 fun ChessBoard() {
     if(Globals.isBoardLoaded.value) {
         key(Globals.refreshBoard.value) {
+            val density = LocalDensity.current
+            val firstPadding = 10
+            val border = 4
+            val secondPadding = 4
+            val total = firstPadding + border + secondPadding
+
             Column(
-                modifier = Modifier.padding(30.dp).border(4.dp, Color.Black).padding(4.dp),
+                modifier = Modifier
+                    .padding(firstPadding.dp)
+                    .border(border.dp, Color.Black)
+                    .padding(secondPadding.dp)
+                    .onGloballyPositioned {
+                        Globals.boardHeightDp.value = with(density) { it.size.height.toDp() }
+                        Globals.boardHeightDp.value += (total).dp
+                    }
             ) {
                 repeat(Globals.BOX_HEIGHT) { rowY ->
                     Row {

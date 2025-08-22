@@ -15,30 +15,40 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.result.ResultHandler
 
 @Composable
-fun SideContent(){
+fun SideContent(
+    modifier: Modifier
+){
     Column {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = "Juegan ${if (Globals.isWhiteMove.value) "Blancas" else "Negras"}",
-                fontSize = 24.sp,
-                modifier = Modifier.padding(top = 24.dp),
-            )
-        }
-
         Row {
-            Text(
-                text = "Resultado: ${ResultHandler.getResultToString()}",
-                fontSize = 20.sp,
-                modifier = Modifier.padding(top = 12.dp),
-            )
+            MovesPanel(modifier = modifier)
+
+            Column(
+                modifier = modifier
+                    .padding(12.dp)
+                    .weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "Juegan ${if (Globals.isWhiteMove.value) "Blancas" else "Negras"}",
+                        fontSize = 24.sp,
+                        modifier = Modifier.padding(top = 24.dp),
+                    )
+                }
+
+                Row {
+                    Text(
+                        text = "Resultado: ${ResultHandler.getResultToString()}",
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(top = 12.dp),
+                    )
+
+                }
+            }
 
         }
-
-
-        MovesPanel()
-
     }
 }

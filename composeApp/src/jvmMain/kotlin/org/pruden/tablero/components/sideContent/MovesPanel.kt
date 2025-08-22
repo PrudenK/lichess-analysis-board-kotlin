@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +18,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material3.Switch
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -28,44 +28,72 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerMoveFilter
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
+import org.pruden.tablero.components.custom.IconSwitch
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.moves.MovesManager
-import org.pruden.tablero.utils.notation.FenToChessBoard
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.moves_all
 import tableroajedrez.composeapp.generated.resources.moves_one
 import kotlin.collections.chunked
 
 @Composable
-fun MovesPanel() {
+fun MovesPanel(
+    modifier: Modifier
+) {
     val backgroundMoves = Color(0xFF262421)
     val movesColor = Color(0xFFc0c0c0)
     val hoverColor = Color(0xFF3692e7)
     val scrollState = rememberScrollState()
+    val secondary = Color(0xFF383632)
 
-
+    val isModuleAvaliable = remember { mutableStateOf(false) }
 
     val pairs = Globals.movesBufferNotation.value.chunked(2)
 
     key(Globals.refreshMovesPanel.value) {
         Row(
-            modifier = Modifier.fillMaxHeight().padding(bottom = 105.dp).width(250.dp).background(color = backgroundMoves),
+            modifier = modifier
+                .width(350.dp)
+                .padding(
+                    top = 10.dp,
+                    start = 10.dp
+                ),
         ) {
-            Column {
-                Text(
-                    text = "Movimientos",
-                    fontSize = 20.sp,
-                    color = movesColor,
-                )
+            Column(
+                modifier = Modifier.background(color = secondary)
+            ) {
+
 
                 Box(
-                    modifier = Modifier.fillMaxSize().weight(1f),
+                    modifier = Modifier.padding(15.dp)
+                ){
+                    IconSwitch(
+                        checked = isModuleAvaliable.value,
+                        onCheckedChange = {
+                            isModuleAvaliable.value = it
+                        },
+                        modifier = Modifier.scale(1.3f)
+                    )
+                }
+
+
+
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .background(color = backgroundMoves),
                 ) {
                     Column(
                         modifier = Modifier
@@ -87,13 +115,18 @@ fun MovesPanel() {
                                     .height(IntrinsicSize.Min),
                             ) {
                                 Text(
-                                    text = "${i + 1}.",
-                                    modifier = Modifier.weight(0.3f)
+                                    text = "${i + 1}",
+                                    fontSize = 18.sp,
+                                    lineHeight = 28.sp,
+                                    modifier = Modifier
+                                        .weight(0.4f)
                                         .fillMaxWidth()
+                                        .background(secondary)
                                         .padding(vertical = 4.dp),
                                     textAlign = TextAlign.Center,
-                                    color = movesColor.copy(alpha = 0.5f),
+                                    color = movesColor.copy(alpha = 0.5f)
                                 )
+
 
                                 VerticalDivider(
                                     color = movesColor.copy(alpha = 0.5f),
@@ -127,7 +160,6 @@ fun MovesPanel() {
                                 )
                             }
 
-                            Divider(color = movesColor.copy(alpha = 0.5f))
 
                         }
                     }
@@ -217,7 +249,8 @@ fun TextWithHover(
     textColor: Color,
     padding: PaddingValues = PaddingValues(all = 0.dp),
     isThisMove: Boolean = false,
-    onClick: () -> Unit = { }
+    onClick: () -> Unit = { },
+    fontSize: TextUnit = 20.sp
 ) {
     val isHovered = remember { mutableStateOf(false) }
     Text(
@@ -237,7 +270,9 @@ fun TextWithHover(
             ).clickable {
                 onClick()
             },
-        color = textColor
+        color = textColor,
+        fontWeight = if (isThisMove) FontWeight.Bold else FontWeight.Normal,
+        fontSize = fontSize
     )
 }
 
