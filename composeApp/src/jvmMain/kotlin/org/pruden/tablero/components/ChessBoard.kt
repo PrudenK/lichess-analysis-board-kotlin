@@ -92,7 +92,7 @@ fun ChessBoard() {
                                             }else if(!Globals.isWhitePromotion.value && !Globals.isBlackPromotion.value){
                                                 Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
                                                 println(FenConverter.chessBoardToFen())
-                                                FenToChessBoard.setBoardFromFen(FenConverter.chessBoardToFen())
+                                                //FenToChessBoard.setBoardFromFen(FenConverter.chessBoardToFen())
                                             }
 
                                             ChessBoardActionHandler.verifyIfCheck()

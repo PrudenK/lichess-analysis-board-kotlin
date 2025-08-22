@@ -5,17 +5,20 @@ import org.pruden.tablero.utils.notation.FenToChessBoard
 
 object MovesManager {
 
+    private val initialPos = Globals.initialFenPos
+
+
     fun goToStart() {
         val list = Globals.movesBufferNotation.value
         if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
-        FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+        FenToChessBoard.setBoardFromFen(initialPos)
         toggleRefresh()
     }
 
     fun stepBack() {
         val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+            FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
             return
         }
@@ -28,10 +31,10 @@ object MovesManager {
             }
             idx == 0 -> {
                 list[0].isActualMove = false
-                FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                FenToChessBoard.setBoardFromFen(initialPos)
             }
             idx == -1 -> {
-                FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+                FenToChessBoard.setBoardFromFen(initialPos)
             }
         }
         toggleRefresh()
@@ -65,7 +68,7 @@ object MovesManager {
     fun goToEnd() {
         val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+            FenToChessBoard.setBoardFromFen(initialPos)
         } else {
             list.forEach { it.isActualMove = false }
             val last = list.last()

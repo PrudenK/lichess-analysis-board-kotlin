@@ -5,8 +5,7 @@ import org.pruden.tablero.globals.Globals.BOX_HEIGHT
 import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
-
-    fun setBoardFromFen(fen: String = "rn1q3r/p2p1ppp/p1pb3n/3b1Q2/3B4/P6P/RP3PP1/1Nk1K2R w K - 2 18") {
+    fun setBoardFromFen(fen: String = "") {
         val spaceParts = fen.split(" ")
         val boardRows = spaceParts[0].split("/").toMutableList()
 
@@ -50,7 +49,7 @@ object FenToChessBoard {
             }
         }
 
-        Globals.isWhiteMove.value = spaceParts[1] == "w"
+        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) true else spaceParts[1] != "w"
 
         Globals.whiteCastle = Triple(
             !spaceParts[2].contains("Q"),
