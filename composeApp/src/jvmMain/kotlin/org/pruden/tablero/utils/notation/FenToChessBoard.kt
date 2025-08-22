@@ -6,6 +6,9 @@ import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
     fun setBoardFromFen(fen: String = "") {
+        println("________________________________")
+        println(fen)
+
         val spaceParts = fen.split(" ")
         val boardRows = spaceParts[0].split("/").toMutableList()
 
@@ -49,7 +52,7 @@ object FenToChessBoard {
             }
         }
 
-        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) true else spaceParts[1] != "w"
+        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) true else spaceParts[1] == "w"
 
         Globals.whiteCastle = Triple(
             !spaceParts[2].contains("Q"),

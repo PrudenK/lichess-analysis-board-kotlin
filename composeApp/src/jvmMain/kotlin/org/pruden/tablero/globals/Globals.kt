@@ -74,7 +74,7 @@ object Globals {
     var colPassant = -1
     var enPassantCell = Pair(-1, -1)
 
-    val result = mutableStateOf<Int>(-1) // 0(wWin), 1(bWin), 2(draw, stalemate), 3(draw, death position)
+    val result = mutableStateOf(-1) // 0(wWin), 1(bWin), 2(draw, stalemate), 3(draw, death position)
 
     val isGameOver = mutableStateOf(false)
 
@@ -86,7 +86,6 @@ object Globals {
     val refreshMovesPanel = mutableStateOf(false)
 
     var fenEnPassant = "-"
-    var fenPositionsBuffer = mutableListOf<String>()
 
     val initialFenPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 

@@ -43,7 +43,7 @@ object MovesManager {
     fun stepForward() {
         val list = Globals.movesBufferNotation.value
         if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(Globals.fenPositionsBuffer[0])
+            FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
             return
         }

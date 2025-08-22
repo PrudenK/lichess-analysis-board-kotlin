@@ -49,7 +49,7 @@ fun TopBar(){
 
         TextButton(
             onClick = {
-                for(m in Globals.fenPositionsBuffer){
+                for(m in Globals.movesBufferNotation.value.map { it.fen }){
                     println(m)
                 }
                 println("_______________________________")
@@ -60,7 +60,7 @@ fun TopBar(){
 
         TextButton(
             onClick = {
-                FenToChessBoard.setBoardFromFen()
+                FenToChessBoard.setBoardFromFen("rnbqk2r/ppppbppp/4pn2/8/8/4PN2/PPPPBPPP/RNBQ1RK1 b kq - 3 4")
             },
         ){
             Text("LoadFen")

@@ -16,6 +16,7 @@ import org.pruden.tablero.utils.moves.History
 import org.pruden.tablero.utils.notation.FenConverter
 import org.pruden.tablero.utils.notation.FenToChessBoard
 import org.pruden.tablero.utils.notation.NotationHandler
+import org.pruden.tablero.utils.notation.NotationMovesHandler
 import org.pruden.tablero.utils.promotion.PromotionHandler
 import org.pruden.tablero.utils.result.ResultHandler
 
@@ -80,7 +81,7 @@ fun ChessBoard() {
                                                 Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                                 ChessBoardActionHandler.verifyIfCheck()
 
-                                                Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
+                                                NotationMovesHandler.updateLastMoveFen()
                                             }
                                         }
 
@@ -90,9 +91,7 @@ fun ChessBoard() {
                                             if(!moveWasDone) {
                                                 ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
                                             }else if(!Globals.isWhitePromotion.value && !Globals.isBlackPromotion.value){
-                                                Globals.fenPositionsBuffer.add(FenConverter.chessBoardToFen())
-                                                println(FenConverter.chessBoardToFen())
-                                                //FenToChessBoard.setBoardFromFen(FenConverter.chessBoardToFen())
+                                                NotationMovesHandler.updateLastMoveFen()
                                             }
 
                                             ChessBoardActionHandler.verifyIfCheck()

@@ -24,6 +24,11 @@ object NotationMovesHandler {
         Globals.movesBufferNotation.value.add(move)
     }
 
+    fun updateLastMoveFen(){
+        val move = Globals.movesBufferNotation.value.last()
+        move.fen = FenConverter.chessBoardToFen(Globals.chessBoard)
+    }
+
 
     fun modifyLastMoveNotation(adder : String){
         if (Globals.movesBufferNotation.value.isEmpty()) return
