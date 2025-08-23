@@ -34,7 +34,7 @@ fun FenBox(){
                 fontWeight = FontWeight.Bold,
                 color = Color.Gray,
                 fontSize = 18.sp,
-                modifier = Modifier.padding(horizontal = 10.dp),
+                modifier = Modifier.padding(start = 10.dp, end = 14.dp),
 
             )
 

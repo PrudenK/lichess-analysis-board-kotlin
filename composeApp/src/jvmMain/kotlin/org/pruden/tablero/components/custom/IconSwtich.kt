@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import org.pruden.tablero.globals.Colors
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.check
 import tableroajedrez.composeapp.generated.resources.no_check
@@ -28,7 +29,7 @@ fun IconSwitch(
     val switchWidth = 45.dp
     val switchHeight = 28.dp
 
-    val backgroundColor = if (checked) Color(0xFF629924) else Color(0xFF666665)
+    val backgroundColor = if (checked) Colors.moduleActivateColor else Color(0xFF666665)
     val circleColor = if(checked) Color(0xFF35332f) else Color(0xFF35332f)
     val borderColor = Color(0xFF404040)
 

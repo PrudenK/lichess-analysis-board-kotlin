@@ -11,4 +11,6 @@ object Colors {
     val secondary = Color(0xFF383632)
 
     val textColor = Color.LightGray.copy(0.8f)
+
+    val moduleActivateColor = Color(0xFF629924)
 }

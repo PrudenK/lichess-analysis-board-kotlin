@@ -33,8 +33,10 @@ fun ModuleBar(
                     ApiChess.moduleService.evaluatePosition(EvalRequest(fen = fen, depth = 18, variants = 1))
                 }
                 evalCp = ((res.eval ?: 0.0) * 100).toInt()
+                Globals.valoration.value = evalCp
             } catch (e: Exception) {
                 evalCp = 20
+                Globals.valoration.value = evalCp
             }
         }
     }

@@ -14,10 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -29,9 +31,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -45,6 +49,7 @@ import org.pruden.tablero.utils.moves.MovesManager
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.moves_all
 import tableroajedrez.composeapp.generated.resources.moves_one
+import java.util.*
 import kotlin.collections.chunked
 
 @Composable
@@ -63,21 +68,51 @@ fun MovesPanel(
                 ),
         ) {
             Column(
-                modifier = Modifier.background(color = Colors.secondary)
+                modifier = Modifier
+                    .background(color = Colors.secondary, RoundedCornerShape(6.dp))
             ) {
 
 
+
+                if (Globals.isModuleActivated.value) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(4.dp)
+                            .background(Colors.moduleActivateColor, RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
+                    )
+                }
                 Box(
                     modifier = Modifier.padding(15.dp)
                 ){
-                    IconSwitch(
-                        checked = Globals.isModuleActivated.value,
-                        onCheckedChange = {
-                            Globals.isModuleActivated.value = it
-                        },
-                        modifier = Modifier.scale(1.3f)
-                    )
+                    Row {
+                        IconSwitch(
+                            checked = Globals.isModuleActivated.value,
+                            onCheckedChange = {
+                                Globals.isModuleActivated.value = it
+                            },
+                            modifier = Modifier.scale(1.2f).padding(top = 4.dp)
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .padding(start = 22.dp)
+                                .height(32.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (Globals.isModuleActivated.value) {
+                                val text = String.format(Locale.US, "%.1f", Globals.valoration.value / 100f)
+                                Text(
+                                    text = "${if (Globals.valoration.value > 0) "+" else ""}$text",
+                                    fontSize = 24.sp,
+                                    color = Colors.textColor,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+                    }
                 }
+
 
 
 

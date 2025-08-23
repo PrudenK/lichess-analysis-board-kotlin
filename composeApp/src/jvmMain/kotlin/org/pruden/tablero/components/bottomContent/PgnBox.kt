@@ -35,7 +35,6 @@ fun PgnBox(){
                 color = Color.Gray,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(horizontal = 10.dp),
-
                 )
 
             Box(
