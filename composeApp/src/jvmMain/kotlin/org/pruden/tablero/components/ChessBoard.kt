@@ -33,7 +33,7 @@ fun ChessBoard() {
 
             Column(
                 modifier = Modifier
-                    .padding(firstPadding.dp)
+                    .padding(start = firstPadding.dp, top = firstPadding.dp)
                     .border(border.dp, Color.Black)
                     .padding(secondPadding.dp)
                     .onGloballyPositioned {

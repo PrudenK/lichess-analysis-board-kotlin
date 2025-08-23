@@ -56,8 +56,6 @@ fun MovesPanel(
     val scrollState = rememberScrollState()
     val secondary = Color(0xFF383632)
 
-    val isModuleAvaliable = remember { mutableStateOf(false) }
-
     val pairs = Globals.movesBufferNotation.value.chunked(2)
 
     key(Globals.refreshMovesPanel.value) {
@@ -65,8 +63,7 @@ fun MovesPanel(
             modifier = modifier
                 .width(350.dp)
                 .padding(
-                    top = 10.dp,
-                    start = 10.dp
+                    top = 10.dp
                 ),
         ) {
             Column(
@@ -78,9 +75,9 @@ fun MovesPanel(
                     modifier = Modifier.padding(15.dp)
                 ){
                     IconSwitch(
-                        checked = isModuleAvaliable.value,
+                        checked = Globals.isModuleActivated.value,
                         onCheckedChange = {
-                            isModuleAvaliable.value = it
+                            Globals.isModuleActivated.value = it
                         },
                         modifier = Modifier.scale(1.3f)
                     )

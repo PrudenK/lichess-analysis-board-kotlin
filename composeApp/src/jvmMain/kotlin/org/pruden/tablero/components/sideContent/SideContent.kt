@@ -17,7 +17,7 @@ fun SideContent(
 ){
     Column {
         Row {
-            ModuleBar(modifier = Modifier.width(20.dp).height(Globals.boardHeightDp.value).padding(top = 10.dp))
+            ModuleBar(modifier = Modifier.width(15.dp).height(Globals.boardHeightDp.value).padding(top = 10.dp))
 
             MovesPanel(modifier = modifier)
 

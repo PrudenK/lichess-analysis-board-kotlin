@@ -23,17 +23,19 @@ fun ModuleBar(
     modifier: Modifier = Modifier
 ) {
     val actualMove = Globals.movesBufferNotation.value.find { it.isActualMove }
-    var evalCp by remember(actualMove?.fen) { mutableStateOf<Int>(20) }
+    var evalCp by remember(actualMove?.fen) { mutableStateOf(20) }
 
     LaunchedEffect(actualMove?.fen) {
-        val fen = actualMove?.fen ?: Globals.initialFenPos
-        try {
-            val res = withContext(Dispatchers.IO) {
-                ApiChess.moduleService.evaluatePosition(EvalRequest(fen = fen, depth = 18, variants = 1))
+        if(Globals.isModuleActivated.value){
+            val fen = actualMove?.fen ?: Globals.initialFenPos
+            try {
+                val res = withContext(Dispatchers.IO) {
+                    ApiChess.moduleService.evaluatePosition(EvalRequest(fen = fen, depth = 18, variants = 1))
+                }
+                evalCp = ((res.eval ?: 0.0) * 100).toInt()
+            } catch (e: Exception) {
+                evalCp = 20
             }
-            evalCp = ((res.eval ?: 0.0) * 100).toInt()
-        } catch (e: Exception) {
-            evalCp = 20
         }
     }
 
@@ -51,46 +53,45 @@ fun ModuleBar(
 
     Box(
         modifier = modifier
-            .width(20.dp)
+            .width(15.dp)
             .height(innerH)
-            .background(Color.DarkGray.copy(0.3f), RoundedCornerShape(4.dp))
     ) {
+        if(Globals.isModuleActivated.value){
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(innerH - splitH)
+                    .align(Alignment.TopStart)
+                    .background(blackEvalColor)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(splitH)
+                    .align(Alignment.BottomStart)
+                    .background(whiteEvalColor)
+            )
 
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(innerH - splitH)
-                .align(Alignment.TopStart)
-                .background(blackEvalColor)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(splitH)
-                .align(Alignment.BottomStart)
-                .background(whiteEvalColor)
-        )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .offset(y = (Globals.boardHeightDp.value / 2) - 6.dp)
+                    .background(markerColor, RoundedCornerShape(2.dp))
+            )
 
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(6.dp)
-                .offset(y = (Globals.boardHeightDp.value / 2) - 6.dp)
-                .background(markerColor, RoundedCornerShape(2.dp))
-        )
-
-
-        for (i in 1..7) {
-            if (i != 4) {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .offset(y = (step * i) - 1.dp),
-                    color = Color.Black.copy(0.3f)
-                )
+            for (i in 1..7) {
+                if (i != 4) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .offset(y = (step * i) - 1.dp),
+                        color = Color.Black.copy(0.3f)
+                    )
+                }
             }
         }
     }
