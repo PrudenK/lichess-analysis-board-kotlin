@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -92,7 +93,7 @@ fun Cell(
             Image(
                 painter = painterResource(resource = it.png!!),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize().padding(6.dp)
+                modifier = Modifier.scale(1.1f).fillMaxSize().padding(6.dp)
                     .graphicsLayer(alpha = if(it.isSelected.value) 0.5f else 1.0f)
             )
         }

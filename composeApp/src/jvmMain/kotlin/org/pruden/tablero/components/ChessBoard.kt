@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.castle.CastleHandler
 import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
@@ -34,11 +35,14 @@ fun ChessBoard() {
             Column(
                 modifier = Modifier
                     .padding(start = firstPadding.dp, top = firstPadding.dp)
-                    .border(border.dp, Color.Black)
+                    .border(border.dp, Colors.secondary)
                     .padding(secondPadding.dp)
                     .onGloballyPositioned {
                         Globals.boardHeightDp.value = with(density) { it.size.height.toDp() }
+                        Globals.boardWidthDp.value = with(density) { it.size.width.toDp() }
+
                         Globals.boardHeightDp.value += (total).dp
+                        Globals.boardWidthDp.value += (border + secondPadding).dp
                     }
             ) {
                 repeat(Globals.BOX_HEIGHT) { rowY ->

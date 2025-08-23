@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.components.custom.IconSwitch
+import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.moves.MovesManager
 import tableroajedrez.composeapp.generated.resources.Res
@@ -50,13 +51,8 @@ import kotlin.collections.chunked
 fun MovesPanel(
     modifier: Modifier
 ) {
-    val backgroundMoves = Color(0xFF262421)
-    val movesColor = Color(0xFFc0c0c0)
-    val hoverColor = Color(0xFF3692e7)
-    val scrollState = rememberScrollState()
-    val secondary = Color(0xFF383632)
-
     val pairs = Globals.movesBufferNotation.value.chunked(2)
+    val scrollState = rememberScrollState()
 
     key(Globals.refreshMovesPanel.value) {
         Row(
@@ -67,7 +63,7 @@ fun MovesPanel(
                 ),
         ) {
             Column(
-                modifier = Modifier.background(color = secondary)
+                modifier = Modifier.background(color = Colors.secondary)
             ) {
 
 
@@ -90,7 +86,7 @@ fun MovesPanel(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f)
-                        .background(color = backgroundMoves),
+                        .background(color = Colors.backgroundMoves),
                 ) {
                     Column(
                         modifier = Modifier
@@ -98,7 +94,7 @@ fun MovesPanel(
                             .verticalScroll(scrollState)
                     ) {
 
-                        Divider(color = movesColor.copy(alpha = 0.5f))
+                        Divider(color = Colors.movesColor.copy(alpha = 0.5f))
 
                         for ((i, pair) in pairs.withIndex()) {
                             val whiteSan = pair.getOrNull(0)?.san.orEmpty()
@@ -118,23 +114,23 @@ fun MovesPanel(
                                     modifier = Modifier
                                         .weight(0.4f)
                                         .fillMaxWidth()
-                                        .background(secondary)
+                                        .background(Colors.secondary)
                                         .padding(vertical = 4.dp),
                                     textAlign = TextAlign.Center,
-                                    color = movesColor.copy(alpha = 0.5f)
+                                    color = Colors.movesColor.copy(alpha = 0.5f)
                                 )
 
 
                                 VerticalDivider(
-                                    color = movesColor.copy(alpha = 0.5f),
+                                    color = Colors.movesColor.copy(alpha = 0.5f),
                                     modifier = Modifier.fillMaxHeight()
                                 )
 
                                 TextWithHover(
                                     text = whiteSan,
                                     modifier = Modifier.weight(1f),
-                                    textColor = movesColor,
-                                    hoverColor = hoverColor,
+                                    textColor = Colors.movesColor,
+                                    hoverColor = Colors.hoverColor,
                                     padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
                                     isThisMove = isThisWhiteMove,
                                     onClick = {
@@ -145,8 +141,8 @@ fun MovesPanel(
                                 TextWithHover(
                                     text = blackSan,
                                     modifier = Modifier.weight(1f).padding(end = 8.dp),
-                                    textColor = movesColor,
-                                    hoverColor = hoverColor,
+                                    textColor = Colors.movesColor,
+                                    hoverColor = Colors.hoverColor,
                                     padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
                                     isThisMove = isThisBlackMove,
                                     onClick = {
@@ -165,8 +161,8 @@ fun MovesPanel(
                         adapter = rememberScrollbarAdapter(scrollState),
                         modifier = Modifier.align(Alignment.CenterEnd),
                         style = LocalScrollbarStyle.current.copy(
-                            unhoverColor = movesColor.copy(alpha = 0.3f),
-                            hoverColor = movesColor.copy(alpha = 0.6f),
+                            unhoverColor = Colors.movesColor.copy(alpha = 0.3f),
+                            hoverColor = Colors.movesColor.copy(alpha = 0.6f),
                             minimalHeight = 16.dp,
                             thickness = 8.dp
                         )
@@ -186,7 +182,7 @@ fun MovesPanel(
                             Icon(
                                 painter = painterResource(resource = Res.drawable.moves_all),
                                 contentDescription = null,
-                                tint = movesColor,
+                                tint = Colors.movesColor,
                                 modifier = Modifier.size(24.dp).rotate(180f)
                             )
                         }
@@ -199,7 +195,7 @@ fun MovesPanel(
                             Icon(
                                 painter = painterResource(resource = Res.drawable.moves_one),
                                 contentDescription = null,
-                                tint = movesColor,
+                                tint = Colors.movesColor,
                                 modifier = Modifier.size(24.dp).rotate(180f)
                             )
                         }
@@ -212,7 +208,7 @@ fun MovesPanel(
                             Icon(
                                 painter = painterResource(resource = Res.drawable.moves_one),
                                 contentDescription = null,
-                                tint = movesColor,
+                                tint = Colors.movesColor,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -225,7 +221,7 @@ fun MovesPanel(
                             Icon(
                                 painter = painterResource(resource = Res.drawable.moves_all),
                                 contentDescription = null,
-                                tint = movesColor,
+                                tint = Colors.movesColor,
                                 modifier = Modifier.size(24.dp)
                             )
                         }

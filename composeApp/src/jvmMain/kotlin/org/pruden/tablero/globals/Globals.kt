@@ -43,6 +43,7 @@ object Globals {
 
 
     val boardHeightDp = mutableStateOf(0.dp)
+    val boardWidthDp = mutableStateOf(0.dp)
 
     const val BOX_SIZE = 80
     const val BOX_WIDTH = 8
