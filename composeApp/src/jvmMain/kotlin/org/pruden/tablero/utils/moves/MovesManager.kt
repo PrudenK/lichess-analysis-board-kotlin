@@ -10,12 +10,14 @@ object MovesManager {
     private val list: MutableList<NotationMove> get() = Globals.movesBufferNotation.value
 
     fun goToStart() {
+        quitAllPossibleMovesMarks()
         setAllMovesNotActual()
         FenToChessBoard.setBoardFromFen(initialPos)
         toggleRefresh()
     }
 
     fun stepBack() {
+        quitAllPossibleMovesMarks()
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
@@ -40,6 +42,7 @@ object MovesManager {
     }
 
     fun stepForward() {
+        quitAllPossibleMovesMarks()
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
             toggleRefresh()
@@ -64,6 +67,7 @@ object MovesManager {
     }
 
     fun goToEnd() {
+        quitAllPossibleMovesMarks()
         if (list.isEmpty()) {
             FenToChessBoard.setBoardFromFen(initialPos)
         } else {
@@ -76,6 +80,7 @@ object MovesManager {
     }
 
     fun goToClickedMove(move: NotationMove){
+        quitAllPossibleMovesMarks()
         setAllMovesNotActual()
 
         move.isActualMove = true
@@ -85,6 +90,10 @@ object MovesManager {
 
     private fun setAllMovesNotActual() {
         if (list.isNotEmpty()) list.forEach { it.isActualMove = false }
+    }
+
+    private fun quitAllPossibleMovesMarks() {
+        Globals.possibleMoves.value = emptyList()
     }
 
     private fun toggleRefresh() {

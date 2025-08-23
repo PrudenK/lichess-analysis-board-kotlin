@@ -34,8 +34,6 @@ fun IconSwitch(
 
     val icon = if (checked) Res.drawable.check else Res.drawable.no_check
 
-
-
     Box(
         modifier = modifier
             .width(switchWidth)
