@@ -7,22 +7,17 @@ object NotationMovesHandler {
 
 
     fun addNotationMove(san: String, from: Pair<Int, Int>, to: Pair<Int, Int>) {
-        for (m in Globals.movesBufferNotation.value){
-            m.isActualMove = false
-        }
+        val list = Globals.movesBufferNotation.value.toMutableList()
+
+        list.forEach { it.isActualMove = false }
 
         val fen = FenConverter.chessBoardToFen(Globals.chessBoard)
 
-        val move = NotationMove(
-            san = san,
-            fen = fen,
-            isActualMove = true,
-            from = from,
-            to = to
-        )
+        list.add(NotationMove(san, fen, true, from, to))
 
-        Globals.movesBufferNotation.value.add(move)
+        Globals.movesBufferNotation.value = list
     }
+
 
     fun updateLastMoveFen(){
         val move = Globals.movesBufferNotation.value.last()

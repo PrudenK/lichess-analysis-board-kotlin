@@ -1,9 +1,6 @@
 package org.pruden.tablero.components.sideContent
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -20,6 +17,8 @@ fun SideContent(
 ){
     Column {
         Row {
+            ModuleBar(modifier = Modifier.width(20.dp).height(Globals.boardHeightDp.value).padding(top = 10.dp))
+
             MovesPanel(modifier = modifier)
 
             Column(
