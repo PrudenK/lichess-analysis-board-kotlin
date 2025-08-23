@@ -20,6 +20,16 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            // Corrutinas
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+
+            // Retrofit
+            implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
+            // Gson
+            implementation("com.google.code.gson:gson:2.11.0")
+            implementation("com.squareup.retrofit2:converter-gson:2.11.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

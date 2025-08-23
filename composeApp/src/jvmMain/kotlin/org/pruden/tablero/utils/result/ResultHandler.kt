@@ -22,13 +22,10 @@ object ResultHandler {
     }
 
     fun calculateResultAfterMove(){
-        println(111111)
-
         // Nota quedan separadas las condiciones para que si el jugador A está en jaque y se cubre
         // con una pieza realizando una descubierta terminando en mate funcione
 
         if(Globals.whiteIsChecked.value){
-            println(222222)
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.White)
 
             if (moves.isEmpty()) {
@@ -37,7 +34,6 @@ object ResultHandler {
         }
 
         if(Globals.blackIsChecked.value){
-            println(3333)
             val moves = MoveCalculator.getAllPossibleMovesByColor(Color.Black)
 
             if (moves.isEmpty()) {
@@ -74,10 +70,10 @@ object ResultHandler {
         calculateDeadPosition()
     }
 
-    fun isFiftyReclaimable() = Globals.halfMoves >= 100
-    fun isSeventyFiveAuto() = Globals.halfMoves >= 150
+    private fun isFiftyReclaimable() = Globals.halfMoves >= 100
+    private fun isSeventyFiveAuto() = Globals.halfMoves >= 150
 
-    fun calculateDeadPosition() {
+    private fun calculateDeadPosition() {
         var knights = 0
         var bishopsOnWhite = 0
         var bishopsOnBlack = 0

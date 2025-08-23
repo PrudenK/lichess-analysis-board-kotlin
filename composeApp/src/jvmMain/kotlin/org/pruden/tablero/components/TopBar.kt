@@ -11,6 +11,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.pruden.tablero.api.constants.ApiChess
+import org.pruden.tablero.api.objects.request.EvalRequest
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.notation.FenToChessBoard
@@ -60,10 +65,31 @@ fun TopBar(){
 
         TextButton(
             onClick = {
-                FenToChessBoard.setBoardFromFen("6nr/p2n1pPp/p1p5/8/3pq3/b2P4/brP2PP1/1kBQK1R1 w - - 0 14")
+                //FenToChessBoard.setBoardFromFen("6nr/p2n1pPp/p1p5/8/3pq3/b2P4/brP2PP1/1kBQK1R1 w - - 0 14")
+                val lastFen = Globals.movesBufferNotation.value.lastOrNull()?.fen
+                if (lastFen != null){
+                    val scope = CoroutineScope(Dispatchers.IO)
+
+                    scope.launch {
+                        try {
+                            val response = ApiChess.moduleService.evaluatePosition(
+                                EvalRequest(
+                                    fen = lastFen,
+                                    depth = 12,
+                                    variants = 5
+                                )
+                            )
+                            println("Eval: ${response.eval}, bestmove: ${response.move}")
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                }
+
             },
         ){
-            Text("LoadFen")
+            Text("EvaluateFen")
         }
     }
 }

@@ -1,0 +1,32 @@
+package org.pruden.tablero.api.objects.response
+
+data class EvalResponse(
+    val text: String?,
+    val captured: Boolean?,
+    val promotion: Boolean?,
+    val isCapture: Boolean?,
+    val isPromotion: Boolean?,
+    val isCastling: Boolean?,
+    val fen: String?,
+    val type: String?,
+    val depth: Int?,
+    val move: String?,
+    val eval: Double?,
+    val centipawns: String?,
+    val mate: Int?,
+    val continuationArr: List<String>?,
+    val debug: String?,
+    val winChance: Double?,
+    val taskId: String?,
+    val turn: String?,
+    val color: String?,
+    val piece: String?,
+    val from: String?,
+    val to: String?,
+    val san: String?,
+    val flags: String?,
+    val lan: String?,
+    val fromNumeric: String?,
+    val toNumeric: String?,
+    val continuation: List<ContinuationMove>?
+)
