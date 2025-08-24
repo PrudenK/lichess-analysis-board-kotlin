@@ -58,6 +58,7 @@ fun MovesPanel(
 ) {
     val pairs = Globals.movesBufferNotation.value.chunked(2)
     val scrollState = rememberScrollState()
+    val hasOverflow = scrollState.maxValue > 0
 
     key(Globals.refreshMovesPanel.value) {
         Row(
@@ -175,7 +176,7 @@ fun MovesPanel(
 
                                 TextWithHover(
                                     text = blackSan,
-                                    modifier = Modifier.weight(1f).padding(end = 8.dp),
+                                    modifier = Modifier.weight(1f).padding(end = if(hasOverflow) 8.dp else 0.dp),
                                     textColor = Colors.movesColor,
                                     hoverColor = Colors.hoverColor,
                                     padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
