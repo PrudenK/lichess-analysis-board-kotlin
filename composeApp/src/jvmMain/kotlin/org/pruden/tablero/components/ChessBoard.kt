@@ -23,7 +23,9 @@ import org.pruden.tablero.utils.result.ResultHandler
 
 
 @Composable
-fun ChessBoard() {
+fun ChessBoard(
+    modifier: Modifier
+) {
     if(Globals.isBoardLoaded.value) {
         key(Globals.refreshBoard.value) {
             val density = LocalDensity.current
@@ -33,7 +35,7 @@ fun ChessBoard() {
             val total = firstPadding + border + secondPadding
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(start = firstPadding.dp, top = firstPadding.dp)
                     .border(border.dp, Colors.secondary)
                     .padding(secondPadding.dp)

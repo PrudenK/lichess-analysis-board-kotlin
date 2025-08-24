@@ -3,13 +3,13 @@ package org.pruden.tablero.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.components.bottomContent.FenBox
 import org.pruden.tablero.components.bottomContent.PgnBox
-import org.pruden.tablero.components.sideContent.MovesPanel
-import org.pruden.tablero.components.sideContent.SideContent
+import org.pruden.tablero.components.sideContent.RightSideContent
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
 
@@ -33,13 +33,25 @@ fun ContentMain(
                 .fillMaxSize()
                 .background(backgroundColor),
         ) {
-            Column {
-                Row {
-                    ChessBoard()
-                    SideContent(modifier = Modifier.height(Globals.boardHeightDp.value))
+            Column(modifier = Modifier.fillMaxSize()) {
+                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+
+                    val gap = 12.dp
+                    ChessBoard(modifier = Modifier.align(Alignment.Center))
+                    RightSideContent(
+                        modifier = Modifier
+                            .height(Globals.boardHeightDp.value)
+                            .align(Alignment.CenterStart)
+                            .absoluteOffset(x = this.maxWidth / 2 + Globals.boardWidthDp.value / 2 + gap)
+                    )
                 }
-                FenBox()
-                PgnBox()
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    FenBox()
+                    PgnBox()
+                }
             }
         }
     }
