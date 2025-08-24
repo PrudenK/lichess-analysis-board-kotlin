@@ -1,4 +1,4 @@
-package org.pruden.tablero.components.sideContent
+package org.pruden.tablero.components.rightSideContent
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

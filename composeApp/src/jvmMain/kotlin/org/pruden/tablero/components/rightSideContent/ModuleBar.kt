@@ -1,4 +1,4 @@
-package org.pruden.tablero.components.sideContent
+package org.pruden.tablero.components.rightSideContent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,9 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.pruden.tablero.api.constants.ApiChess
 import org.pruden.tablero.api.objects.request.EvalRequest

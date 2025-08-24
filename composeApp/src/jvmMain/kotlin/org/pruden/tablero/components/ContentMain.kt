@@ -9,7 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.components.bottomContent.FenBox
 import org.pruden.tablero.components.bottomContent.PgnBox
-import org.pruden.tablero.components.sideContent.RightSideContent
+import org.pruden.tablero.components.leftSideContent.LeftSideContent
+import org.pruden.tablero.components.rightSideContent.RightSideContent
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
 
@@ -35,6 +36,10 @@ fun ContentMain(
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+
+                    LeftSideContent(
+                        modifier = Modifier.padding(top = 10.dp, start = 100.dp)
+                    )
 
                     val gap = 12.dp
                     ChessBoard(modifier = Modifier.align(Alignment.Center))
