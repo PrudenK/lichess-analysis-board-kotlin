@@ -11,6 +11,7 @@ import org.pruden.tablero.components.bottomContent.FenBox
 import org.pruden.tablero.components.bottomContent.PgnBox
 import org.pruden.tablero.components.leftSideContent.LeftSideContent
 import org.pruden.tablero.components.rightSideContent.RightSideContent
+import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
 
@@ -19,20 +20,18 @@ import org.pruden.tablero.utils.chessBoard.loadChessBoard
 fun ContentMain(
     modifier: Modifier,
 ) {
-    val backgroundColor = Color(0xFF161512)
-
     if (!Globals.isBoardLoaded.value) {
         loadChessBoard()
         Globals.isBoardLoaded.value = true
     }
 
     Box(
-        modifier = modifier.background(Color.Black.copy(alpha = 0.6f)),
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundColor),
+                .background(Colors.backgroundGeneral),
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {

@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.pruden.tablero.globals.Globals
 
 @Composable
 fun LeftSideContent(
     modifier: Modifier
 ){
     Column(
-        modifier = modifier
+        modifier = modifier.height(Globals.boardHeightDp.value - 10.dp)
     ) {
         GameSelector()
 

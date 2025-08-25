@@ -30,6 +30,11 @@ kotlin {
             // Gson
             implementation("com.google.code.gson:gson:2.11.0")
             implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+
+            implementation("org.jsoup:jsoup:1.17.2")
+
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
