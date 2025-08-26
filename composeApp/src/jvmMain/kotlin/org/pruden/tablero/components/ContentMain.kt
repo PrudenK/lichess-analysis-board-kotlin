@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.components.bottomContent.FenBox
@@ -35,13 +36,19 @@ fun ContentMain(
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                    val gap = 12.dp
 
                     LeftSideContent(
-                        modifier = Modifier.padding(top = 10.dp, start = 100.dp)
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .absoluteOffset(x = this.maxWidth / 2 - Globals.boardWidthDp.value / 2 - gap - Globals.leftSideContentWidth)
                     )
 
-                    val gap = 12.dp
-                    ChessBoard(modifier = Modifier.align(Alignment.Center))
+                    ChessBoard(modifier = Modifier
+                        .align(Alignment.Center)
+                        //.rotate(180f)
+                    )
+
                     RightSideContent(
                         modifier = Modifier
                             .height(Globals.boardHeightDp.value)

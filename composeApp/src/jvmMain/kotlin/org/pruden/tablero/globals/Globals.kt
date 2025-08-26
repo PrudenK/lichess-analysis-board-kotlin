@@ -96,4 +96,5 @@ object Globals {
     val isModuleActivated = mutableStateOf(true)
     val valoration = mutableStateOf(20)
 
+    val leftSideContentWidth = 370.dp
 }

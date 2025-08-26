@@ -7,29 +7,25 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Colors
+import org.pruden.tablero.globals.Globals
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.caret_down
-import tableroajedrez.composeapp.generated.resources.no_check
 import tableroajedrez.composeapp.generated.resources.standard_gamemode
 
 @Composable
 fun GameSelector() {
-    val boxWidth = 370.dp
     val backgroundColor = Color(0xFF373531)
     val caretColor = Color(0xFF3689d5)
 
 
     Box(
         modifier = Modifier
-            .width(boxWidth)
+            .width(Globals.leftSideContentWidth)
             .background(backgroundColor, RoundedCornerShape(4.dp))
     ){
         Row (

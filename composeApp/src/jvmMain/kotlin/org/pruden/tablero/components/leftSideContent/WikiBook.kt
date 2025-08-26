@@ -50,7 +50,7 @@ fun WikiBook() {
     }
 
     if(extractHtml.isNotEmpty()){
-        Box(modifier = Modifier.width(370.dp)) {
+        Box(modifier = Modifier.width(Globals.leftSideContentWidth)) {
             if(bookIsOpen){
                 Box(
                     modifier = Modifier
