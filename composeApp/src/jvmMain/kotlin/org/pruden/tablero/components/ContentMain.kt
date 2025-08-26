@@ -46,7 +46,7 @@ fun ContentMain(
 
                     ChessBoard(modifier = Modifier
                         .align(Alignment.Center)
-                        //.rotate(180f)
+                        .rotate(if(Globals.isBoardRotated.value) 180f else 0f)
                     )
 
                     RightSideContent(

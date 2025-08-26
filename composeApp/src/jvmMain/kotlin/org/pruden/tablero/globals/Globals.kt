@@ -97,4 +97,5 @@ object Globals {
     val valoration = mutableStateOf(20)
 
     val leftSideContentWidth = 370.dp
+    val isBoardRotated = mutableStateOf(false)
 }

@@ -36,7 +36,12 @@ fun ChessBoard(
 
             Column(
                 modifier = modifier
-                    .padding(start = firstPadding.dp, top = firstPadding.dp)
+                    .padding(
+                        start = if(Globals.isBoardRotated.value) 0.dp else firstPadding.dp,
+                        top = if(Globals.isBoardRotated.value) 0.dp else firstPadding.dp,
+                        end = if(Globals.isBoardRotated.value) firstPadding.dp else 0.dp,
+                        bottom = if(Globals.isBoardRotated.value) firstPadding.dp else 0.dp
+                    )
                     .border(border.dp, Colors.secondary)
                     .padding(secondPadding.dp)
                     .onGloballyPositioned {

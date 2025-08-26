@@ -1,95 +1,82 @@
 package org.pruden.tablero.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.pruden.tablero.api.constants.ApiChess
-import org.pruden.tablero.api.objects.request.EvalRequest
+import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.painterResource
+import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.utils.moves.MoveCalculator
-import org.pruden.tablero.utils.notation.FenToChessBoard
 import org.pruden.tablero.utils.topBar.TopBarHandler
+import tableroajedrez.composeapp.generated.resources.Res
+import tableroajedrez.composeapp.generated.resources.bP
+import tableroajedrez.composeapp.generated.resources.github
+import java.awt.Desktop
+import java.net.URI
 
 @Composable
 fun TopBar(){
     Row(
         modifier = Modifier.fillMaxWidth()
             .height(56.dp)
-            .background(MaterialTheme.colorScheme.secondaryContainer),
+            .background(Colors.backgroundGeneral).padding(top = 10.dp, start = 10.dp, end = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        TextButton(
+            onClick = {
+                Desktop.getDesktop().browse(URI("https://github.com/PrudenK"))
+            },
+        ){
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "PrudenK",
+                    fontSize = 24.sp,
+                    color = Colors.textColor
+                )
+
+                Spacer(Modifier.width(16.dp))
+
+                Icon(
+                    painter = painterResource(resource = Res.drawable.github),
+                    contentDescription = null,
+                    tint = Colors.textColor
+                )
+            }
+        }
+
         TextButton(
             onClick = {
                 TopBarHandler.restartBoard()
             },
         ){
-            Text("Reiniciar tablero")
-        }
-        TextButton(
-            onClick = {
-                TopBarHandler.printBoard()
-            },
-        ){
-            Text("Print")
+            Text(
+                text = "Reiniciar tablero",
+                color = Colors.textColor,
+                fontSize = 16.sp
+            )
         }
 
         TextButton(
             onClick = {
-                println(MoveCalculator.calculateCellsControledByOponent(org.pruden.tablero.models.Color.Black).map { positionToChessNotation(it) })
+                Globals.isBoardRotated.value = !Globals.isBoardRotated.value
             },
         ){
-            Text("Cells controled")
-        }
-
-        TextButton(
-            onClick = {
-                for(m in Globals.movesBufferNotation.value.map { it.fen }){
-                    println(m)
-                }
-                println("_______________________________")
-            },
-        ){
-            Text("Fen")
-        }
-
-        TextButton(
-            onClick = {
-                //FenToChessBoard.setBoardFromFen("6nr/p2n1pPp/p1p5/8/3pq3/b2P4/brP2PP1/1kBQK1R1 w - - 0 14")
-                val lastFen = Globals.movesBufferNotation.value.lastOrNull()?.fen
-                if (lastFen != null){
-                    val scope = CoroutineScope(Dispatchers.IO)
-
-                    scope.launch {
-                        try {
-                            val response = ApiChess.moduleService.evaluatePosition(
-                                EvalRequest(
-                                    fen = lastFen,
-                                    depth = 12,
-                                    variants = 5
-                                )
-                            )
-                            println("Eval: ${response.eval}, bestmove: ${response.move}")
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-
-                }
-
-            },
-        ){
-            Text("EvaluateFen")
+            Text(
+                text = "Girar tablero",
+                color = Colors.textColor,
+                fontSize = 16.sp
+            )
         }
     }
 }

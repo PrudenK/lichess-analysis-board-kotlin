@@ -96,7 +96,7 @@ fun Cell(
                 contentDescription = null,
                 modifier = Modifier.scale(1.1f).fillMaxSize().padding(6.dp)
                     .graphicsLayer(alpha = if(it.isSelected.value) 0.5f else 1.0f)
-                    //.rotate(180f)
+                    .rotate(if(Globals.isBoardRotated.value) 180f else 0f)
             )
         }
 
