@@ -108,4 +108,12 @@ object Globals {
     val dragPointerPx = mutableStateOf(Offset.Zero)
     val dragPng = mutableStateOf<DrawableResource?>(null)
     val cellSizePx = mutableStateOf(0f)
+    val dragFrom = mutableStateOf<Pair<Int,Int>?>(null)
+
+    fun clearDrag() {
+        isDragging.value = false
+        dragPointerPx.value = Offset.Zero
+        dragPng.value = null
+        dragFrom.value = null
+    }
 }

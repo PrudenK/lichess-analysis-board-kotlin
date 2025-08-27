@@ -49,10 +49,7 @@ object TopBarHandler {
 
         Globals.fenEnPassant = "-"
 
-        Globals.isDragging.value = false
-        Globals.dragPointerPx.value = Offset.Zero
-        Globals.dragPng.value = null
-        Globals.cellSizePx.value = 0f
+        Globals.clearDrag()
 
 
         loadChessBoard()

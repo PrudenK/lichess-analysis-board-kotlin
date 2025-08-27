@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -26,6 +27,12 @@ import org.pruden.tablero.utils.result.ResultHandler
 
 @Composable
 fun ChessBoard(modifier: Modifier) {
+    DisposableEffect(Globals.refreshBoard.value) {
+        Globals.clearDrag()
+        onDispose { }
+    }
+
+
     if (Globals.isBoardLoaded.value) {
         key(Globals.refreshBoard.value) {
             val density = LocalDensity.current
@@ -87,6 +94,7 @@ fun ChessBoard(modifier: Modifier) {
                                                         NotationHandler.annotateCheckIfAny()
                                                     }
                                                 }
+                                                Globals.clearDrag()
                                             } else {
                                                 if (!promoteCanceled) {
                                                     Globals.isWhitePromotion.value = false
@@ -94,12 +102,14 @@ fun ChessBoard(modifier: Modifier) {
                                                     Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                                     ChessBoardActionHandler.verifyIfCheck()
                                                     NotationMovesHandler.updateLastMoveFen()
+                                                    Globals.clearDrag()
                                                 }
                                             }
                                             if (!promoteDone || promoteCanceled) {
                                                 ChessBoardActionHandler.removePieceSelection()
                                                 if (!moveWasDone) {
                                                     ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
+                                                    Globals.clearDrag()
                                                 } else if (!Globals.isWhitePromotion.value && !Globals.isBlackPromotion.value) {
                                                     NotationMovesHandler.updateLastMoveFen()
                                                 }
