@@ -1,13 +1,10 @@
 package org.pruden.tablero.utils.topBar
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.node.GlobalPositionAwareModifierNode
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.Color
 import org.pruden.tablero.utils.chessBoard.loadChessBoard
-import org.pruden.tablero.utils.moves.MovesManager
 
 object TopBarHandler {
     fun restartBoard() {
@@ -49,8 +46,9 @@ object TopBarHandler {
 
         Globals.fenEnPassant = "-"
 
-        Globals.clearDrag()
-
+        Globals.isDragging.value = false
+        Globals.dragPointerPx.value = Offset.Zero
+        Globals.dragPng.value = null
 
         loadChessBoard()
 
@@ -77,7 +75,4 @@ object TopBarHandler {
             println()
         }
     }
-
-
-
 }

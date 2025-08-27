@@ -27,12 +27,6 @@ import org.pruden.tablero.utils.result.ResultHandler
 
 @Composable
 fun ChessBoard(modifier: Modifier) {
-    DisposableEffect(Globals.refreshBoard.value) {
-        Globals.clearDrag()
-        onDispose { }
-    }
-
-
     if (Globals.isBoardLoaded.value) {
         key(Globals.refreshBoard.value) {
             val density = LocalDensity.current
@@ -84,17 +78,21 @@ fun ChessBoard(modifier: Modifier) {
                                                     if (selectedPiecePos != null) {
                                                         moveWasDone = true
                                                         val (selCol, selRow) = selectedPiecePos
+
                                                         History.push(selCol, selRow, clickedCol, clickedRow)
                                                         ChessBoardActionHandler.saveLastMove(clickedRow, clickedCol, selRow, selCol)
+
                                                         val movedPiece = ChessBoardActionHandler.movePiece(clickedRow, clickedCol, selRow, selCol)
+
                                                         ChessBoardActionHandler.enPassantCalculations(movedPiece, clickedRow, clickedCol, selRow, selCol)
                                                         ChessBoardActionHandler.makePromotionOrCompleteMove(movedPiece, clickedRow, clickedCol, selRow, selCol)
+
                                                         CastleHandler.disableCastleIfKingOrRookMoved(movedPiece, selRow, selCol)
                                                         CastleHandler.moveRookOnCastle(movedPiece, selRow, selCol, clickedRow, clickedCol)
+
                                                         NotationHandler.annotateCheckIfAny()
                                                     }
                                                 }
-                                                Globals.clearDrag()
                                             } else {
                                                 if (!promoteCanceled) {
                                                     Globals.isWhitePromotion.value = false
@@ -102,14 +100,12 @@ fun ChessBoard(modifier: Modifier) {
                                                     Globals.isWhiteMove.value = !Globals.isWhiteMove.value
                                                     ChessBoardActionHandler.verifyIfCheck()
                                                     NotationMovesHandler.updateLastMoveFen()
-                                                    Globals.clearDrag()
                                                 }
                                             }
                                             if (!promoteDone || promoteCanceled) {
                                                 ChessBoardActionHandler.removePieceSelection()
                                                 if (!moveWasDone) {
                                                     ChessBoardActionHandler.tryToSelectAPiece(clickedRow, clickedCol)
-                                                    Globals.clearDrag()
                                                 } else if (!Globals.isWhitePromotion.value && !Globals.isBlackPromotion.value) {
                                                     NotationMovesHandler.updateLastMoveFen()
                                                 }

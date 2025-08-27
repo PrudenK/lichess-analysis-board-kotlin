@@ -45,18 +45,14 @@ fun Cell(
             .pointerInput(Globals.refreshBoard.value, Globals.movesBufferNotation.value.size, cell.pieceOnBox) {
                 detectDragGestures(
                     onDragStart = { pos ->
-                        println(cell.pieceOnBox)
-
                         if (!cell.disable && cell.pieceOnBox != null &&
                             (Globals.isWhiteMove.value && cell.pieceOnBox?.color == org.pruden.tablero.models.Color.White ||
                                     !Globals.isWhiteMove.value && cell.pieceOnBox?.color == org.pruden.tablero.models.Color.Black)
                             ) {
+
                             onClick(columnX, rowY)
                             Globals.isDragging.value = true
                             Globals.dragPng.value = cell.pieceOnBox?.png
-
-                            Globals.dragFrom.value = Pair(columnX, rowY)
-
 
                             val cs = Globals.cellSizePx.value
                             Globals.dragPointerPx.value = Offset(columnX * cs + pos.x, rowY * cs + pos.y)
@@ -114,17 +110,14 @@ fun Cell(
         }
 
 
-        val hideForDrag = Globals.isDragging.value && Globals.dragFrom.value == Pair(columnX, rowY)
-        if (!hideForDrag) {
-            cell.pieceOnBox?.let {
-                Image(
-                    painter = painterResource(resource = it.png!!),
-                    contentDescription = null,
-                    modifier = Modifier.scale(1.1f).fillMaxSize().padding(6.dp)
-                        .graphicsLayer(alpha = if(it.isSelected.value) 0.5f else 1.0f)
-                        .rotate(if(Globals.isBoardRotated.value) 180f else 0f)
-                )
-            }
+        cell.pieceOnBox?.let {
+            Image(
+                painter = painterResource(resource = it.png!!),
+                contentDescription = null,
+                modifier = Modifier.scale(1.1f).fillMaxSize().padding(6.dp)
+                    .graphicsLayer(alpha = if(it.isSelected.value) 0.5f else 1.0f)
+                    .rotate(if(Globals.isBoardRotated.value) 180f else 0f)
+            )
         }
 
 

@@ -101,19 +101,9 @@ object Globals {
     val leftSideContentWidth = 370.dp
     val isBoardRotated = mutableStateOf(false)
 
-
-
-
     val isDragging = mutableStateOf(false)
     val dragPointerPx = mutableStateOf(Offset.Zero)
     val dragPng = mutableStateOf<DrawableResource?>(null)
     val cellSizePx = mutableStateOf(0f)
-    val dragFrom = mutableStateOf<Pair<Int,Int>?>(null)
 
-    fun clearDrag() {
-        isDragging.value = false
-        dragPointerPx.value = Offset.Zero
-        dragPng.value = null
-        dragFrom.value = null
-    }
 }
