@@ -30,9 +30,7 @@ fun Cell(
     columnX: Int,
     rowY: Int,
     cell: BoxModel,
-    onClick: (Int, Int) -> Unit,
-    onDrag: (Int, Int, Offset) -> Unit,
-    onDrop: (Int, Int) -> Unit
+    onClick: (Int, Int) -> Unit
 ) {
     Box(
         Modifier
@@ -46,21 +44,43 @@ fun Cell(
             }
             .pointerInput(Unit) {
                 detectDragGestures(
-                    onDragStart = {
-                        if (!cell.disable) {
+                    onDragStart = { pos ->
+                        println(cell.pieceOnBox)
+
+                        if (!cell.disable && cell.pieceOnBox != null &&
+                            (Globals.isWhiteMove.value && cell.pieceOnBox?.color == org.pruden.tablero.models.Color.White ||
+                                    !Globals.isWhiteMove.value && cell.pieceOnBox?.color == org.pruden.tablero.models.Color.Black)
+                            ) {
                             onClick(columnX, rowY)
+                            Globals.isDragging.value = true
+                            Globals.dragPng.value = cell.pieceOnBox?.png
+                            val cs = Globals.cellSizePx.value
+                            Globals.dragPointerPx.value = Offset(columnX * cs + pos.x, rowY * cs + pos.y)
                         }
                     },
-                    onDrag = { change, dragAmount ->
-                        if (!cell.disable) {
-                            change.consume()
-                            onDrag(columnX, rowY, dragAmount)
+                    onDrag = { change, _ ->
+                        if (!cell.disable && Globals.isDragging.value) {
+                            val cs = Globals.cellSizePx.value
+                            Globals.dragPointerPx.value = Offset(
+                                columnX * cs + change.position.x,
+                                rowY * cs + change.position.y
+                            )
                         }
                     },
                     onDragEnd = {
-                        if (!cell.disable) {
-                            onDrop(columnX, rowY)
+                        if (Globals.isDragging.value) {
+                            val cs = Globals.cellSizePx.value
+                            val p = Globals.dragPointerPx.value
+                            val dstCol = (p.x / cs).toInt().coerceIn(0, Globals.BOX_WIDTH - 1)
+                            val dstRow = (p.y / cs).toInt().coerceIn(0, Globals.BOX_HEIGHT - 1)
+                            Globals.isDragging.value = false
+                            Globals.dragPng.value = null
+                            onClick(dstCol, dstRow)
                         }
+                    },
+                    onDragCancel = {
+                        Globals.isDragging.value = false
+                        Globals.dragPng.value = null
                     }
                 )
             }

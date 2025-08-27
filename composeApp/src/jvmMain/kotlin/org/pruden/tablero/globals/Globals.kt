@@ -1,8 +1,10 @@
 package org.pruden.tablero.globals
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.DrawableResource
 import org.pruden.tablero.models.BoxModel
 import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.NotationMove
@@ -98,4 +100,12 @@ object Globals {
 
     val leftSideContentWidth = 370.dp
     val isBoardRotated = mutableStateOf(false)
+
+
+
+
+    val isDragging = mutableStateOf(false)
+    val dragPointerPx = mutableStateOf(Offset.Zero)
+    val dragPng = mutableStateOf<DrawableResource?>(null)
+    val cellSizePx = mutableStateOf(0f)
 }
