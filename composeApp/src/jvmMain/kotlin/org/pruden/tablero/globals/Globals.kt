@@ -5,10 +5,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
-import org.pruden.tablero.models.BoxModel
-import org.pruden.tablero.models.LastMove
-import org.pruden.tablero.models.NotationMove
-import org.pruden.tablero.models.Piece
+import org.pruden.tablero.models.*
 
 object Globals {
 
@@ -106,4 +103,6 @@ object Globals {
     val dragPng = mutableStateOf<DrawableResource?>(null)
     val cellSizePx = mutableStateOf(0f)
 
+
+    val bestMove = mutableStateOf<BestMove?>(null)
 }

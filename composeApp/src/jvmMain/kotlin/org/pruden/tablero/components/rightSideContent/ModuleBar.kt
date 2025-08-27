@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import org.pruden.tablero.api.constants.ApiChess
 import org.pruden.tablero.api.objects.request.EvalRequest
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.BestMove
 
 
 @Composable
@@ -31,11 +32,19 @@ fun ModuleBar(
                     ApiChess.moduleService.evaluatePosition(EvalRequest(fen = fen, depth = 18, variants = 1))
                 }
                 evalCp = ((res.eval ?: 0.0) * 100).toInt()
+
+                Globals.bestMove.value = BestMove(
+                    from = res.from,
+                    to = res.to,
+                    san = res.san,
+                )
                 Globals.valoration.value = evalCp
             } catch (e: Exception) {
                 evalCp = 20
                 Globals.valoration.value = evalCp
             }
+        }else{
+            Globals.bestMove.value = null
         }
     }
 

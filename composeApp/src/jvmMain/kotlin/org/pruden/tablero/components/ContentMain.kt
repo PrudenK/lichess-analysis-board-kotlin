@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import org.pruden.tablero.components.bottomContent.FenBox
 import org.pruden.tablero.components.bottomContent.PgnBox
@@ -48,6 +49,8 @@ fun ContentMain(
                         .align(Alignment.Center)
                         .rotate(if(Globals.isBoardRotated.value) 180f else 0f)
                     )
+
+
 
                     RightSideContent(
                         modifier = Modifier

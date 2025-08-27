@@ -35,6 +35,10 @@ fun ChessBoard(modifier: Modifier) {
             val secondPadding = 4
             val total = firstPadding + border + secondPadding
 
+
+
+
+
             Box(
                 modifier = modifier
                     .padding(
@@ -53,6 +57,9 @@ fun ChessBoard(modifier: Modifier) {
                         Globals.cellSizePx.value = with(density) { Globals.BOX_SIZE.dp.toPx() }
                     }
             ) {
+
+
+
                 Column {
                     repeat(Globals.BOX_HEIGHT) { rowY ->
                         Row {
@@ -135,6 +142,15 @@ fun ChessBoard(modifier: Modifier) {
                             }
                             .size(Globals.BOX_SIZE.dp)
                             .rotate(if (Globals.isBoardRotated.value) 180f else 0f)
+                    )
+                }
+
+                if(Globals.isModuleActivated.value){
+                    MoveArrowOverlay(
+                        from = Globals.bestMove.value?.fromToPair(),
+                        to = Globals.bestMove.value?.toToPair(),
+                        cellSize = with(LocalDensity.current) { Globals.BOX_SIZE.dp.toPx() },
+                        modifier = Modifier.size((Globals.BOX_SIZE * 8).dp)
                     )
                 }
             }
