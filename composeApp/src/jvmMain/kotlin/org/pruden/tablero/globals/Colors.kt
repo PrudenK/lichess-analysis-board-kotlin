@@ -16,4 +16,6 @@ object Colors {
     val textColor = Color.LightGray.copy(0.8f)
 
     val moduleActivateColor = Color(0xFF629924)
+
+    val posibleMovesColor = Color(0xFF59945D)
 }

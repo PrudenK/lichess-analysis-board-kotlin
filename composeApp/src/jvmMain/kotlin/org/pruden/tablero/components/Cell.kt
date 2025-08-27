@@ -23,6 +23,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.BoxModel
 import androidx.compose.ui.graphics.graphicsLayer
+import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.utils.promotion.PromotionHandler
 
 @Composable
@@ -92,7 +93,7 @@ fun Cell(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .background(Color.Green.copy(alpha = 0.5f))
+                    .background(Colors.posibleMovesColor.copy(alpha = 0.5f))
             )
         }
 
@@ -126,8 +127,8 @@ fun Cell(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(20.dp)
-                    .background(Color.Green, shape = CircleShape)
+                    .padding(28.dp)
+                    .background(Colors.posibleMovesColor, shape = CircleShape)
             )
         }
 
