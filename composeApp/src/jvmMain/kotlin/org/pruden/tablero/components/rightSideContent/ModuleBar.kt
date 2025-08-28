@@ -24,7 +24,7 @@ fun ModuleBar(
     val actualMove = Globals.movesBufferNotation.value.find { it.isActualMove }
     var evalCp by remember(actualMove?.fen) { mutableStateOf(20) }
 
-    LaunchedEffect(actualMove?.fen) {
+    LaunchedEffect(actualMove?.fen, Globals.isModuleActivated.value) {
         if(Globals.isModuleActivated.value){
             val fen = actualMove?.fen ?: Globals.initialFenPos
             try {
