@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Size
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -18,11 +19,12 @@ fun MoveArrowOverlay(
     to: Pair<Int, Int>?,
     cellSize: Float,
     color: Color = Color(0x8899AABB),
-    stroke: Float = 10f,
-    head: Float = 26f,
+    stroke: Float = cellSize * 0.25f,
+    head: Float = cellSize * 1f,
+    divider: Float = 5.7f,
     modifier: Modifier = Modifier
 ) {
-    if(from == null || to == null) return
+    if (from == null || to == null) return
 
     Canvas(modifier) {
         val sx = (from.first + 0.5f) * cellSize
@@ -33,22 +35,38 @@ fun MoveArrowOverlay(
         val start = Offset(sx, sy)
         val end = Offset(ex, ey)
 
+        val angle = atan2((end.y - start.y), (end.x - start.x))
+        val deg = (angle * 180f / PI.toFloat())
+
+        val lineCut = head * 0.85f
+        val endLine = Offset(
+            end.x - cos(angle) * lineCut,
+            end.y - sin(angle) * lineCut
+        )
+
         drawLine(
             color = color,
             start = start,
-            end = end,
+            end = endLine,
             strokeWidth = stroke,
-            cap = StrokeCap.Round
         )
 
-        val angle = atan2((end.y - start.y), (end.x - start.x))
+        drawArc(
+            color = color,
+            startAngle = deg - 90f - 180f,
+            sweepAngle = 180f,
+            useCenter = true,
+            topLeft = Offset(start.x - stroke / 2f, start.y - stroke / 2f),
+            size = Size(stroke, stroke)
+        )
+
         val p1 = Offset(
-            x = end.x - head * cos(angle - PI.toFloat() / 8f),
-            y = end.y - head * sin(angle - PI.toFloat() / 8f)
+            x = end.x - head * cos(angle - PI.toFloat() / divider),
+            y = end.y - head * sin(angle - PI.toFloat() / divider)
         )
         val p2 = Offset(
-            x = end.x - head * cos(angle + PI.toFloat() / 8f),
-            y = end.y - head * sin(angle + PI.toFloat() / 8f)
+            x = end.x - head * cos(angle + PI.toFloat() / divider),
+            y = end.y - head * sin(angle + PI.toFloat() / divider)
         )
 
         val path = Path().apply {
@@ -57,6 +75,8 @@ fun MoveArrowOverlay(
             lineTo(p2.x, p2.y)
             close()
         }
+
+
         drawPath(path, color)
     }
 }
