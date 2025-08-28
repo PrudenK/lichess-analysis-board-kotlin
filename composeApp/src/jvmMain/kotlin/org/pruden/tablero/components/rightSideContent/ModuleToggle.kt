@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import org.pruden.tablero.components.custom.IconSwitch
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.utils.result.ResultHandler
 import java.util.*
 
 @Composable
@@ -46,9 +47,20 @@ fun ModuleToggle(){
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (Globals.isModuleActivated.value) {
-                    val text = String.format(Locale.US, "%.1f", Globals.valoration.value / 100f)
+                    var text = (if (Globals.valoration.value > 0) "+" else "") + String.format(Locale.US, "%.1f", Globals.valoration.value / 100f)
+
+                    if(Globals.movesToMate.value != null){
+                        text = "#${Globals.movesToMate.value}"
+                    }
+
+                    /*
+                    if(Globals.result.value != -1){
+                        text = "-"
+                    }
+                     */
+
                     Text(
-                        text = "${if (Globals.valoration.value > 0) "+" else ""}$text",
+                        text = text,
                         fontSize = 24.sp,
                         color = Colors.textColor,
                         fontWeight = FontWeight.SemiBold

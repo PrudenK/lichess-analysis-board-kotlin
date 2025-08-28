@@ -39,6 +39,8 @@ fun ModuleBar(
                     san = res.san,
                 )
                 Globals.valoration.value = evalCp
+
+                Globals.movesToMate.value = res.mate
             } catch (e: Exception) {
                 evalCp = 20
                 Globals.valoration.value = evalCp

@@ -105,4 +105,6 @@ object Globals {
 
 
     val bestMove = mutableStateOf<BestMove?>(null)
+
+    val movesToMate = mutableStateOf<Int?>(null)
 }
