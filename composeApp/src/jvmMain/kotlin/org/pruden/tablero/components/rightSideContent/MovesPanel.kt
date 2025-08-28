@@ -68,50 +68,7 @@ fun MovesPanel(
                     .background(color = Colors.secondary, RoundedCornerShape(6.dp))
             ) {
 
-
-
-                if (Globals.isModuleActivated.value) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(4.dp)
-                            .background(Colors.moduleActivateColor, RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
-                    )
-                }
-                Box(
-                    modifier = Modifier.padding(15.dp)
-                ){
-                    Row {
-                        IconSwitch(
-                            checked = Globals.isModuleActivated.value,
-                            onCheckedChange = {
-                                Globals.isModuleActivated.value = it
-                            },
-                            modifier = Modifier.scale(1.2f).padding(top = 4.dp)
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .padding(start = 22.dp)
-                                .height(32.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            if (Globals.isModuleActivated.value) {
-                                val text = String.format(Locale.US, "%.1f", Globals.valoration.value / 100f)
-                                Text(
-                                    text = "${if (Globals.valoration.value > 0) "+" else ""}$text",
-                                    fontSize = 24.sp,
-                                    color = Colors.textColor,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
-                        }
-                    }
-                }
-
-
-
-
+                ModuleToggle()
 
                 Box(
                     modifier = Modifier
