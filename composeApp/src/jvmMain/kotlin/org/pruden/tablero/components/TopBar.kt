@@ -78,6 +78,27 @@ fun TopBar(){
                 fontSize = 16.sp
             )
         }
+
+
+        TextButton(
+            onClick = {
+                val list = Globals.movesNodesBuffer.value
+
+
+                println("------------------------------------")
+                for(l in list){
+                    println(l)
+                }
+
+
+            },
+        ){
+            Text(
+                text = "Aux",
+                color = Colors.textColor,
+                fontSize = 16.sp
+            )
+        }
     }
 }
 fun positionToChessNotation(position: Pair<Int, Int>): String {

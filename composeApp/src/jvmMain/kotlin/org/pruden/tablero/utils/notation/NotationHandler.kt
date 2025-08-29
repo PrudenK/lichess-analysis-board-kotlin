@@ -4,6 +4,7 @@ import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.*
 import org.pruden.tablero.utils.chessBoard.CellHandler
 import org.pruden.tablero.utils.moves.MoveCalculator
+import org.pruden.tablero.utils.nodes.MovesNodesManager
 import kotlin.math.abs
 
 object NotationHandler {
@@ -22,8 +23,10 @@ object NotationHandler {
             Globals.halfMoves += 1
         }
 
+        // NODES
 
         castleSanIfAny(piece, from, to)?.let {
+            MovesNodesManager.addMove(it, from, to)
             NotationMovesHandler.addNotationMove(it, from, to); return
         }
 
@@ -39,7 +42,10 @@ object NotationHandler {
             "$letter$dis$cap$dest"
         }
 
+        // NODES
+
         NotationMovesHandler.addNotationMove(san, from, to)
+        MovesNodesManager.addMove(san, from, to)
     }
 
     fun appendPromotion(type: PieceType) {

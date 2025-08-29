@@ -1,10 +1,7 @@
 package org.pruden.tablero.utils.chessBoard
 
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.BoxModel
-import org.pruden.tablero.models.Color
-import org.pruden.tablero.models.Piece
-import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.models.*
 import org.pruden.tablero.utils.notation.FenConverter
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.bB
@@ -64,4 +61,15 @@ fun loadChessBoard() {
             )
         }
     }
+
+
+
+
+    Globals.movesNodesBuffer.value.add(
+        MoveNode(
+            id = "root",
+            fen = FenConverter.chessBoardToFen(Globals.chessBoard),
+            isActualMove = true
+        )
+    )
 }

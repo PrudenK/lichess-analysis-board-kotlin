@@ -1,6 +1,7 @@
 package org.pruden.tablero.utils.moves
 
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.MoveNode
 import org.pruden.tablero.models.NotationMove
 import org.pruden.tablero.utils.notation.FenToChessBoard
 
@@ -8,6 +9,7 @@ object MovesManager {
 
     private val initialPos = Globals.initialFenPos
     private val list: MutableList<NotationMove> get() = Globals.movesBufferNotation.value
+    private val listXX: MutableList<MoveNode> get() = Globals.movesNodesBuffer.value
 
     fun goToStart() {
         quitAllPossibleMovesMarks()
@@ -38,6 +40,22 @@ object MovesManager {
                 FenToChessBoard.setBoardFromFen(initialPos)
             }
         }
+
+
+
+        // NODES
+        val actualMoveNode = listXX.find { it.isActualMove }!!
+
+
+        if(actualMoveNode.parentId != null){
+            val moveToGo = listXX.find { it.id == actualMoveNode.parentId }!!
+            //FenToChessBoard.setBoardFromFen(moveToGo!!.fen)
+
+            listXX.forEach { it.isActualMove = false}
+            moveToGo.isActualMove = true
+        }
+
+
         toggleRefresh()
     }
 
@@ -49,6 +67,8 @@ object MovesManager {
             return
         }
         val idx = list.indexOfFirst { it.isActualMove }
+
+
         when {
             idx == -1 -> {
                 list[0].isActualMove = true
@@ -63,6 +83,22 @@ object MovesManager {
                 FenToChessBoard.setBoardFromFen(list[idx].fen)
             }
         }
+
+
+
+        // NODES
+
+        val actualMoveNode = listXX.find { it.isActualMove }!!
+
+        if(actualMoveNode.childrenIds.isNotEmpty()){
+            val moveToGo = listXX.find { it.id == actualMoveNode.childrenIds[0] }!!
+            //FenToChessBoard.setBoardFromFen(moveToGo!!.fen)
+
+            listXX.forEach { it.isActualMove = false}
+            moveToGo.isActualMove = true
+        }
+
+
         toggleRefresh()
     }
 

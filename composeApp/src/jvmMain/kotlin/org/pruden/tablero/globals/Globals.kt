@@ -107,4 +107,12 @@ object Globals {
     val bestMove = mutableStateOf<BestMove?>(null)
 
     val movesToMate = mutableStateOf<Int?>(null)
+
+
+
+
+
+    // NODES
+
+    val movesNodesBuffer = mutableStateOf(mutableListOf<MoveNode>())
 }
