@@ -13,11 +13,11 @@ data class MoveNode(
     var isActualMove: Boolean,
     var isWhiteMove: Boolean? = null
 ){
-    fun getParentMove() = Globals.movesNodesBuffer.value.find { it.id == this.parentId }
+    fun getParentMove(nodes: List<MoveNode> = Globals.movesNodesBuffer.value) = nodes.find { it.id == this.parentId }
 
 
-    fun getStepsFromRoot(): Int {
-        val index = Globals.movesNodesBuffer.value.associateBy { it.id }
+    fun getStepsFromRoot(nodes: List<MoveNode> = Globals.movesNodesBuffer.value): Int {
+        val index = nodes.associateBy { it.id }
         var steps = 0
         var cur: MoveNode? = this
         while (cur != null && cur.id != "root") {
@@ -27,10 +27,10 @@ data class MoveNode(
         return (steps + 1) / 2
     }
 
-    fun isPrincipalLine(): Boolean {
+    fun isPrincipalLine(nodes: List<MoveNode> = Globals.movesNodesBuffer.value): Boolean {
         var cur: MoveNode? = this
         while (cur != null && cur.id != "root") {
-            val parent = cur.getParentMove() ?: return false
+            val parent = cur.getParentMove(nodes) ?: return false
             val first = parent.childrenIds.firstOrNull() ?: return false
             if (cur.id != first) return false
             cur = parent
@@ -38,8 +38,8 @@ data class MoveNode(
         return true
     }
 
-    fun getMagnitudeOfVariant(): Int {
-        val index = Globals.movesNodesBuffer.value.associateBy { it.id }
+    fun getMagnitudeOfVariant(nodes: List<MoveNode> = Globals.movesNodesBuffer.value): Int {
+        val index = nodes.associateBy { it.id }
         var cur: MoveNode? = this
         var magnitude = 0
         while (cur != null && cur.id != "root") {

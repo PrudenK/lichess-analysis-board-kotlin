@@ -8,10 +8,6 @@ object PGNHandler {
         val pila = mutableListOf<String>()
         val pilaHistorica = mutableMapOf<String, Boolean>()
 
-        for(n in nodes){
-            println(n.san + " ${n.getMagnitudeOfVariant()}")
-        }
-
         var resultado = ""
 
         fun subVariants(lista: MutableList<String>, vieneDePila: Boolean = false){
@@ -25,7 +21,7 @@ object PGNHandler {
                         pilaHistorica[id] = false
 
                         if(node.isWhiteMove!!){
-                            resultado += " ${node.getStepsFromRoot()}. ${node.san}"
+                            resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
                         }else{
                             resultado += " ${node.san}"
                         }
@@ -40,21 +36,21 @@ object PGNHandler {
                         if(!vieneDePila){
                             if(index != 0){
                                 if(node.isWhiteMove!!){
-                                    resultado += " (${node.getStepsFromRoot()}. ${node.san}"
+                                    resultado += " (${node.getStepsFromRoot(nodes)}. ${node.san}"
                                 }else{
-                                    resultado += " (${node.getStepsFromRoot()}... ${node.san}"
+                                    resultado += " (${node.getStepsFromRoot(nodes)}... ${node.san}"
                                 }
                             }else{
                                 if(pilaHistorica.contains(node.parentId) && pilaHistorica[node.parentId] == false){
 
                                     if(node.isWhiteMove!!){
-                                        resultado += " ${node.getStepsFromRoot()}. ${node.san}"
+                                        resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
                                     }else{
-                                        resultado += " ${node.getStepsFromRoot()}... ${node.san}"
+                                        resultado += " ${node.getStepsFromRoot(nodes)}... ${node.san}"
                                     }
                                 }else{
                                     if(node.isWhiteMove!!){
-                                        resultado += " ${node.getStepsFromRoot()}. ${node.san}"
+                                        resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
                                     }else{
                                         resultado += " ${node.san}"
                                     }
@@ -63,9 +59,9 @@ object PGNHandler {
                         }else{
                             if(pilaHistorica[id] == true){
                                 if(node.isWhiteMove!!){
-                                    resultado += " (${node.getStepsFromRoot()}. ${node.san}"
+                                    resultado += " (${node.getStepsFromRoot(nodes)}. ${node.san}"
                                 }else{
-                                    resultado += " (${node.getStepsFromRoot()}... ${node.san}"
+                                    resultado += " (${node.getStepsFromRoot(nodes)}... ${node.san}"
                                 }
                             }
                         }
@@ -77,7 +73,7 @@ object PGNHandler {
                                 if(pila.isNotEmpty()){
                                     val last = pila.removeLast()
 
-                                    var interactions = node.getMagnitudeOfVariant() - Globals.movesNodesBuffer.value.find { it.id == last }!!.getMagnitudeOfVariant()
+                                    var interactions = node.getMagnitudeOfVariant(nodes) - nodes.find { it.id == last }!!.getMagnitudeOfVariant(nodes)
 
                                     if(interactions == 0) interactions = 1
 
@@ -97,7 +93,6 @@ object PGNHandler {
         subVariants(nodes[0].childrenIds)
 
         resultado = resultado.replace(" )", ")").replace(Regex("\\s+"), " ").trim()
-        println(resultado)
-        return "Finish"
+        return resultado
     }
 }
