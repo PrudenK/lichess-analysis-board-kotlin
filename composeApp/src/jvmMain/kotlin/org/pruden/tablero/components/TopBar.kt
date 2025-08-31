@@ -84,6 +84,10 @@ fun TopBar(){
 
         TextButton(
             onClick = {
+                for(l in Globals.movesNodesBuffer.value){
+                    println(l)
+                }
+
                 println(PGNHandler.nodeMovesToPgn())
             },
         ){

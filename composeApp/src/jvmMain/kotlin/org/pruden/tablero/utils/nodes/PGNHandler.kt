@@ -5,81 +5,55 @@ import org.pruden.tablero.models.MoveNode
 
 object PGNHandler {
     fun nodeMovesToPgn(nodes: List<MoveNode> = Globals.movesNodesBuffer.value): String {
-        val pila = mutableListOf<String>()
-        val pilaHistorica = mutableMapOf<String, Boolean>()
+        val stack = mutableListOf<String>()
+        val historyStack = mutableMapOf<String, Boolean>()
 
-        var resultado = ""
+        var result = ""
 
-        fun subVariants(lista: MutableList<String>, vieneDePila: Boolean = false){
-            for((index, id) in lista.withIndex()){
+        fun subVariants(movesList: MutableList<String>, comesFromStack: Boolean = false){
+            for((index, id) in movesList.withIndex()){
                 val node = nodes.find { it.id == id }!!
-                if(node.childrenIds.isNotEmpty() && index != 1 && lista.size > 1){
+
+                if(hasChildren(node) && index != 1 && movesList.size > 1){
                     if(index == 0){
-                        val subList = lista.subList(2, lista.size).reversed()
+                        val subList = movesList.subList(2, movesList.size).reversed()
 
-                        pila.add(id)
-                        pilaHistorica[id] = false
+                        stack.add(id)
+                        historyStack[id] = false
 
-                        if(node.isWhiteMove!!){
-                            resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
-                        }else{
-                            resultado += " ${node.san}"
-                        }
+                        result += " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
 
                         for(subId in subList){
-                            pila.add(subId)
-                            pilaHistorica[subId] = true
+                            stack.add(subId)
+                            historyStack[subId] = true
                         }
                     }
                 }else{
-                    if(!(pilaHistorica.contains(id) && !vieneDePila)){
-                        if(!vieneDePila){
-                            if(index != 0){
-                                if(node.isWhiteMove!!){
-                                    resultado += " (${node.getStepsFromRoot(nodes)}. ${node.san}"
-                                }else{
-                                    resultado += " (${node.getStepsFromRoot(nodes)}... ${node.san}"
-                                }
-                            }else{
-                                if(pilaHistorica.contains(node.parentId) && pilaHistorica[node.parentId] == false){
-
-                                    if(node.isWhiteMove!!){
-                                        resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
-                                    }else{
-                                        resultado += " ${node.getStepsFromRoot(nodes)}... ${node.san}"
-                                    }
-                                }else{
-                                    if(node.isWhiteMove!!){
-                                        resultado += " ${node.getStepsFromRoot(nodes)}. ${node.san}"
-                                    }else{
-                                        resultado += " ${node.san}"
-                                    }
-                                }
+                    if(isNotInHistoryOrFromStack(id, comesFromStack, historyStack)){
+                        if(comesFromStack){
+                            if(historyStack[id] == true){
+                                result += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
                             }
                         }else{
-                            if(pilaHistorica[id] == true){
-                                if(node.isWhiteMove!!){
-                                    resultado += " (${node.getStepsFromRoot(nodes)}. ${node.san}"
+                            result += if(isFirstMove(index)){
+                                if(comesFromStackAndIsPrincipalVariant(historyStack, node)){
+                                    " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
                                 }else{
-                                    resultado += " (${node.getStepsFromRoot(nodes)}... ${node.san}"
+                                    " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
                                 }
+                            }else{
+                                " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
                             }
                         }
 
-                        if(node.childrenIds.isNotEmpty()){
+                        if(hasChildren(node)){
                             subVariants(node.childrenIds, false)
                         }else{
-                            if(index == lista.size -1){
-                                if(pila.isNotEmpty()){
-                                    val last = pila.removeLast()
+                            if(isLastElement(index, movesList)){
+                                if(stack.isNotEmpty()){
+                                    val last = stack.removeLast()
 
-                                    var interactions = node.getMagnitudeOfVariant(nodes) - nodes.find { it.id == last }!!.getMagnitudeOfVariant(nodes)
-
-                                    if(interactions == 0) interactions = 1
-
-                                    repeat(interactions){
-                                        resultado += ")"
-                                    }
+                                    result += getClosingParentheses(node, last, nodes)
 
                                     subVariants(mutableListOf(last), true)
                                 }
@@ -92,7 +66,32 @@ object PGNHandler {
 
         subVariants(nodes[0].childrenIds)
 
-        resultado = resultado.replace(" )", ")").replace(Regex("\\s+"), " ").trim()
-        return resultado
+        return normalizeWhitespace(result)
     }
+
+
+    private fun isNotInHistoryOrFromStack(id: String, comesFromStack: Boolean, historyStack: MutableMap<String, Boolean>): Boolean {
+        return !(historyStack.contains(id) && !comesFromStack)
+    }
+
+    private fun isLastElement(i: Int, list: MutableList<String>) = i == list.size -1
+    private fun hasChildren(node: MoveNode): Boolean = node.childrenIds.isNotEmpty()
+    private fun isFirstMove(i: Int) = i == 0
+    private fun comesFromStackAndIsPrincipalVariant(historyStack: MutableMap<String, Boolean>, node: MoveNode): Boolean{
+        return historyStack.contains(node.parentId) && historyStack[node.parentId] == false
+    }
+    private fun getClosingParentheses(node: MoveNode, last: String, nodes: List<MoveNode>): String{
+        var result = ""
+        var interactions = node.getMagnitudeOfVariant(nodes) - nodes.find { it.id == last }!!.getMagnitudeOfVariant(nodes)
+        if(interactions == 0) interactions = 1
+
+        repeat(interactions){
+            result += ")"
+        }
+        return result
+    }
+    private fun normalizeWhitespace(result: String): String{
+        return result.replace(" )", ")").replace(Regex("\\s+"), " ").trim()
+    }
+
 }

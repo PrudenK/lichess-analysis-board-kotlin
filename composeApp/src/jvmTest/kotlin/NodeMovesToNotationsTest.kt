@@ -84,6 +84,25 @@ class NodeMovesToNotationsTest {
     }
 
 
+    @Test
+    fun testMovesNodesToChessNotation4(){
+        val prueba3 = "MoveNode(id=root, parentId=null, childrenIds=[caf7821c-bb1c-4cf8-b94d-a7145130aedb, 9de35edd-b95d-482f-8ebd-8a441f407918, 4ed83935-a8e6-4fff-a48e-24305722b659], san=null, from=null, to=null, fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=null)\n" +
+                "MoveNode(id=caf7821c-bb1c-4cf8-b94d-a7145130aedb, parentId=root, childrenIds=[edbc3295-3590-4bef-bfa7-091a06b3b570], san=e4, from=(4, 6), to=(4, 4), fen=rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=edbc3295-3590-4bef-bfa7-091a06b3b570, parentId=caf7821c-bb1c-4cf8-b94d-a7145130aedb, childrenIds=[dfa6d51b-6354-4896-93ad-0b5d4dca1600], san=e5, from=(4, 1), to=(4, 3), fen=rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=dfa6d51b-6354-4896-93ad-0b5d4dca1600, parentId=edbc3295-3590-4bef-bfa7-091a06b3b570, childrenIds=[], san=Nf3, from=(6, 7), to=(5, 5), fen=rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 1 2, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=9de35edd-b95d-482f-8ebd-8a441f407918, parentId=root, childrenIds=[1d628e67-17e0-4d6f-a680-1e9aa7c9764c], san=d4, from=(3, 6), to=(3, 4), fen=rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=1d628e67-17e0-4d6f-a680-1e9aa7c9764c, parentId=9de35edd-b95d-482f-8ebd-8a441f407918, childrenIds=[a25220a9-e6c6-4b94-9013-6d04493bc675], san=d5, from=(3, 1), to=(3, 3), fen=rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 3, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=a25220a9-e6c6-4b94-9013-6d04493bc675, parentId=1d628e67-17e0-4d6f-a680-1e9aa7c9764c, childrenIds=[], san=Nf3, from=(6, 7), to=(5, 5), fen=rnbqkbnr/ppp1pppp/8/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R w KQkq - 1 4, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=4ed83935-a8e6-4fff-a48e-24305722b659, parentId=root, childrenIds=[13979a47-831c-4747-8656-5e7230d2c822], san=c4, from=(2, 6), to=(2, 4), fen=rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 4, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=13979a47-831c-4747-8656-5e7230d2c822, parentId=4ed83935-a8e6-4fff-a48e-24305722b659, childrenIds=[850deab1-b417-4cab-9b78-23801422e8d8], san=c5, from=(2, 1), to=(2, 3), fen=rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 5, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=850deab1-b417-4cab-9b78-23801422e8d8, parentId=13979a47-831c-4747-8656-5e7230d2c822, childrenIds=[], san=Nf3, from=(6, 7), to=(5, 5), fen=rnbqkbnr/pp1ppppp/8/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 1 5, isActualMove=true, isWhiteMove=true)"
+
+        val result = PGNHandler.nodeMovesToPgn(parseMoveNodes(prueba3).toMutableList())
+        val expected = "1. e4 (1. d4 d5 2. Nf3) (1. c4 c5 2. Nf3) 1... e5 2. Nf3"
+        assertEquals(expected, result)
+    }
+
+
 
 
 
