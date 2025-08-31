@@ -26,6 +26,8 @@ object MovesManager {
             return
         }
         val idx = list.indexOfFirst { it.isActualMove }
+
+        /*
         when {
             idx > 0 -> {
                 list[idx].isActualMove = false
@@ -41,6 +43,8 @@ object MovesManager {
             }
         }
 
+         */
+
 
 
         // NODES
@@ -49,7 +53,7 @@ object MovesManager {
 
         if(actualMoveNode.parentId != null){
             val moveToGo = listXX.find { it.id == actualMoveNode.parentId }!!
-            //FenToChessBoard.setBoardFromFen(moveToGo!!.fen)
+            FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
 
             listXX.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true
@@ -68,7 +72,7 @@ object MovesManager {
         }
         val idx = list.indexOfFirst { it.isActualMove }
 
-
+        /*
         when {
             idx == -1 -> {
                 list[0].isActualMove = true
@@ -84,6 +88,8 @@ object MovesManager {
             }
         }
 
+         */
+
 
 
         // NODES
@@ -92,7 +98,7 @@ object MovesManager {
 
         if(actualMoveNode.childrenIds.isNotEmpty()){
             val moveToGo = listXX.find { it.id == actualMoveNode.childrenIds[0] }!!
-            //FenToChessBoard.setBoardFromFen(moveToGo!!.fen)
+            FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
 
             listXX.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true

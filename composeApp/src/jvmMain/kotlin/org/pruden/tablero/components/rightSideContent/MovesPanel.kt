@@ -51,7 +51,6 @@ import kotlin.collections.chunked
 fun MovesPanel(
     modifier: Modifier
 ) {
-    val pairs = Globals.movesBufferNotation.value.chunked(2)
     val scrollState = rememberScrollState()
     val hasOverflow = scrollState.maxValue > 0
 
@@ -83,6 +82,11 @@ fun MovesPanel(
                     ) {
 
                         Divider(color = Colors.movesColor.copy(alpha = 0.5f))
+
+
+
+                        val pairs = Globals.movesBufferNotation.value.chunked(2)
+
 
                         for ((i, pair) in pairs.withIndex()) {
                             val whiteSan = pair.getOrNull(0)?.san.orEmpty()
@@ -145,6 +149,9 @@ fun MovesPanel(
                         }
                     }
 
+
+
+
                     VerticalScrollbar(
                         adapter = rememberScrollbarAdapter(scrollState),
                         modifier = Modifier.align(Alignment.CenterEnd),
@@ -156,6 +163,10 @@ fun MovesPanel(
                         )
                     )
                 }
+
+
+
+
 
                 Box {
                     Row(

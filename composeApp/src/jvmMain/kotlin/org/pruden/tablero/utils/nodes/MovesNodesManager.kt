@@ -18,6 +18,12 @@ object MovesNodesManager {
         val actualMoveBefore = list.find { it.isActualMove }
 
         if(actualMoveBefore != null){
+
+            for(id in actualMoveBefore.childrenIds){
+                val mov = list.find { it.id == id }!!
+                if (mov.san == san) return
+            }
+
             val newMoveId = Uuid.random().toString()
 
             actualMoveBefore.childrenIds.add(newMoveId)
@@ -31,7 +37,8 @@ object MovesNodesManager {
                 from = from,
                 to = to,
                 fen = FenConverter.chessBoardToFen(Globals.chessBoard),
-                isActualMove = true
+                isActualMove = true,
+                isWhiteMove = Globals.isWhiteMove.value
             )
 
             list.add(newMove)
@@ -39,7 +46,4 @@ object MovesNodesManager {
             Globals.movesNodesBuffer.value = list
         }
     }
-
-
-
 }
