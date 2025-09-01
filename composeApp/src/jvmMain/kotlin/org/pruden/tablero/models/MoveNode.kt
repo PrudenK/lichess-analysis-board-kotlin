@@ -6,7 +6,7 @@ data class MoveNode(
     val id: String,
     val parentId: String? = null,
     val childrenIds: MutableList<String> = mutableListOf(),
-    val san: String? = null,
+    var san: String? = null,
     val from: Pair<Int,Int>? = null,
     val to: Pair<Int,Int>? = null,
     val fen: String,

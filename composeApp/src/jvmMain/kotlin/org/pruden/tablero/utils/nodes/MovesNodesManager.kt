@@ -22,6 +22,8 @@ object MovesNodesManager {
             for(id in actualMoveBefore.childrenIds){
                 val mov = list.find { it.id == id }!!
 
+                println("MOVEEEEE SAN: ${mov.san} ${san}")
+
                 if (mov.san == san) {
                     list.forEach { it.isActualMove = false }
                     mov.isActualMove = true
@@ -51,4 +53,21 @@ object MovesNodesManager {
             Globals.movesNodesBuffer.value = list
         }
     }
+
+
+    fun modifyLastMoveNode(adder : String){
+        if (Globals.movesNodesBuffer.value.isEmpty()) return
+
+        val lastMove = Globals.movesNodesBuffer.value.last()
+
+        if(adder == "#"){
+            lastMove.san = lastMove.san!!.replace("+", "")
+        }
+
+        lastMove.san += adder
+        Globals.movesNodesBuffer.value[Globals.movesNodesBuffer.value.size - 1] = lastMove
+    }
+
+
+
 }

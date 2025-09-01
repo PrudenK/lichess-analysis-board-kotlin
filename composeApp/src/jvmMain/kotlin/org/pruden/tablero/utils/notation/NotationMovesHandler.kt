@@ -37,4 +37,4 @@ object NotationMovesHandler {
         lastMove.san += adder
         Globals.movesBufferNotation.value[Globals.movesBufferNotation.value.size - 1] = lastMove
     }
-}
+} // TODO cancelar promoción

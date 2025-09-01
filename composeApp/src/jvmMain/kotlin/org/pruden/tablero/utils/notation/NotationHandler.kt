@@ -5,6 +5,7 @@ import org.pruden.tablero.models.*
 import org.pruden.tablero.utils.chessBoard.CellHandler
 import org.pruden.tablero.utils.moves.MoveCalculator
 import org.pruden.tablero.utils.nodes.MovesNodesManager
+import org.pruden.tablero.utils.nodes.NodePromotion
 import kotlin.math.abs
 
 object NotationHandler {
@@ -44,11 +45,28 @@ object NotationHandler {
 
         // NODES
 
+        println("saaaaaaaaaaaaaN : $san")
+
+        if(piece.type == PieceType.Pawn){
+
+            if(piece.color == Color.White){
+                if(clickedCell.boxNotation[1] == '8'){
+                    Globals.nodePromotion = NodePromotion(san, from, to)
+                }else MovesNodesManager.addMove(san, from, to)
+            }else{
+                if(clickedCell.boxNotation[1] == '1') {
+                    Globals.nodePromotion = NodePromotion(san, from, to)
+                }else MovesNodesManager.addMove(san, from, to)
+            }
+
+        }else{
+            MovesNodesManager.addMove(san, from, to)
+        }
         NotationMovesHandler.addNotationMove(san, from, to)
-        MovesNodesManager.addMove(san, from, to)
+
     }
 
-    fun appendPromotion(type: PieceType) {
+    fun appendPromotion(type: PieceType, san: String = "") {
         val t = when (type) {
             PieceType.Queen -> "Q"
             PieceType.Rook -> "R"
@@ -56,7 +74,9 @@ object NotationHandler {
             PieceType.Knight -> "N"
             else -> return
         }
+
         NotationMovesHandler.modifyLastMoveNotation("=$t")
+        MovesNodesManager.modifyLastMoveNode("=$t")
     }
 
     fun annotateCheckIfAny(promoted: Boolean = false) {
@@ -67,13 +87,17 @@ object NotationHandler {
     }
     private fun appendCheck() {
         NotationMovesHandler.modifyLastMoveNotation("+")
+        MovesNodesManager.modifyLastMoveNode("+")
     }
 
     fun appendMate() {
         NotationMovesHandler.modifyLastMoveNotation("#")
+        MovesNodesManager.modifyLastMoveNode("#")
     }
 
-    fun removeLastMove() = Globals.movesBufferNotation.value.removeLast()
+    fun removeLastMove(){
+        Globals.movesBufferNotation.value.removeLast()
+    }
 
     private fun letterOfAPiece(piece: Piece): String = when (piece.type) {
         PieceType.King -> "K"

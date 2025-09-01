@@ -11,6 +11,7 @@ import org.pruden.tablero.models.LastMove
 import org.pruden.tablero.models.Piece
 import org.pruden.tablero.models.PieceType
 import org.pruden.tablero.utils.moves.History
+import org.pruden.tablero.utils.nodes.MovesNodesManager
 import org.pruden.tablero.utils.notation.NotationHandler
 import org.pruden.tablero.utils.result.ResultHandler
 
@@ -81,7 +82,18 @@ object PromotionHandler {
             }
             Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
 
+
+
+            MovesNodesManager.addMove(
+                san = Globals.nodePromotion!!.san,
+                to = Globals.nodePromotion!!.to,
+                from = Globals.nodePromotion!!.from
+            )
+
+
+
             NotationHandler.appendPromotion(piecePromoted.type)
+
         }
         if(promotionWithCapture) {
             Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
@@ -121,6 +133,14 @@ object PromotionHandler {
                 else -> PieceProvider.getBlackQueen(pawnPromoted.position)
             }
             Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
+
+
+            MovesNodesManager.addMove(
+                san = Globals.nodePromotion!!.san,
+                to = Globals.nodePromotion!!.to,
+                from = Globals.nodePromotion!!.from
+            )
+
 
             NotationHandler.appendPromotion(piecePromoted.type)
         }

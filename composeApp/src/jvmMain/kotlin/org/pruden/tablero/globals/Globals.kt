@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
 import org.pruden.tablero.models.*
+import org.pruden.tablero.utils.nodes.NodePromotion
 
 object Globals {
 
@@ -115,4 +116,6 @@ object Globals {
     // NODES
 
     val movesNodesBuffer = mutableStateOf(mutableListOf<MoveNode>())
+
+    var nodePromotion: NodePromotion? = null
 }
