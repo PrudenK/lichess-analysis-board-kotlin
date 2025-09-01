@@ -14,29 +14,26 @@ object PGNHandler {
             for((index, id) in movesList.withIndex()){
                 val node = nodes.find { it.id == id }!!
 
-                if(/*hasChildren(node) &&*/ index == 0 && movesList.size > 1){
-                    if(index == 0){
-                        val subList = movesList.subList(2, movesList.size).reversed()
+                if(index == 0 && movesList.size > 1){
+                    val subList = movesList.subList(2, movesList.size).reversed()
 
-                        if(hasChildren(node)){
-                            stack.add(id)
-                            historyStack[id] = false
-                        }
+                    if(hasChildren(node)){
+                        stack.add(id)
+                        historyStack[id] = false
+                    }
 
-                        if(result.isNotEmpty() && result.last() == ')'){
-                            result += " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
-                        }else{
-                            result += " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
-                        }
+                    result += if(result.isNotEmpty() && result.last() == ')'){
+                        " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
+                    }else{
+                        " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
+                    }
 
-                        for(subId in subList){
-                            stack.add(subId)
-                            historyStack[subId] = true
-                        }
+                    for(subId in subList){
+                        stack.add(subId)
+                        historyStack[subId] = true
                     }
                 }else{
                     if(isNotInHistoryOrFromStack(id, comesFromStack, historyStack)){
-                        println("Dentro :   " + node.san)
                         if(comesFromStack){
                             if(historyStack[id] == true){
                                 result += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
