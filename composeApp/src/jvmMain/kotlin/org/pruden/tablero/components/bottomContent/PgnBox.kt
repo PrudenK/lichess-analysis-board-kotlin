@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.utils.nodes.PGNHandler
 
 @Composable
 fun PgnBox(){
@@ -44,15 +45,7 @@ fun PgnBox(){
                     .clip(RoundedCornerShape(4.dp))
                     .weight(1f)
             ){
-                val pgnText = Globals.movesBufferNotation.value
-                    .chunked(2)
-                    .mapIndexed { index, pair ->
-                        val white = pair.getOrNull(0)?.san ?: ""
-                        val black = pair.getOrNull(1)?.san ?: ""
-                        "${index + 1}. $white $black"
-                    }
-                    .joinToString(" ")
-
+                val pgnText = PGNHandler.nodeMovesToPgn()
 
                 BasicTextField(
                     value = pgnText,

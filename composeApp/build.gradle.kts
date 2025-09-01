@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    jacoco
 }
 
 kotlin {
@@ -61,4 +62,27 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("jvmTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    val sourceDirs = files("composeApp/src/jvmMain/kotlin")
+    val classDirs = fileTree("composeApp/build/classes/kotlin/jvm/main") {
+        exclude("**/R.class", "**/R\$*.class")
+    }
+    val execDataFiles = fileTree("composeApp/build") {
+        include("**/jacoco/test.exec")
+    }
+
+    sourceDirectories.setFrom(sourceDirs)
+    classDirectories.setFrom(classDirs)
+    executionData.setFrom(execDataFiles)
 }

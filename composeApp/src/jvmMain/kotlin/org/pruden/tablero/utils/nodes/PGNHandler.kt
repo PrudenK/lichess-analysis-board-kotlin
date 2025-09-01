@@ -14,14 +14,20 @@ object PGNHandler {
             for((index, id) in movesList.withIndex()){
                 val node = nodes.find { it.id == id }!!
 
-                if(hasChildren(node) && index != 1 && movesList.size > 1){
+                if(/*hasChildren(node) &&*/ index == 0 && movesList.size > 1){
                     if(index == 0){
                         val subList = movesList.subList(2, movesList.size).reversed()
 
-                        stack.add(id)
-                        historyStack[id] = false
+                        if(hasChildren(node)){
+                            stack.add(id)
+                            historyStack[id] = false
+                        }
 
-                        result += " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
+                        if(result.isNotEmpty() && result.last() == ')'){
+                            result += " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
+                        }else{
+                            result += " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
+                        }
 
                         for(subId in subList){
                             stack.add(subId)
@@ -30,6 +36,7 @@ object PGNHandler {
                     }
                 }else{
                     if(isNotInHistoryOrFromStack(id, comesFromStack, historyStack)){
+                        println("Dentro :   " + node.san)
                         if(comesFromStack){
                             if(historyStack[id] == true){
                                 result += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
@@ -56,6 +63,21 @@ object PGNHandler {
                                     result += getClosingParentheses(node, last, nodes)
 
                                     subVariants(mutableListOf(last), true)
+                                }else{
+                                    repeat(node.getMagnitudeOfVariant(nodes)){
+                                        result += ")"
+                                    }
+                                }
+                            }else{
+                                if(
+                                    index == 1
+                                ){
+                                    if(stack.isNotEmpty()){
+                                        val last = stack.removeLast()
+                                        result += getClosingParentheses(node, last, nodes)
+
+                                        subVariants(mutableListOf(last), true)
+                                    }
                                 }
                             }
                         }
@@ -82,16 +104,29 @@ object PGNHandler {
     }
     private fun getClosingParentheses(node: MoveNode, last: String, nodes: List<MoveNode>): String{
         var result = ""
-        var interactions = node.getMagnitudeOfVariant(nodes) - nodes.find { it.id == last }!!.getMagnitudeOfVariant(nodes)
-        if(interactions == 0) interactions = 1
+
+        val to = nodes.find { it.id == last }!!
+
+        var interactions = node.getMagnitudeOfVariant(nodes) - to.getMagnitudeOfVariant(nodes)
+
+        val indexToInParentChilds = calculateIndexOfToNodeInHisParentNodeListOfChilds(to, nodes, last)
+        if(indexToInParentChilds != 0) interactions++
 
         repeat(interactions){
             result += ")"
         }
+
         return result
     }
     private fun normalizeWhitespace(result: String): String{
         return result.replace(" )", ")").replace(Regex("\\s+"), " ").trim()
     }
 
+    private fun calculateIndexOfToNodeInHisParentNodeListOfChilds(to: MoveNode, nodes: List<MoveNode>, last: String ): Int{
+        val parentTo = to.parentId
+        val parentToNode = nodes.find { it.id == parentTo }!!
+        val indexToInParentChilds = parentToNode.childrenIds.indexOf(last)
+
+        return indexToInParentChilds
+    }
 }

@@ -21,7 +21,12 @@ object MovesNodesManager {
 
             for(id in actualMoveBefore.childrenIds){
                 val mov = list.find { it.id == id }!!
-                if (mov.san == san) return
+
+                if (mov.san == san) {
+                    list.forEach { it.isActualMove = false }
+                    mov.isActualMove = true
+                    return
+                }
             }
 
             val newMoveId = Uuid.random().toString()
