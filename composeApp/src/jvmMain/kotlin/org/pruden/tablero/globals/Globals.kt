@@ -118,4 +118,7 @@ object Globals {
     val movesNodesBuffer = mutableStateOf(mutableListOf<MoveNode>())
 
     var nodePromotion: NodePromotion? = null
+
+
+    var actualNodeMoveId = ""
 }

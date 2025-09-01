@@ -24,9 +24,15 @@ object MovesNodesManager {
 
                 println("MOVEEEEE SAN: ${mov.san} ${san}")
 
-                if (mov.san == san) {
+                if ((mov.from == from && mov.to == to) || mov.san == san ) {
+
+
+
                     list.forEach { it.isActualMove = false }
                     mov.isActualMove = true
+
+                    Globals.actualNodeMoveId = mov.id
+
                     return
                 }
             }
@@ -48,6 +54,8 @@ object MovesNodesManager {
                 isWhiteMove = Globals.isWhiteMove.value
             )
 
+            Globals.actualNodeMoveId = newMoveId
+
             list.add(newMove)
 
             Globals.movesNodesBuffer.value = list
@@ -58,14 +66,18 @@ object MovesNodesManager {
     fun modifyLastMoveNode(adder : String){
         if (Globals.movesNodesBuffer.value.isEmpty()) return
 
-        val lastMove = Globals.movesNodesBuffer.value.last()
+        val lastMove = Globals.movesNodesBuffer.value.find { it.id == Globals.actualNodeMoveId }!!
+        val index = Globals.movesNodesBuffer.value.indexOf(lastMove)
 
-        if(adder == "#"){
+        if(adder == "#" || adder == "+" && lastMove.san!!.endsWith("+")){
             lastMove.san = lastMove.san!!.replace("+", "")
         }
 
-        lastMove.san += adder
-        Globals.movesNodesBuffer.value[Globals.movesNodesBuffer.value.size - 1] = lastMove
+        if(!(adder.startsWith("=") && lastMove.san!!.contains(adder))){
+            lastMove.san += adder
+        }
+
+        Globals.movesNodesBuffer.value[index] = lastMove
     }
 
 
