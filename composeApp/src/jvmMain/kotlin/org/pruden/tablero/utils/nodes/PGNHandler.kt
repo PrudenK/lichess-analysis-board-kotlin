@@ -9,6 +9,7 @@ object PGNHandler {
         val historyStack = mutableMapOf<String, Boolean>()
 
         var result = ""
+        var pgnWithIds = ""
 
         fun subVariants(movesList: MutableList<String>, comesFromStack: Boolean = false){
             for((index, id) in movesList.withIndex()){
@@ -28,6 +29,15 @@ object PGNHandler {
                         " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
                     }
 
+
+
+                    // TODO
+                    pgnWithIds += if(pgnWithIds.isNotEmpty() && pgnWithIds.last() == ')'){
+                        " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.id}"
+                    }else{
+                        " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.id}"
+                    }
+
                     for(subId in subList){
                         stack.add(subId)
                         historyStack[subId] = true
@@ -37,6 +47,11 @@ object PGNHandler {
                         if(comesFromStack){
                             if(historyStack[id] == true){
                                 result += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
+
+
+                                // TODO
+                                pgnWithIds += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.id}"
+
                             }
                         }else{
                             result += if(isFirstMove(index)){
@@ -47,6 +62,17 @@ object PGNHandler {
                                 }
                             }else{
                                 " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
+                            }
+
+                            // TODO
+                            pgnWithIds += if(isFirstMove(index)){
+                                if(comesFromStackAndIsPrincipalVariant(historyStack, node)){
+                                    " ${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.id}"
+                                }else{
+                                    " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.id}"
+                                }
+                            }else{
+                                " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.id}"
                             }
                         }
 
@@ -59,10 +85,16 @@ object PGNHandler {
 
                                     result += getClosingParentheses(node, last, nodes)
 
+                                    // TODO
+                                    pgnWithIds += getClosingParentheses(node, last, nodes)
+
                                     subVariants(mutableListOf(last), true)
                                 }else{
                                     repeat(node.getMagnitudeOfVariant(nodes)){
                                         result += ")"
+
+                                        //TODO
+                                        pgnWithIds += ")"
                                     }
                                 }
                             }else{
@@ -72,6 +104,9 @@ object PGNHandler {
                                     if(stack.isNotEmpty()){
                                         val last = stack.removeLast()
                                         result += getClosingParentheses(node, last, nodes)
+
+                                        // TODO
+                                        pgnWithIds += getClosingParentheses(node, last, nodes)
 
                                         subVariants(mutableListOf(last), true)
                                     }
@@ -84,6 +119,11 @@ object PGNHandler {
         }
 
         subVariants(nodes[0].childrenIds)
+
+        Globals.pgnWithIds = normalizeWhitespace(pgnWithIds)
+
+        println(Globals.pgnWithIds)
+        println(normalizeWhitespace(result))
 
         return normalizeWhitespace(result)
     }
