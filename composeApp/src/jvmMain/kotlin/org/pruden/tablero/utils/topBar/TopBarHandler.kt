@@ -41,7 +41,8 @@ object TopBarHandler {
         Globals.result.value = -1
         Globals.isGameOver.value = false
 
-        Globals.movesBufferNotation.value = mutableListOf()
+        Globals.movesNodesBuffer.value = mutableListOf()
+
         Globals.halfMoves = 0
 
         Globals.fenEnPassant = "-"

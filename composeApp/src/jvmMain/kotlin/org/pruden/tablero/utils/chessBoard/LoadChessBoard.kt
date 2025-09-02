@@ -68,7 +68,7 @@ fun loadChessBoard() {
     Globals.movesNodesBuffer.value.add(
         MoveNode(
             id = "root",
-            fen = FenConverter.chessBoardToFen(Globals.chessBoard),
+            fen = FenConverter.chessBoardToFen(Globals.chessBoard, 1),
             isActualMove = true
         )
     )

@@ -44,7 +44,7 @@ object MovesNodesManager {
                 san = san,
                 from = from,
                 to = to,
-                fen = FenConverter.chessBoardToFen(Globals.chessBoard),
+                fen = FenConverter.chessBoardToFen(Globals.chessBoard, 90),
                 isActualMove = true,
                 isWhiteMove = Globals.isWhiteMove.value
             )
@@ -101,7 +101,7 @@ object MovesNodesManager {
                             san = actualMove.san!!.split("=")[0] + adder,
                             from = actualMove.from,
                             to = actualMove.to,
-                            fen = FenConverter.chessBoardToFen(Globals.chessBoard),
+                            fen = FenConverter.chessBoardToFen(Globals.chessBoard, if(parentLasMove.isWhiteMove!!) parentLasMove.getStepsFromRoot() + 1 else parentLasMove.getStepsFromRoot()),
                             isActualMove = true,
                             isWhiteMove = Globals.isWhiteMove.value
                         )
@@ -125,6 +125,16 @@ object MovesNodesManager {
         }
     }
 
+    fun updateLastMoveFen(){
+        val move = Globals.movesNodesBuffer.value.last()
 
+        val playNumber = when{
+            move.id  == "root" -> 1
+            move.isWhiteMove!! -> move.getStepsFromRoot()
+            else ->  move.getStepsFromRoot() + 1
+        }
+
+        move.fen = FenConverter.chessBoardToFen(Globals.chessBoard, playNumber)
+    }
 
 }

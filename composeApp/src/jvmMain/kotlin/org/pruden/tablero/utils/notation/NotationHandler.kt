@@ -28,7 +28,7 @@ object NotationHandler {
 
         castleSanIfAny(piece, from, to)?.let {
             MovesNodesManager.addMove(it, from, to)
-            NotationMovesHandler.addNotationMove(it, from, to); return
+            return
         }
 
         val san = if (piece.type == PieceType.Pawn) {
@@ -44,9 +44,6 @@ object NotationHandler {
         }
 
         // NODES
-
-        println("saaaaaaaaaaaaaN : $san")
-
         if(piece.type == PieceType.Pawn){
 
             if(piece.color == Color.White){
@@ -62,11 +59,10 @@ object NotationHandler {
         }else{
             MovesNodesManager.addMove(san, from, to)
         }
-        NotationMovesHandler.addNotationMove(san, from, to)
 
     }
 
-    fun appendPromotion(type: PieceType, san: String = "") {
+    fun appendPromotion(type: PieceType) {
         val t = when (type) {
             PieceType.Queen -> "Q"
             PieceType.Rook -> "R"
@@ -75,7 +71,6 @@ object NotationHandler {
             else -> return
         }
 
-        NotationMovesHandler.modifyLastMoveNotation("=$t")
         MovesNodesManager.modifyLastMoveNode("=$t")
     }
 
@@ -86,17 +81,11 @@ object NotationHandler {
         if (attacked.contains(king.position)) appendCheck()
     }
     private fun appendCheck() {
-        NotationMovesHandler.modifyLastMoveNotation("+")
         MovesNodesManager.modifyLastMoveNode("+")
     }
 
     fun appendMate() {
-        NotationMovesHandler.modifyLastMoveNotation("#")
         MovesNodesManager.modifyLastMoveNode("#")
-    }
-
-    fun removeLastMove(){
-        Globals.movesBufferNotation.value.removeLast()
     }
 
     private fun letterOfAPiece(piece: Piece): String = when (piece.type) {

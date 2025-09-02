@@ -71,8 +71,6 @@ object PromotionHandler {
             }
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
-
-            NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
                 1 -> PieceProvider.getWhiteKnight(pawnPromoted.position)
@@ -122,8 +120,6 @@ object PromotionHandler {
 
             pawnPromoted.position = Globals.lastPieceStartPos
             promoteCanceled = true
-
-            NotationHandler.removeLastMove()
         }else{
             val piecePromoted = when (clickedRow) {
                 6 -> PieceProvider.getBlackKnight(pawnPromoted.position)

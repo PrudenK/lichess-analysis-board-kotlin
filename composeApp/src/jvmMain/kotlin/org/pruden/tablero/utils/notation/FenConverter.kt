@@ -1,14 +1,11 @@
 package org.pruden.tablero.utils.notation
 
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.models.BoxModel
-import org.pruden.tablero.models.Color
-import org.pruden.tablero.models.Piece
-import org.pruden.tablero.models.PieceType
+import org.pruden.tablero.models.*
 
 object FenConverter {
 
-    fun chessBoardToFen(chessBoard: Array<Array<BoxModel>> = Globals.chessBoard): String{
+    fun chessBoardToFen(chessBoard: Array<Array<BoxModel>> = Globals.chessBoard, playNumber: Int): String{
         var result = ""
         for (row in chessBoard) {
             var empty = 0
@@ -39,7 +36,7 @@ object FenConverter {
 
         result += " ${Globals.halfMoves}"
 
-        result += " ${Globals.movesBufferNotation.value.size / 2 + 1}"
+        result +=  " $playNumber"
 
         return result
     }
