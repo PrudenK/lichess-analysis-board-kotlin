@@ -21,7 +21,7 @@ import org.pruden.tablero.models.BestMove
 fun ModuleBar(
     modifier: Modifier = Modifier
 ) {
-    val actualMove = Globals.movesBufferNotation.value.find { it.isActualMove }
+    val actualMove = Globals.movesNodesBuffer.value.find { it.isActualMove }
     var evalCp by remember(actualMove?.fen) { mutableStateOf(20) }
 
     LaunchedEffect(actualMove?.fen, Globals.isModuleActivated.value) {

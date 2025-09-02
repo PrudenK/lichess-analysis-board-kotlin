@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.pruden.tablero.api.constants.ApiWikiBook
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
+import org.pruden.tablero.models.MoveNode
 import tableroajedrez.composeapp.generated.resources.Res
 import tableroajedrez.composeapp.generated.resources.wikibook_caret
 
@@ -28,26 +29,28 @@ fun WikiBook() {
     var bookIsOpen by remember { mutableStateOf(true) }
     var extractHtml by remember { mutableStateOf("") }
 
-    val sanKey = Globals.movesBufferNotation.value.joinToString("|") { it.san }
-
-    LaunchedEffect(sanKey) {
+    LaunchedEffect(Globals.refreshMovesPanel.value) {
+        val nodes = Globals.movesNodesBuffer.value
+        val current = nodes.find { it.isActualMove }
+        val chain = mutableListOf<MoveNode>()
+        var cur = current
+        while (cur != null && cur.id != "root") {
+            chain.add(cur)
+            cur = nodes.find { it.id == cur!!.parentId }
+        }
+        val chainChrono = chain.asReversed()
         val formatted = buildString {
-            var moveNumber = 1
-            for ((index, move) in Globals.movesBufferNotation.value.map { it.san }.withIndex()) {
-                if (index % 2 == 0) {
-                    append("${moveNumber}._$move")
-                } else {
-                    append("${moveNumber}...$move")
-                    moveNumber++
-                }
-                if (index < Globals.movesBufferNotation.value.size - 1) append("/")
+            for ((i, node) in chainChrono.withIndex()) {
+                append(if (node.isWhiteMove == true) "${node.getStepsFromRoot()}._" else "${node.getStepsFromRoot()}...")
+                append(node.san)
+                if (i < chainChrono.size - 1) append("/")
             }
         }
-
         val titles = "Chess_Opening_Theory/$formatted"
         val res = ApiWikiBook.wikiBookService.getExtract(titles)
         extractHtml = res.query?.pages?.values?.firstOrNull()?.extract.orEmpty()
     }
+
 
     if(extractHtml.isNotEmpty()){
         Box(modifier = Modifier.width(Globals.leftSideContentWidth)) {
