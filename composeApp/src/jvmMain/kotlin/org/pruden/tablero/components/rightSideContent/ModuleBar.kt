@@ -24,6 +24,8 @@ fun ModuleBar(
     val actualMove = Globals.movesNodesBuffer.value.find { it.isActualMove }
     var evalCp by remember(actualMove?.fen) { mutableStateOf(20) }
 
+
+    // TODO mañana cuando la API me funcione otra vez
     LaunchedEffect(actualMove?.fen, Globals.isModuleActivated.value) {
         if(Globals.isModuleActivated.value){
             val fen = actualMove?.fen ?: Globals.INITIAL_FEN_POS

@@ -22,13 +22,11 @@ object TopBarHandler {
         Globals.promotionCol = 0
         Globals.isWhitePromotion.value = false
         Globals.isBlackPromotion.value = false
-
         Globals.promotionBuffer.clear()
         Globals.pawnPromoted = null
         Globals.lastPieceStartPos = Pair(-1, -1)
 
         Globals.refreshBoard.value = false
-
         Globals.lastMove.value = null
 
         Globals.checkedKingPos.value = null
@@ -37,23 +35,33 @@ object TopBarHandler {
         Globals.posiblePassant = false
         Globals.colPassant = -1
         Globals.enPassantCell = Pair(-1, -1)
+        Globals.fenEnPassant = "-"
 
         Globals.result.value = -1
         Globals.isGameOver.value = false
 
         Globals.movesNodesBuffer.value = mutableListOf()
+        Globals.orderNodesIds = mutableListOf()
+        Globals.actualNodeMoveId = ""
+        Globals.nodePromotion = null
 
         Globals.halfMoves = 0
-
-        Globals.fenEnPassant = "-"
 
         Globals.isDragging.value = false
         Globals.dragPointerPx.value = Offset.Zero
         Globals.dragPng.value = null
+        Globals.cellSizePx.value = 0f
+
+        Globals.isBoardRotated.value = false
+
+        Globals.bestMove.value = null
+        Globals.movesToMate.value = null
+        Globals.valoration.value = 20
 
         loadChessBoard()
 
         Globals.refreshBoard.value = !Globals.refreshBoard.value
+        Globals.refreshMovesPanel.value = !Globals.refreshMovesPanel.value
         Globals.isBoardLoaded.value = true
 
         printBoard()
