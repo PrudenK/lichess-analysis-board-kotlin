@@ -2,14 +2,11 @@ package org.pruden.tablero.utils.moves
 
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.MoveNode
-import org.pruden.tablero.models.NotationMove
 import org.pruden.tablero.utils.notation.FenToChessBoard
 
 object MovesManager {
-
     private val initialPos = Globals.initialFenPos
-    private val list: MutableList<NotationMove> get() = Globals.movesBufferNotation.value
-    private val listXX: MutableList<MoveNode> get() = Globals.movesNodesBuffer.value
+    private val list: MutableList<MoveNode> get() = Globals.movesNodesBuffer.value
 
     fun goToStart() {
         quitAllPossibleMovesMarks()
@@ -20,42 +17,16 @@ object MovesManager {
 
     fun stepBack() {
         quitAllPossibleMovesMarks()
-        if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(initialPos)
-            toggleRefresh()
-            return
-        }
-        val idx = list.indexOfFirst { it.isActualMove }
-
-        /*
-        when {
-            idx > 0 -> {
-                list[idx].isActualMove = false
-                list[idx - 1].isActualMove = true
-                FenToChessBoard.setBoardFromFen(list[idx - 1].fen)
-            }
-            idx == 0 -> {
-                list[0].isActualMove = false
-                FenToChessBoard.setBoardFromFen(initialPos)
-            }
-            idx == -1 -> {
-                FenToChessBoard.setBoardFromFen(initialPos)
-            }
-        }
-
-         */
-
-
 
         // NODES
-        val actualMoveNode = listXX.find { it.isActualMove }!!
+        val actualMoveNode = list.find { it.isActualMove }!!
 
 
         if(actualMoveNode.parentId != null){
-            val moveToGo = listXX.find { it.id == actualMoveNode.parentId }!!
+            val moveToGo = list.find { it.id == actualMoveNode.parentId }!!
             FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
 
-            listXX.forEach { it.isActualMove = false}
+            list.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true
         }
 
@@ -65,42 +36,16 @@ object MovesManager {
 
     fun stepForward() {
         quitAllPossibleMovesMarks()
-        if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(initialPos)
-            toggleRefresh()
-            return
-        }
-        val idx = list.indexOfFirst { it.isActualMove }
-
-        /*
-        when {
-            idx == -1 -> {
-                list[0].isActualMove = true
-                FenToChessBoard.setBoardFromFen(list[0].fen)
-            }
-            idx < list.lastIndex -> {
-                list[idx].isActualMove = false
-                list[idx + 1].isActualMove = true
-                FenToChessBoard.setBoardFromFen(list[idx + 1].fen)
-            }
-            else -> {
-                FenToChessBoard.setBoardFromFen(list[idx].fen)
-            }
-        }
-
-         */
-
-
 
         // NODES
 
-        val actualMoveNode = listXX.find { it.isActualMove }!!
+        val actualMoveNode = list.find { it.isActualMove }!!
 
         if(actualMoveNode.childrenIds.isNotEmpty()){
-            val moveToGo = listXX.find { it.id == actualMoveNode.childrenIds[0] }!!
+            val moveToGo = list.find { it.id == actualMoveNode.childrenIds[0] }!!
             FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
 
-            listXX.forEach { it.isActualMove = false}
+            list.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true
         }
 
@@ -121,7 +66,7 @@ object MovesManager {
         toggleRefresh()
     }
 
-    fun goToClickedMove(move: NotationMove){
+    fun goToClickedMove(move: MoveNode){
         quitAllPossibleMovesMarks()
         setAllMovesNotActual()
 

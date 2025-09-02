@@ -12,6 +12,7 @@ import org.pruden.tablero.components.rightSideContent.movesTexts.VariantText
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.MoveNode
+import org.pruden.tablero.utils.moves.MovesManager
 
 @Composable
 fun renderBranch(
@@ -32,7 +33,12 @@ fun renderBranch(
         HorizontalDivider(modifier = Modifier.height(0.5.dp), color = Colors.textColor.copy(0.5f))
 
         for (n in spine) {
-            VariantText(move = n)
+            VariantText(
+                move = n,
+                onClick = {
+                    MovesManager.goToClickedMove(n)
+                }
+            )
         }
     }
     for (n in spine) {

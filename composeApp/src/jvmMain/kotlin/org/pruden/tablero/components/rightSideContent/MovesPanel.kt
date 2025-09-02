@@ -19,6 +19,7 @@ import org.pruden.tablero.components.rightSideContent.variants.renderWhiteSiblin
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.MoveNode
+import org.pruden.tablero.utils.moves.MovesManager
 
 @Composable
 fun MovesPanel(
@@ -120,7 +121,11 @@ fun MovesPanel(
                                         hoverColor = Colors.hoverColor,
                                         padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
                                         isThisMove = white?.isActualMove == true,
-                                        onClick = {}
+                                        onClick = {
+                                            if(white != null){
+                                                MovesManager.goToClickedMove(white)
+                                            }
+                                        }
                                     )
 
                                     MainLineText(
@@ -137,7 +142,11 @@ fun MovesPanel(
                                             hasWhiteSiblingsFromBlack -> false
                                             else -> black?.isActualMove == true
                                         },
-                                        onClick = {}
+                                        onClick = {
+                                            if(black != null){
+                                                MovesManager.goToClickedMove(black)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -217,7 +226,7 @@ fun MovesPanel(
                                             padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
                                             isThisMove = black.isActualMove,
                                             onClick = {
-
+                                                MovesManager.goToClickedMove(black)
                                             }
                                         )
                                     }

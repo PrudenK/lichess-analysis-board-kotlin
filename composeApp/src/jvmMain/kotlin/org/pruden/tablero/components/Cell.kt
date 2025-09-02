@@ -43,7 +43,7 @@ fun Cell(
                     onClick(columnX, rowY)
                 }
             }
-            .pointerInput(Globals.refreshBoard.value, Globals.movesBufferNotation.value.size, cell.pieceOnBox) {
+            .pointerInput(Globals.refreshBoard.value, Globals.movesNodesBuffer.value.size, cell.pieceOnBox) {
                 detectDragGestures(
                     onDragStart = { pos ->
                         if (!cell.disable && cell.pieceOnBox != null &&

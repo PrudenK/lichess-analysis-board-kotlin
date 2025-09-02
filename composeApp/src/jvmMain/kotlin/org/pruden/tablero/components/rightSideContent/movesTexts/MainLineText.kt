@@ -33,7 +33,7 @@ fun MainLineText(
     Text(
         text = text,
         modifier = modifier
-            .background(if (isHovered.value && text.isNotEmpty()) hoverColor else if(isThisMove) hoverColor.copy(0.5f) else Color.Transparent)
+            .background(if (isHovered.value && text.isNotEmpty() && text != "...") hoverColor else if(isThisMove) hoverColor.copy(0.5f) else Color.Transparent)
             .padding(padding)
             .pointerMoveFilter(
                 onEnter = {

@@ -119,7 +119,6 @@ object Globals {
 
     var nodePromotion: NodePromotion? = null
 
-    //TODO
     var orderNodesIds = mutableListOf<String>()
 
     var actualNodeMoveId = ""
