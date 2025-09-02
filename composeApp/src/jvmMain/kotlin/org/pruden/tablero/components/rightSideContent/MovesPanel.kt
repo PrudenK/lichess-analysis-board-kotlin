@@ -1,17 +1,7 @@
 package org.pruden.tablero.components.rightSideContent
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -23,8 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.pruden.tablero.components.rightSideContent.MovesTexts.MainLineText
-import org.pruden.tablero.components.rightSideContent.MovesTexts.VariantText
+import org.pruden.tablero.components.rightSideContent.movesTexts.MainLineText
+import org.pruden.tablero.components.rightSideContent.variants.renderBranch
+import org.pruden.tablero.components.rightSideContent.variants.renderWhiteSiblingVariantsUnderBlack
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
 import org.pruden.tablero.models.MoveNode
@@ -84,47 +75,7 @@ fun MovesPanel(
                             principalNodesPair.add(Triple(pendingWhite.getStepsFromRoot(), pendingWhite, null))
                         }
 
-                        @Composable
-                        fun renderBranch(start: MoveNode, depth: Int) {
-                            val spine = mutableListOf<MoveNode>()
-                            var current: MoveNode? = start
-                            while (current != null) {
-                                spine.add(current)
-                                val firstChildId = current.childrenIds.firstOrNull()
-                                current = Globals.movesNodesBuffer.value.find { it.id == firstChildId }
-                            }
-                            Row(modifier = Modifier.padding(start = (depth * 12).dp)) {
-                                for (n in spine) {
-                                    VariantText(move = n)
-                                }
-                            }
-                            for (n in spine) {
-                                val siblings = n.childrenIds.drop(1).mapNotNull { id ->
-                                    Globals.movesNodesBuffer.value.find { it.id == id }
-                                }
-                                if (siblings.isNotEmpty()) {
-                                    Column(modifier = Modifier.padding(start = ((depth + 1) * 12).dp)) {
-                                        for (sib in siblings) {
-                                            renderBranch(sib, depth + 1)
-                                        }
-                                    }
-                                }
-                            }
-                        }
 
-                        @Composable
-                        fun renderWhiteSiblingVariantsUnderBlack(parentBlack: MoveNode, depth: Int) {
-                            val children = parentBlack.childrenIds.mapNotNull { id ->
-                                Globals.movesNodesBuffer.value.find { it.id == id }
-                            }
-                            if (children.size <= 1) return
-                            val variants = children.drop(1)
-                            Column {
-                                for (variant in variants) {
-                                    renderBranch(variant, depth)
-                                }
-                            }
-                        }
 
                         for (i in principalNodesPair.indices) {
                             val (steps, white, black) = principalNodesPair[i]
@@ -271,8 +222,6 @@ fun MovesPanel(
                                         )
                                     }
                                 }
-
-
                             }
                         }
                     }

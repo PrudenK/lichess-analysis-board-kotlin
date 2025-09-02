@@ -1,4 +1,4 @@
-package org.pruden.tablero.components.rightSideContent.MovesTexts
+package org.pruden.tablero.components.rightSideContent.movesTexts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
