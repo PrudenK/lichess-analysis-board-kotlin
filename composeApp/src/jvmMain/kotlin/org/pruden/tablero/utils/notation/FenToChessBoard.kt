@@ -50,7 +50,7 @@ object FenToChessBoard {
             }
         }
 
-        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) true else spaceParts[1] == "w"
+        Globals.isWhiteMove.value = if(fen == Globals.INITIAL_FEN_POS) true else spaceParts[1] == "w"
 
         Globals.whiteCastle = Triple(
             !spaceParts[2].contains("Q"),

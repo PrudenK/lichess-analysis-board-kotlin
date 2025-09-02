@@ -88,7 +88,7 @@ object Globals {
 
     var fenEnPassant = "-"
 
-    val initialFenPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    const val INITIAL_FEN_POS = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
     val isModuleActivated = mutableStateOf(true)
     val valoration = mutableStateOf(20)

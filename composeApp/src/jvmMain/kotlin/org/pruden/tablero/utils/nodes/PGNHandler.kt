@@ -29,9 +29,6 @@ object PGNHandler {
                         " ${if(node.isWhiteMove!!) node.getStepsFromRoot(nodes).toString()+"." else ""} ${node.san}"
                     }
 
-
-
-                    // TODO
                     pgnWithIds.add(node.id)
 
                     for(subId in subList){
@@ -44,10 +41,7 @@ object PGNHandler {
                             if(historyStack[id] == true){
                                 result += " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
 
-
-                                // TODO
                                 pgnWithIds.add(node.id)
-
                             }
                         }else{
                             result += if(isFirstMove(index)){
@@ -59,10 +53,7 @@ object PGNHandler {
                             }else{
                                 " (${node.getStepsFromRoot(nodes)}${if(node.isWhiteMove!!) "." else "..."} ${node.san}"
                             }
-
-                            // TODO
                             pgnWithIds.add(node.id)
-
                         }
 
                         if(hasChildren(node)){

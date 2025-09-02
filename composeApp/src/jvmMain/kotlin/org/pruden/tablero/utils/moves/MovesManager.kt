@@ -5,7 +5,7 @@ import org.pruden.tablero.models.MoveNode
 import org.pruden.tablero.utils.notation.FenToChessBoard
 
 object MovesManager {
-    private val initialPos = Globals.initialFenPos
+    private val initialPos = Globals.INITIAL_FEN_POS
     private val list: MutableList<MoveNode> get() = Globals.movesNodesBuffer.value
 
     fun goToStart() {

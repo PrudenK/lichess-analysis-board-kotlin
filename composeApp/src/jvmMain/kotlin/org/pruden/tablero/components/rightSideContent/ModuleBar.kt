@@ -26,7 +26,7 @@ fun ModuleBar(
 
     LaunchedEffect(actualMove?.fen, Globals.isModuleActivated.value) {
         if(Globals.isModuleActivated.value){
-            val fen = actualMove?.fen ?: Globals.initialFenPos
+            val fen = actualMove?.fen ?: Globals.INITIAL_FEN_POS
             try {
                 val res = withContext(Dispatchers.IO) {
                     ApiChess.moduleService.evaluatePosition(EvalRequest(fen = fen, depth = 18, variants = 1))
