@@ -18,9 +18,7 @@ object MovesManager {
     fun stepBack() {
         quitAllPossibleMovesMarks()
 
-        // NODES
         val actualMoveNode = list.find { it.isActualMove }!!
-
 
         if(actualMoveNode.parentId != null){
             val moveToGo = list.find { it.id == actualMoveNode.parentId }!!
@@ -30,14 +28,11 @@ object MovesManager {
             moveToGo.isActualMove = true
         }
 
-
         toggleRefresh()
     }
 
     fun stepForward() {
         quitAllPossibleMovesMarks()
-
-        // NODES
 
         val actualMoveNode = list.find { it.isActualMove }!!
 
@@ -49,22 +44,34 @@ object MovesManager {
             moveToGo.isActualMove = true
         }
 
-
         toggleRefresh()
     }
 
     fun goToEnd() {
         quitAllPossibleMovesMarks()
-        if (list.isEmpty()) {
-            FenToChessBoard.setBoardFromFen(initialPos)
-        } else {
+        val lastNode = lastPrincipalNode()
+
+        if (lastNode != null && lastNode.id != "root") {
             setAllMovesNotActual()
-            val last = list.last()
-            last.isActualMove = true
-            FenToChessBoard.setBoardFromFen(last.fen)
+
+            lastNode.isActualMove = true
+            FenToChessBoard.setBoardFromFen(lastNode.fen)
+        } else {
+            FenToChessBoard.setBoardFromFen(initialPos)
         }
+
         toggleRefresh()
     }
+
+    private fun lastPrincipalNode(): MoveNode? {
+        val nodes = Globals.movesNodesBuffer.value
+        for (id in Globals.orderNodesIds.asReversed()) {
+            val n = nodes.find { it.id == id }
+            if (n?.isPrincipalLine() == true) return n
+        }
+        return null
+    }
+
 
     fun goToClickedMove(move: MoveNode){
         quitAllPossibleMovesMarks()
