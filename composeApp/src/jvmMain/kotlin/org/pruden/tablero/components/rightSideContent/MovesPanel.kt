@@ -24,33 +24,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.pruden.tablero.components.rightSideContent.MovesTexts.MainLineText
+import org.pruden.tablero.components.rightSideContent.MovesTexts.VariantText
 import org.pruden.tablero.globals.Colors
 import org.pruden.tablero.globals.Globals
-import org.pruden.tablero.utils.moves.MovesManager
-import kotlin.collections.chunked
+import org.pruden.tablero.models.MoveNode
 
 @Composable
 fun MovesPanel(
     modifier: Modifier
 ) {
     val scrollState = rememberScrollState()
-    val hasOverflow = scrollState.maxValue > 0
 
     key(Globals.refreshMovesPanel.value) {
         Row(
             modifier = modifier
                 .width(350.dp)
-                .padding(
-                    top = 10.dp
-                ),
+                .padding(top = 10.dp),
         ) {
             Column(
                 modifier = Modifier
                     .background(color = Colors.secondary, RoundedCornerShape(6.dp))
             ) {
-
                 ModuleToggle()
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -62,79 +57,225 @@ fun MovesPanel(
                             .fillMaxSize()
                             .verticalScroll(scrollState)
                     ) {
-
                         Divider(color = Colors.movesColor.copy(alpha = 0.5f))
 
+                        val principalNodesPair = mutableListOf<Triple<Int, MoveNode?, MoveNode?>>()
+                        var pendingWhite: MoveNode? = null
 
-
-                        val pairs = Globals.movesBufferNotation.value.chunked(2)
-
-
-                        for ((i, pair) in pairs.withIndex()) {
-                            val whiteSan = pair.getOrNull(0)?.san.orEmpty()
-                            val blackSan = pair.getOrNull(1)?.san.orEmpty()
-
-                            val isThisWhiteMove = pair.getOrNull(0)?.isActualMove ?: false
-                            val isThisBlackMove = pair.getOrNull(1)?.isActualMove ?: false
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
-                                    .height(IntrinsicSize.Min),
-                            ) {
-                                Text(
-                                    text = "${i + 1}",
-                                    fontSize = 18.sp,
-                                    lineHeight = 28.sp,
-                                    modifier = Modifier
-                                        .weight(0.4f)
-                                        .fillMaxWidth()
-                                        .background(Colors.secondary)
-                                        .padding(vertical = 4.dp),
-                                    textAlign = TextAlign.Center,
-                                    color = Colors.movesColor.copy(alpha = 0.5f)
-                                )
-
-
-                                VerticalDivider(
-                                    color = Colors.movesColor.copy(alpha = 0.5f),
-                                    modifier = Modifier.fillMaxHeight()
-                                )
-
-                                MainLineText(
-                                    text = whiteSan,
-                                    modifier = Modifier.weight(1f),
-                                    textColor = Colors.movesColor,
-                                    hoverColor = Colors.hoverColor,
-                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                                    isThisMove = isThisWhiteMove,
-                                    onClick = {
-                                        MovesManager.goToClickedMove(pair[0])
+                        for (id in Globals.orderNodesIds) {
+                            val node = Globals.movesNodesBuffer.value.find { it.id == id } ?: continue
+                            if (node.isPrincipalLine()) {
+                                if (node.isWhiteMove == true) {
+                                    if (pendingWhite != null) {
+                                        principalNodesPair.add(Triple(node.getStepsFromRoot(), pendingWhite, null))
                                     }
-                                )
+                                    pendingWhite = node
+                                } else {
+                                    if (pendingWhite != null) {
+                                        principalNodesPair.add(Triple(node.getStepsFromRoot(), pendingWhite, node))
+                                        pendingWhite = null
+                                    } else {
+                                        principalNodesPair.add(Triple(node.getStepsFromRoot(), null, node))
+                                    }
+                                }
+                            }
+                        }
+                        if (pendingWhite != null) {
+                            principalNodesPair.add(Triple(pendingWhite.getStepsFromRoot(), pendingWhite, null))
+                        }
 
-                                MainLineText(
-                                    text = blackSan,
-                                    modifier = Modifier.weight(1f).padding(end = if(hasOverflow) 8.dp else 0.dp),
-                                    textColor = Colors.movesColor,
-                                    hoverColor = Colors.hoverColor,
-                                    padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                                    isThisMove = isThisBlackMove,
-                                    onClick = {
-                                        if(pair.getOrNull(1) != null) {
-                                            MovesManager.goToClickedMove(pair[1])
+                        @Composable
+                        fun renderBranch(start: MoveNode, depth: Int) {
+                            val spine = mutableListOf<MoveNode>()
+                            var current: MoveNode? = start
+                            while (current != null) {
+                                spine.add(current)
+                                val firstChildId = current.childrenIds.firstOrNull()
+                                current = Globals.movesNodesBuffer.value.find { it.id == firstChildId }
+                            }
+                            Row(modifier = Modifier.padding(start = (depth * 12).dp)) {
+                                for (n in spine) {
+                                    VariantText(move = n)
+                                }
+                            }
+                            for (n in spine) {
+                                val siblings = n.childrenIds.drop(1).mapNotNull { id ->
+                                    Globals.movesNodesBuffer.value.find { it.id == id }
+                                }
+                                if (siblings.isNotEmpty()) {
+                                    Column(modifier = Modifier.padding(start = ((depth + 1) * 12).dp)) {
+                                        for (sib in siblings) {
+                                            renderBranch(sib, depth + 1)
                                         }
                                     }
-                                )
+                                }
+                            }
+                        }
 
+                        @Composable
+                        fun renderWhiteSiblingVariantsUnderBlack(parentBlack: MoveNode, depth: Int) {
+                            val children = parentBlack.childrenIds.mapNotNull { id ->
+                                Globals.movesNodesBuffer.value.find { it.id == id }
+                            }
+                            if (children.size <= 1) return
+                            val variants = children.drop(1)
+                            Column {
+                                for (variant in variants) {
+                                    renderBranch(variant, depth)
+                                }
+                            }
+                        }
 
+                        for (i in principalNodesPair.indices) {
+                            val (steps, white, black) = principalNodesPair[i]
+                            val nextWhite = if (i + 1 < principalNodesPair.size) principalNodesPair[i + 1].second else null
+
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(IntrinsicSize.Min)
+                                ) {
+                                    Text(
+                                        text = "$steps",
+                                        fontSize = 18.sp,
+                                        lineHeight = 28.sp,
+                                        modifier = Modifier
+                                            .weight(0.4f)
+                                            .fillMaxWidth()
+                                            .background(Colors.secondary)
+                                            .padding(vertical = 4.dp),
+                                        textAlign = TextAlign.Center,
+                                        color = Colors.movesColor.copy(alpha = 0.5f)
+                                    )
+
+                                    VerticalDivider(
+                                        color = Colors.movesColor.copy(alpha = 0.5f),
+                                        modifier = Modifier.fillMaxHeight()
+                                    )
+
+                                    val parentOfWhite = white?.parentId?.let { pid ->
+                                        Globals.movesNodesBuffer.value.find { it.id == pid }
+                                    }
+
+                                    val hasWhiteSiblingsFromBlack = white != null &&
+                                            parentOfWhite?.isWhiteMove == false &&
+                                            (parentOfWhite.childrenIds.size > 1)
+
+                                    MainLineText(
+                                        text = white?.san.orEmpty(),
+                                        modifier = Modifier.weight(1f),
+                                        textColor = Colors.movesColor,
+                                        hoverColor = Colors.hoverColor,
+                                        padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                        isThisMove = white?.isActualMove == true,
+                                        onClick = {}
+                                    )
+
+                                    MainLineText(
+                                        text = when {
+                                            hasWhiteSiblingsFromBlack -> "..."
+                                            black != null -> black.san.orEmpty()
+                                            else -> ""
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                        textColor = Colors.movesColor,
+                                        hoverColor = Colors.hoverColor,
+                                        padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                        isThisMove = when{
+                                            hasWhiteSiblingsFromBlack -> false
+                                            else -> black?.isActualMove == true
+                                        },
+                                        onClick = {}
+                                    )
+                                }
+
+                                val parentOfWhite = white?.parentId?.let { pid ->
+                                    Globals.movesNodesBuffer.value.find { it.id == pid }
+                                }
+
+                                val hasWhiteSiblingsFromBlack = white != null &&
+                                        parentOfWhite?.isWhiteMove == false &&
+                                        (parentOfWhite.childrenIds.size > 1)
+
+                                if (parentOfWhite != null && hasWhiteSiblingsFromBlack) {
+                                    renderWhiteSiblingVariantsUnderBlack(parentOfWhite, depth = 1)
+                                }
+
+                                val shouldRenderBlackVariantsHere = black != null &&
+                                        !(black.childrenIds.isNotEmpty() &&
+                                                nextWhite != null &&
+                                                black.childrenIds.firstOrNull() == nextWhite.id)
+
+                                if (shouldRenderBlackVariantsHere) {
+                                    val children = black!!.childrenIds.mapNotNull { id ->
+                                        Globals.movesNodesBuffer.value.find { it.id == id }
+                                    }
+                                    if (children.size > 1) {
+                                        val variants = children.drop(1)
+                                        Column {
+                                            for (variant in variants) {
+                                                renderBranch(variant, depth = 1)
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (black != null && hasWhiteSiblingsFromBlack) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(IntrinsicSize.Min)
+                                    ) {
+
+                                        Text(
+                                            text = "$steps",
+                                            fontSize = 18.sp,
+                                            lineHeight = 28.sp,
+                                            modifier = Modifier
+                                                .weight(0.4f)
+                                                .fillMaxWidth()
+                                                .background(Colors.secondary)
+                                                .padding(vertical = 4.dp),
+                                            textAlign = TextAlign.Center,
+                                            color = Colors.movesColor.copy(alpha = 0.5f)
+                                        )
+
+                                        VerticalDivider(
+                                            color = Colors.movesColor.copy(alpha = 0.5f),
+                                            modifier = Modifier.fillMaxHeight()
+                                        )
+
+                                        MainLineText(
+                                            text = "...",
+                                            modifier = Modifier.weight(1f),
+                                            textColor = Colors.movesColor,
+                                            hoverColor = Colors.hoverColor,
+                                            padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                            isThisMove = false,
+                                            onClick = {
+
+                                            }
+                                        )
+
+                                        MainLineText(
+                                            text = black.san.orEmpty(),
+                                            modifier = Modifier.weight(1f),
+                                            textColor = Colors.movesColor,
+                                            hoverColor = Colors.hoverColor,
+                                            padding = PaddingValues(start = 12.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                                            isThisMove = black.isActualMove,
+                                            onClick = {
+
+                                            }
+                                        )
+                                    }
+                                }
 
 
                             }
                         }
                     }
-
-
-
 
                     VerticalScrollbar(
                         adapter = rememberScrollbarAdapter(scrollState),
@@ -146,12 +287,9 @@ fun MovesPanel(
                             thickness = 8.dp
                         )
                     )
-
-
                 }
                 MovesManagerBottomPanel()
             }
         }
     }
 }
-

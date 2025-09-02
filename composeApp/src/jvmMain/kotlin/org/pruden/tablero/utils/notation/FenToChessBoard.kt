@@ -7,9 +7,6 @@ import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
     fun setBoardFromFen(fen: String = "", tree : Boolean = false) {
-        println("________________________________")
-        println(fen)
-
         val spaceParts = fen.split(" ")
         val boardRows = spaceParts[0].split("/").toMutableList()
 
