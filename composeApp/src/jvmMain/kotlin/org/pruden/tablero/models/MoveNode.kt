@@ -53,6 +53,7 @@ data class MoveNode(
         return magnitude
     }
 
+    fun toLastMove() = LastMove(from!!, to!!)
 
 
 }

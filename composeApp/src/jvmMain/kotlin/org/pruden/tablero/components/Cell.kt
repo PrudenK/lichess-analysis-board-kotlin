@@ -99,8 +99,8 @@ fun Cell(
 
 
         // Anterior movimiento
-        val actualMove = Globals.movesBufferNotation.value.find { it.isActualMove }
-        if(actualMove != null){
+        val actualMove = Globals.movesNodesBuffer.value.find { it.isActualMove }
+        if(actualMove != null && actualMove.id != "root"){
             val lm = actualMove.toLastMove()
             val highlight = ((columnX == lm.from.first && rowY == lm.from.second) ||
                             (columnX == lm.to.first && rowY == lm.to.second))
