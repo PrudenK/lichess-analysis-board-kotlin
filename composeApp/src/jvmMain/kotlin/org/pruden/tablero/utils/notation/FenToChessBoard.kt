@@ -6,7 +6,7 @@ import org.pruden.tablero.utils.chessBoard.ChessBoardActionHandler
 import org.pruden.tablero.utils.promotion.PieceProvider
 
 object FenToChessBoard {
-    fun setBoardFromFen(fen: String = "", tree : Boolean = false) {
+    fun setBoardFromFen(fen: String = "") {
         val spaceParts = fen.split(" ")
         val boardRows = spaceParts[0].split("/").toMutableList()
 
@@ -50,13 +50,7 @@ object FenToChessBoard {
             }
         }
 
-        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) {
-            true
-        } else if(tree){
-            spaceParts[1] != "w"
-        }else {
-            spaceParts[1] == "w"
-        }
+        Globals.isWhiteMove.value = if(fen == Globals.initialFenPos) true else spaceParts[1] == "w"
 
         Globals.whiteCastle = Triple(
             !spaceParts[2].contains("Q"),

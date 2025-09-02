@@ -22,7 +22,7 @@ object MovesManager {
 
         if(actualMoveNode.parentId != null){
             val moveToGo = list.find { it.id == actualMoveNode.parentId }!!
-            FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
+            FenToChessBoard.setBoardFromFen(moveToGo.fen)
 
             list.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true
@@ -38,7 +38,7 @@ object MovesManager {
 
         if(actualMoveNode.childrenIds.isNotEmpty()){
             val moveToGo = list.find { it.id == actualMoveNode.childrenIds[0] }!!
-            FenToChessBoard.setBoardFromFen(moveToGo.fen, true)
+            FenToChessBoard.setBoardFromFen(moveToGo.fen)
 
             list.forEach { it.isActualMove = false}
             moveToGo.isActualMove = true
