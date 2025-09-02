@@ -9,7 +9,7 @@ data class MoveNode(
     var san: String? = null,
     val from: Pair<Int,Int>? = null,
     val to: Pair<Int,Int>? = null,
-    val fen: String,
+    var fen: String,
     var isActualMove: Boolean,
     var isWhiteMove: Boolean? = null
 ){

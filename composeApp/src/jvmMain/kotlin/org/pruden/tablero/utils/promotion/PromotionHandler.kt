@@ -81,20 +81,8 @@ object PromotionHandler {
                 else -> PieceProvider.getWhiteQueen(pawnPromoted.position)
             }
             Globals.chessBoard[0][promotionCol].pieceOnBox = piecePromoted
-
-
-
-            MovesNodesManager.addMove(
-                san = Globals.nodePromotion!!.san,
-                to = Globals.nodePromotion!!.to,
-                from = Globals.nodePromotion!!.from
-            )
-
-
-
-            NotationHandler.appendPromotion(piecePromoted.type)
-
         }
+
         if(promotionWithCapture) {
             Globals.chessBoard[1][promotionCol].pieceOnBox = Globals.promotionBuffer[0]
         }
@@ -102,6 +90,17 @@ object PromotionHandler {
         Globals.chessBoard[2][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[3][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()
+
+
+        if(!promoteCanceled){
+            MovesNodesManager.addMove(
+                san = Globals.nodePromotion!!.san,
+                to = Globals.nodePromotion!!.to,
+                from = Globals.nodePromotion!!.from
+            )
+
+            NotationHandler.appendPromotion(Globals.chessBoard[0][promotionCol].pieceOnBox!!.type)
+        }
 
         Globals.isWhitePromotion.value = false
         return promoteCanceled
@@ -133,16 +132,6 @@ object PromotionHandler {
                 else -> PieceProvider.getBlackQueen(pawnPromoted.position)
             }
             Globals.chessBoard[7][promotionCol].pieceOnBox = piecePromoted
-
-
-            MovesNodesManager.addMove(
-                san = Globals.nodePromotion!!.san,
-                to = Globals.nodePromotion!!.to,
-                from = Globals.nodePromotion!!.from
-            )
-
-
-            NotationHandler.appendPromotion(piecePromoted.type)
         }
 
         if(promotionWithCapture){
@@ -151,6 +140,16 @@ object PromotionHandler {
         Globals.chessBoard[5][promotionCol].pieceOnBox = Globals.promotionBuffer[1]
         Globals.chessBoard[4][promotionCol].pieceOnBox = Globals.promotionBuffer[2]
         Globals.promotionBuffer.clear()
+
+        if(!promoteCanceled){
+            MovesNodesManager.addMove(
+                san = Globals.nodePromotion!!.san,
+                to = Globals.nodePromotion!!.to,
+                from = Globals.nodePromotion!!.from
+            )
+            NotationHandler.appendPromotion(Globals.chessBoard[7][promotionCol].pieceOnBox!!.type)
+        }
+
 
         Globals.isBlackPromotion.value = false
         return promoteCanceled

@@ -45,8 +45,10 @@ fun FenBox(){
                     .clip(RoundedCornerShape(4.dp))
                     .weight(1f)
             ){
-                val fenText = Globals.movesBufferNotation.value.find { it.isActualMove }?.fen
-                    ?: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                //val fenText = Globals.movesBufferNotation.value.find { it.isActualMove }?.fen
+                 //   ?: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+                val fenText = "Coming soon"
 
                 BasicTextField(
                     value = fenText,

@@ -462,6 +462,99 @@ class PGNHandlerTest {
     }
 
 
+    @Test
+    fun testMovesNodesToChessNotation25(){
+        val prueba = "MoveNode(id=root, parentId=null, childrenIds=[ad0e16af-0a48-4cb6-8f14-f412c87ccbf4], san=null, from=null, to=null, fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=null)\n" +
+                "MoveNode(id=ad0e16af-0a48-4cb6-8f14-f412c87ccbf4, parentId=root, childrenIds=[32e48cd4-2f0e-42e8-b8a9-be092f4ecdec], san=g4, from=(6, 6), to=(6, 4), fen=rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=32e48cd4-2f0e-42e8-b8a9-be092f4ecdec, parentId=ad0e16af-0a48-4cb6-8f14-f412c87ccbf4, childrenIds=[bf3c1fa3-471a-4e7d-8ebe-0b97826885cc], san=h5, from=(7, 1), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7p/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=bf3c1fa3-471a-4e7d-8ebe-0b97826885cc, parentId=32e48cd4-2f0e-42e8-b8a9-be092f4ecdec, childrenIds=[e25238cd-63a1-4c17-9e89-b9946d0568c0], san=gxh5, from=(6, 4), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7P/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 2, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=e25238cd-63a1-4c17-9e89-b9946d0568c0, parentId=bf3c1fa3-471a-4e7d-8ebe-0b97826885cc, childrenIds=[e30dbf66-02c6-467d-80a0-af180166f576], san=g6, from=(6, 1), to=(6, 2), fen=rnbqkbnr/pppppp2/6p1/7P/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=e30dbf66-02c6-467d-80a0-af180166f576, parentId=e25238cd-63a1-4c17-9e89-b9946d0568c0, childrenIds=[0ad5eb88-9aff-4e00-b565-911bfb398bb5], san=hxg6, from=(7, 3), to=(6, 2), fen=rnbqkbnr/pppppp2/6P1/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=0ad5eb88-9aff-4e00-b565-911bfb398bb5, parentId=e30dbf66-02c6-467d-80a0-af180166f576, childrenIds=[d4a79b67-0e6b-45e1-aedf-d19aff3b67df], san=d6, from=(3, 1), to=(3, 2), fen=rnbqkbnr/ppp1pp2/3p2P1/8/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 3, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=d4a79b67-0e6b-45e1-aedf-d19aff3b67df, parentId=0ad5eb88-9aff-4e00-b565-911bfb398bb5, childrenIds=[25e678d9-f34b-4612-b668-f50bb895623a], san=g7, from=(6, 2), to=(6, 1), fen=rnbqkbnr/ppp1ppP1/3p4/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 4, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=25e678d9-f34b-4612-b668-f50bb895623a, parentId=d4a79b67-0e6b-45e1-aedf-d19aff3b67df, childrenIds=[89264318-e452-4c49-a8cb-d6c07ce368b8, 6b45f88d-e537-430b-acc7-a4631e7476a5, 3c7918df-5132-4172-ad7d-0b55ac24d03c], san=d5, from=(3, 2), to=(3, 3), fen=rnbqkbnr/ppp1ppP1/8/3p4/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 4, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=89264318-e452-4c49-a8cb-d6c07ce368b8, parentId=25e678d9-f34b-4612-b668-f50bb895623a, childrenIds=[d60d5581-770b-411f-956a-99b1f7f8b0e7, bb215e89-0757-474a-9535-373e407ddad4], san=gxh8=Q, from=(6, 1), to=(7, 0), fen=rnbqkbnQ/ppp1pp2/8/3p4/8/8/PPPPPP1P/RNBQKBNR w KQq - 0 5, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=6b45f88d-e537-430b-acc7-a4631e7476a5, parentId=25e678d9-f34b-4612-b668-f50bb895623a, childrenIds=[], san=gxh8=R, from=(6, 1), to=(7, 0), fen=rnbqkbnR/ppp1pp2/8/3p4/8/8/PPPPPP1P/RNBQKBNR w KQq - 0 6, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=3c7918df-5132-4172-ad7d-0b55ac24d03c, parentId=25e678d9-f34b-4612-b668-f50bb895623a, childrenIds=[], san=gxf8=R+, from=(6, 1), to=(5, 0), fen=rnbqkRnr/ppp1pp2/8/3p4/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 6, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=d60d5581-770b-411f-956a-99b1f7f8b0e7, parentId=89264318-e452-4c49-a8cb-d6c07ce368b8, childrenIds=[], san=Nh6, from=(6, 0), to=(7, 2), fen=rnbqkb1Q/ppp1pp2/7n/3p4/8/8/PPPPPP1P/RNBQKBNR b KQq - 1 7, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=bb215e89-0757-474a-9535-373e407ddad4, parentId=89264318-e452-4c49-a8cb-d6c07ce368b8, childrenIds=[], san=Nf6, from=(6, 0), to=(5, 2), fen=rnbqkb1Q/ppp1pp2/5n2/3p4/8/8/PPPPPP1P/RNBQKBNR b KQq - 1 7, isActualMove=true, isWhiteMove=false)"
+        val result = PGNHandler.nodeMovesToPgn(parseMoveNodes(prueba).toMutableList())
+        val expected = "1. g4 h5 2. gxh5 g6 3. hxg6 d6 4. g7 d5 5. gxh8=Q (5. gxh8=R) (5. gxf8=R+) 5... Nh6 (5... Nf6)"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun testMovesNodesToChessNotation26(){
+        val prueba = "MoveNode(id=root, parentId=null, childrenIds=[37a01867-8b97-434f-9d13-9c18787f1bae], san=null, from=null, to=null, fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=null)\n" +
+                "MoveNode(id=37a01867-8b97-434f-9d13-9c18787f1bae, parentId=root, childrenIds=[3d9e6a4d-3839-4afb-9a30-87cb40d53982], san=g4, from=(6, 6), to=(6, 4), fen=rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=3d9e6a4d-3839-4afb-9a30-87cb40d53982, parentId=37a01867-8b97-434f-9d13-9c18787f1bae, childrenIds=[9e5ff906-c549-4f32-a824-bad8de6d9cdc], san=h5, from=(7, 1), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7p/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=9e5ff906-c549-4f32-a824-bad8de6d9cdc, parentId=3d9e6a4d-3839-4afb-9a30-87cb40d53982, childrenIds=[8906c36e-53c2-490c-9b85-11817458ad55], san=gxh5, from=(6, 4), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7P/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 2, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=8906c36e-53c2-490c-9b85-11817458ad55, parentId=9e5ff906-c549-4f32-a824-bad8de6d9cdc, childrenIds=[6c6f9355-67bf-4194-a2fb-62ca8ecd53c2], san=g6, from=(6, 1), to=(6, 2), fen=rnbqkbnr/pppppp2/6p1/7P/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=6c6f9355-67bf-4194-a2fb-62ca8ecd53c2, parentId=8906c36e-53c2-490c-9b85-11817458ad55, childrenIds=[a8648caa-a272-4669-86ba-7eb7d827e49f], san=hxg6, from=(7, 3), to=(6, 2), fen=rnbqkbnr/pppppp2/6P1/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=a8648caa-a272-4669-86ba-7eb7d827e49f, parentId=6c6f9355-67bf-4194-a2fb-62ca8ecd53c2, childrenIds=[19860988-8116-4cd5-85c4-fcb8bc6cf92c], san=b6, from=(1, 1), to=(1, 2), fen=rnbqkbnr/p1pppp2/1p4P1/8/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 3, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=19860988-8116-4cd5-85c4-fcb8bc6cf92c, parentId=a8648caa-a272-4669-86ba-7eb7d827e49f, childrenIds=[36288cb5-e760-42b3-9939-123e4b2646d9], san=g7, from=(6, 2), to=(6, 1), fen=rnbqkbnr/p1ppppP1/1p6/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 4, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=36288cb5-e760-42b3-9939-123e4b2646d9, parentId=19860988-8116-4cd5-85c4-fcb8bc6cf92c, childrenIds=[1c9b2fc5-a4d9-44e6-ac74-8a0f9003701d], san=b5, from=(1, 2), to=(1, 3), fen=rnbqkbnr/p1ppppP1/8/1p6/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 4, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=1c9b2fc5-a4d9-44e6-ac74-8a0f9003701d, parentId=36288cb5-e760-42b3-9939-123e4b2646d9, childrenIds=[70b875c9-153d-4ee6-af96-6ab4296cfa67], san=d3, from=(3, 6), to=(3, 5), fen=rnbqkbnr/p1ppppP1/8/1p6/8/3P4/PPP1PP1P/RNBQKBNR w KQkq - 0 5, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=70b875c9-153d-4ee6-af96-6ab4296cfa67, parentId=1c9b2fc5-a4d9-44e6-ac74-8a0f9003701d, childrenIds=[74e23731-189c-4009-8f94-eb05b2cfb5ec], san=b4, from=(1, 3), to=(1, 4), fen=rnbqkbnr/p1ppppP1/8/8/1p6/3P4/PPP1PP1P/RNBQKBNR b KQkq - 0 5, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=74e23731-189c-4009-8f94-eb05b2cfb5ec, parentId=70b875c9-153d-4ee6-af96-6ab4296cfa67, childrenIds=[8d723857-6e1b-4c84-9069-6689ca3786e2], san=Bh6, from=(2, 7), to=(7, 2), fen=rnbqkbnr/p1ppppP1/7B/8/1p6/3P4/PPP1PP1P/RN1QKBNR w KQkq - 1 6, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=8d723857-6e1b-4c84-9069-6689ca3786e2, parentId=74e23731-189c-4009-8f94-eb05b2cfb5ec, childrenIds=[6d56ff47-034f-44d9-8d31-e94b0d078b33, fe0ae1f4-5d2f-43ad-ad2d-e0ee01e11b51], san=a6, from=(0, 1), to=(0, 2), fen=rnbqkbnr/2ppppP1/p6B/8/1p6/3P4/PPP1PP1P/RN1QKBNR b KQkq - 0 6, isActualMove=true, isWhiteMove=false)\n" +
+                "MoveNode(id=6d56ff47-034f-44d9-8d31-e94b0d078b33, parentId=8d723857-6e1b-4c84-9069-6689ca3786e2, childrenIds=[], san=gxh8=Q, from=(6, 1), to=(7, 0), fen=rnbqkbnQ/2pppp2/p6B/8/1p6/3P4/PPP1PP1P/RN1QKBNR w KQq - 0 7, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=fe0ae1f4-5d2f-43ad-ad2d-e0ee01e11b51, parentId=8d723857-6e1b-4c84-9069-6689ca3786e2, childrenIds=[], san=gxf8=R#, from=(6, 1), to=(5, 0), fen=rnbqkRnr/2pppp2/p6B/8/1p6/3P4/PPP1PP1P/RN1QKBNR w KQkq - 0 8, isActualMove=false, isWhiteMove=true)"
+        val result = PGNHandler.nodeMovesToPgn(parseMoveNodes(prueba).toMutableList())
+        val expected = "1. g4 h5 2. gxh5 g6 3. hxg6 b6 4. g7 b5 5. d3 b4 6. Bh6 a6 7. gxh8=Q (7. gxf8=R#)"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun testMovesNodesToChessNotation27(){
+        val prueba = "MoveNode(id=root, parentId=null, childrenIds=[51c42ffa-3a44-48c0-8f6e-4511f2398e0b], san=null, from=null, to=null, fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=null)\n" +
+                "MoveNode(id=51c42ffa-3a44-48c0-8f6e-4511f2398e0b, parentId=root, childrenIds=[7fc6b1d9-17ea-471f-9d3e-475a6401125f], san=g4, from=(6, 6), to=(6, 4), fen=rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=7fc6b1d9-17ea-471f-9d3e-475a6401125f, parentId=51c42ffa-3a44-48c0-8f6e-4511f2398e0b, childrenIds=[c1fd3d36-9956-4fde-a815-e8853b6f304b], san=h5, from=(7, 1), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7p/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=c1fd3d36-9956-4fde-a815-e8853b6f304b, parentId=7fc6b1d9-17ea-471f-9d3e-475a6401125f, childrenIds=[8338bf6e-2da2-4bcc-816d-5bef3c9c82ca], san=gxh5, from=(6, 4), to=(7, 3), fen=rnbqkbnr/ppppppp1/8/7P/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 2, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=8338bf6e-2da2-4bcc-816d-5bef3c9c82ca, parentId=c1fd3d36-9956-4fde-a815-e8853b6f304b, childrenIds=[b6b2e388-1a4a-431d-a691-90edbc60b71b], san=g6, from=(6, 1), to=(6, 2), fen=rnbqkbnr/pppppp2/6p1/7P/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=b6b2e388-1a4a-431d-a691-90edbc60b71b, parentId=8338bf6e-2da2-4bcc-816d-5bef3c9c82ca, childrenIds=[be512e63-5724-4f5b-8d76-3f8a3feeec5a], san=hxg6, from=(7, 3), to=(6, 2), fen=rnbqkbnr/pppppp2/6P1/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=be512e63-5724-4f5b-8d76-3f8a3feeec5a, parentId=b6b2e388-1a4a-431d-a691-90edbc60b71b, childrenIds=[91c428f7-4133-455f-a226-631fcd2493eb], san=b6, from=(1, 1), to=(1, 2), fen=rnbqkbnr/p1pppp2/1p4P1/8/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 3, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=91c428f7-4133-455f-a226-631fcd2493eb, parentId=be512e63-5724-4f5b-8d76-3f8a3feeec5a, childrenIds=[c19d6a6a-9e69-4a55-bfdc-276ac37e0102], san=g7, from=(6, 2), to=(6, 1), fen=rnbqkbnr/p1ppppP1/1p6/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 0 4, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=c19d6a6a-9e69-4a55-bfdc-276ac37e0102, parentId=91c428f7-4133-455f-a226-631fcd2493eb, childrenIds=[090a7ac8-4b72-4910-b93a-5327d3a57353, 9e33ccb9-145d-4958-a11d-dfcfb029ef38], san=b5, from=(1, 2), to=(1, 3), fen=rnbqkbnr/p1ppppP1/8/1p6/8/8/PPPPPP1P/RNBQKBNR b KQkq - 0 4, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=090a7ac8-4b72-4910-b93a-5327d3a57353, parentId=c19d6a6a-9e69-4a55-bfdc-276ac37e0102, childrenIds=[29fe33ab-9cf3-4b18-a402-052c446b5dbd], san=gxh8=Q, from=(6, 1), to=(7, 0), fen=rnbqkbnQ/p1pppp2/8/1p6/8/8/PPPPPP1P/RNBQKBNR w KQq - 0 5, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=29fe33ab-9cf3-4b18-a402-052c446b5dbd, parentId=090a7ac8-4b72-4910-b93a-5327d3a57353, childrenIds=[], san=Nh6, from=(6, 0), to=(7, 2), fen=rnbqkb1Q/p1pppp2/7n/1p6/8/8/PPPPPP1P/RNBQKBNR b KQq - 1 5, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=9e33ccb9-145d-4958-a11d-dfcfb029ef38, parentId=c19d6a6a-9e69-4a55-bfdc-276ac37e0102, childrenIds=[f9d1aa55-e3d6-4af3-959b-b24fb2e92489], san=Nf3, from=(6, 7), to=(5, 5), fen=rnbqkbnr/p1ppppP1/8/1p6/8/5N2/PPPPPP1P/RNBQKB1R w KQkq - 1 6, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=f9d1aa55-e3d6-4af3-959b-b24fb2e92489, parentId=9e33ccb9-145d-4958-a11d-dfcfb029ef38, childrenIds=[c4d3b4e7-9f3d-4aa2-acfb-f1eb7a45d56e, e4ee0b42-cfb4-4321-864a-8647e367b59c, 31d1d232-bcbd-48b0-a651-70db41ebed40], san=b4, from=(1, 3), to=(1, 4), fen=rnbqkbnr/p1ppppP1/8/8/1p6/5N2/PPPPPP1P/RNBQKB1R b KQkq - 0 6, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=c4d3b4e7-9f3d-4aa2-acfb-f1eb7a45d56e, parentId=f9d1aa55-e3d6-4af3-959b-b24fb2e92489, childrenIds=[], san=gxh8=Q, from=(6, 1), to=(7, 0), fen=rnbqkbnQ/p1pppp2/8/8/1p6/5N2/PPPPPP1P/RNBQKB1R w KQq - 0 7, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=e4ee0b42-cfb4-4321-864a-8647e367b59c, parentId=f9d1aa55-e3d6-4af3-959b-b24fb2e92489, childrenIds=[], san=gxh8=R, from=(6, 1), to=(7, 0), fen=rnbqkbnR/p1pppp2/8/8/1p6/5N2/PPPPPP1P/RNBQKB1R w KQq - 0 8, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=31d1d232-bcbd-48b0-a651-70db41ebed40, parentId=f9d1aa55-e3d6-4af3-959b-b24fb2e92489, childrenIds=[], san=gxh8=B, from=(6, 1), to=(7, 0), fen=rnbqkbnB/p1pppp2/8/8/1p6/5N2/PPPPPP1P/RNBQKB1R w KQq - 0 8, isActualMove=true, isWhiteMove=true)"
+        val result = PGNHandler.nodeMovesToPgn(parseMoveNodes(prueba).toMutableList())
+        val expected = "1. g4 h5 2. gxh5 g6 3. hxg6 b6 4. g7 b5 5. gxh8=Q (5. Nf3 b4 6. gxh8=Q (6. gxh8=R) (6. gxh8=B)) 5... Nh6"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun testMovesNodesToChessNotation28(){
+        val prueba = "MoveNode(id=root, parentId=null, childrenIds=[ec524ad6-31f6-4b27-9b50-8f8a450891dc, c8ae83d1-9f6c-43bc-99db-b205ec8fe441], san=null, from=null, to=null, fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=null)\n" +
+                "MoveNode(id=ec524ad6-31f6-4b27-9b50-8f8a450891dc, parentId=root, childrenIds=[], san=a3, from=(0, 6), to=(0, 5), fen=rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=c8ae83d1-9f6c-43bc-99db-b205ec8fe441, parentId=root, childrenIds=[6da64f95-a234-4097-857e-08579e385d66, 49ca5444-2476-49c6-ad06-09d232e26455], san=a4, from=(0, 6), to=(0, 4), fen=rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=6da64f95-a234-4097-857e-08579e385d66, parentId=c8ae83d1-9f6c-43bc-99db-b205ec8fe441, childrenIds=[], san=a6, from=(0, 1), to=(0, 2), fen=rnbqkbnr/1ppppppp/p7/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=49ca5444-2476-49c6-ad06-09d232e26455, parentId=c8ae83d1-9f6c-43bc-99db-b205ec8fe441, childrenIds=[429b4976-df6b-4eeb-b9f8-90a4480f21e7, c55f9171-ed63-44ff-ac34-e76fa0574aba], san=a5, from=(0, 1), to=(0, 3), fen=rnbqkbnr/1ppppppp/8/p7/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=429b4976-df6b-4eeb-b9f8-90a4480f21e7, parentId=49ca5444-2476-49c6-ad06-09d232e26455, childrenIds=[], san=b3, from=(1, 6), to=(1, 5), fen=rnbqkbnr/1ppppppp/8/p7/P7/1P6/2PPPPPP/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=c55f9171-ed63-44ff-ac34-e76fa0574aba, parentId=49ca5444-2476-49c6-ad06-09d232e26455, childrenIds=[0d0b9edd-7b55-4dc9-860f-c0d357d906cc, 8df69661-49f6-4a84-96ce-2cd9ea5e64ff], san=b4, from=(1, 6), to=(1, 4), fen=rnbqkbnr/1ppppppp/8/p7/PP6/8/2PPPPPP/RNBQKBNR w KQkq - 0 3, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=0d0b9edd-7b55-4dc9-860f-c0d357d906cc, parentId=c55f9171-ed63-44ff-ac34-e76fa0574aba, childrenIds=[], san=b6, from=(1, 1), to=(1, 2), fen=rnbqkbnr/2pppppp/1p6/p7/PP6/8/2PPPPPP/RNBQKBNR b KQkq - 0 4, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=8df69661-49f6-4a84-96ce-2cd9ea5e64ff, parentId=c55f9171-ed63-44ff-ac34-e76fa0574aba, childrenIds=[4a9ecefe-4fae-4754-b741-74aa3a773235, bb503086-931a-4e64-a77d-3c503e0f59f7], san=b5, from=(1, 1), to=(1, 3), fen=rnbqkbnr/2pppppp/8/pp6/PP6/8/2PPPPPP/RNBQKBNR b KQkq - 0 4, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=4a9ecefe-4fae-4754-b741-74aa3a773235, parentId=8df69661-49f6-4a84-96ce-2cd9ea5e64ff, childrenIds=[], san=c3, from=(2, 6), to=(2, 5), fen=rnbqkbnr/2pppppp/8/pp6/PP6/2P5/3PPPPP/RNBQKBNR w KQkq - 0 5, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=bb503086-931a-4e64-a77d-3c503e0f59f7, parentId=8df69661-49f6-4a84-96ce-2cd9ea5e64ff, childrenIds=[694287be-2b7d-4f65-b903-117840109d02, 3de528ba-6b7d-4e37-82ab-5586f0edb530], san=c4, from=(2, 6), to=(2, 4), fen=rnbqkbnr/2pppppp/8/pp6/PPP5/8/3PPPPP/RNBQKBNR w KQkq - 0 5, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=694287be-2b7d-4f65-b903-117840109d02, parentId=bb503086-931a-4e64-a77d-3c503e0f59f7, childrenIds=[], san=c6, from=(2, 1), to=(2, 2), fen=rnbqkbnr/3ppppp/2p5/pp6/PPP5/8/3PPPPP/RNBQKBNR b KQkq - 0 6, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=3de528ba-6b7d-4e37-82ab-5586f0edb530, parentId=bb503086-931a-4e64-a77d-3c503e0f59f7, childrenIds=[173b64a4-dacb-4676-bba5-871ebfe2b5fa, ae6e9db5-1e19-4724-ad4c-92f778dcef2a], san=c5, from=(2, 1), to=(2, 3), fen=rnbqkbnr/3ppppp/8/ppp5/PPP5/8/3PPPPP/RNBQKBNR b KQkq - 0 6, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=173b64a4-dacb-4676-bba5-871ebfe2b5fa, parentId=3de528ba-6b7d-4e37-82ab-5586f0edb530, childrenIds=[], san=d3, from=(3, 6), to=(3, 5), fen=rnbqkbnr/3ppppp/8/ppp5/PPP5/3P4/4PPPP/RNBQKBNR w KQkq - 0 7, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=ae6e9db5-1e19-4724-ad4c-92f778dcef2a, parentId=3de528ba-6b7d-4e37-82ab-5586f0edb530, childrenIds=[b412f813-19a5-40d9-8361-a151fdc26a6a, 098e2a6b-6647-4609-a2ec-0514ff0618eb], san=d4, from=(3, 6), to=(3, 4), fen=rnbqkbnr/3ppppp/8/ppp5/PPPP4/8/4PPPP/RNBQKBNR w KQkq - 0 7, isActualMove=false, isWhiteMove=true)\n" +
+                "MoveNode(id=b412f813-19a5-40d9-8361-a151fdc26a6a, parentId=ae6e9db5-1e19-4724-ad4c-92f778dcef2a, childrenIds=[], san=d6, from=(3, 1), to=(3, 2), fen=rnbqkbnr/4pppp/3p4/ppp5/PPPP4/8/4PPPP/RNBQKBNR b KQkq - 0 8, isActualMove=false, isWhiteMove=false)\n" +
+                "MoveNode(id=098e2a6b-6647-4609-a2ec-0514ff0618eb, parentId=ae6e9db5-1e19-4724-ad4c-92f778dcef2a, childrenIds=[], san=d5, from=(3, 1), to=(3, 3), fen=rnbqkbnr/4pppp/8/pppp4/PPPP4/8/4PPPP/RNBQKBNR b KQkq - 0 8, isActualMove=true, isWhiteMove=false)"
+
+        val result = PGNHandler.nodeMovesToPgn(parseMoveNodes(prueba).toMutableList())
+        val expected = "1. a3 (1. a4 a6 (1... a5 2. b3 (2. b4 b6 (2... b5 3. c3 (3. c4 c6 (3... c5 4. d3 (4. d4 d6 (4... d5))))))))"
+        assertEquals(expected, result)
+    }
+
+
+
 
 
 

@@ -21,12 +21,7 @@ object MovesNodesManager {
 
             for(id in actualMoveBefore.childrenIds){
                 val mov = list.find { it.id == id }!!
-
-                println("MOVEEEEE SAN: ${mov.san} ${san}")
-
                 if ((mov.from == from && mov.to == to) || mov.san == san ) {
-
-
 
                     list.forEach { it.isActualMove = false }
                     mov.isActualMove = true
@@ -63,21 +58,71 @@ object MovesNodesManager {
     }
 
 
+    @OptIn(ExperimentalUuidApi::class)  // TODO refactor
     fun modifyLastMoveNode(adder : String){
-        if (Globals.movesNodesBuffer.value.isEmpty()) return
+        val list = Globals.movesNodesBuffer.value.toMutableList()
 
-        val lastMove = Globals.movesNodesBuffer.value.find { it.id == Globals.actualNodeMoveId }!!
-        val index = Globals.movesNodesBuffer.value.indexOf(lastMove)
+        if (list.isEmpty()) return
 
-        if(adder == "#" || adder == "+" && lastMove.san!!.endsWith("+")){
-            lastMove.san = lastMove.san!!.replace("+", "")
+        val actualMove = list.find { it.id == Globals.actualNodeMoveId }!!
+        val index = list.indexOf(actualMove)
+
+        if(adder == "#" || adder == "+" && actualMove.san!!.endsWith("+")){
+            actualMove.san = actualMove.san!!.replace("+", "")
         }
 
-        if(!(adder.startsWith("=") && lastMove.san!!.contains(adder))){
-            lastMove.san += adder
+        var appendMovePromotion = false
+
+        if(!(adder.startsWith("=") && actualMove.san!!.contains(adder))){
+            if(adder.startsWith("=")){
+                if(actualMove.san!!.contains("=")){
+                    if(actualMove.san!!.contains(adder)){
+                        //NADA
+                    }else{
+                        appendMovePromotion = true
+
+                        val parentLasMove = list.find { it.id == actualMove.parentId }!!
+                        val newMoveId = Uuid.random().toString()
+
+                        for(p in parentLasMove.childrenIds){
+                            val n = Globals.movesNodesBuffer.value.find { it.id == p }!!
+
+                            if(n.san!!.contains(adder)) return
+                        }
+
+
+                        parentLasMove.childrenIds.add(newMoveId)
+
+                        list.forEach { it.isActualMove = false }
+
+                        val newMove = MoveNode(
+                            id = newMoveId,
+                            parentId = parentLasMove.id,
+                            san = actualMove.san!!.split("=")[0] + adder,
+                            from = actualMove.from,
+                            to = actualMove.to,
+                            fen = FenConverter.chessBoardToFen(Globals.chessBoard),
+                            isActualMove = true,
+                            isWhiteMove = Globals.isWhiteMove.value
+                        )
+
+                        Globals.actualNodeMoveId = newMoveId
+
+                        list.add(newMove)
+
+                        Globals.movesNodesBuffer.value = list
+                    }
+                }else{
+                    actualMove.san += adder
+                }
+            }else{
+                actualMove.san += adder
+            }
         }
 
-        Globals.movesNodesBuffer.value[index] = lastMove
+        if(!appendMovePromotion){
+            Globals.movesNodesBuffer.value[index] = actualMove
+        }
     }
 
 
