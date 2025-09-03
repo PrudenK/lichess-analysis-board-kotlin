@@ -82,6 +82,10 @@ fun MovesPanel(
                             val (steps, white, black) = principalNodesPair[i]
                             val nextWhite = if (i + 1 < principalNodesPair.size) principalNodesPair[i + 1].second else null
 
+                            println("\n----- triple nodes ---\n")
+                            println(principalNodesPair[i])
+                            println("\n___________\n")
+
                             Column {
                                 Row(
                                     modifier = Modifier
@@ -110,9 +114,18 @@ fun MovesPanel(
                                         Globals.movesNodesBuffer.value.find { it.id == pid }
                                     }
 
+                                    println("\n---- Parent of white----\n")
+                                    println(parentOfWhite)
+                                    println("\n___________\n")
+
                                     val hasWhiteSiblingsFromBlack = white != null &&
                                             parentOfWhite?.isWhiteMove == false &&
                                             (parentOfWhite.childrenIds.size > 1)
+
+
+                                    println("\n---- hasWhiteSiblingsFromBlack----\n")
+                                    println(hasWhiteSiblingsFromBlack)
+                                    println("\n___________\n")
 
                                     MainLineText(
                                         text = white?.san.orEmpty(),
@@ -158,17 +171,23 @@ fun MovesPanel(
                                         parentOfWhite?.isWhiteMove == false &&
                                         (parentOfWhite.childrenIds.size > 1)
 
-                                if (parentOfWhite != null && hasWhiteSiblingsFromBlack) {
+                                if (parentOfWhite != null && hasWhiteSiblingsFromBlack) { // CASE 1, es el negro quien tiene hijos
                                     renderWhiteSiblingVariantsUnderBlack(parentOfWhite, depth = 1)
                                 }
 
-                                val shouldRenderBlackVariantsHere = black != null &&
-                                        !(black.childrenIds.isNotEmpty() &&
-                                                nextWhite != null &&
-                                                black.childrenIds.firstOrNull() == nextWhite.id)
 
-                                if (shouldRenderBlackVariantsHere) {
-                                    val children = black!!.childrenIds.mapNotNull { id ->
+
+                                val shouldRenderBlackVariantsHere = white != null && white.childrenIds.size > 1
+
+                                // reivsar
+
+                                println("\n---- shouldRenderBlackVariantsHere----\n")
+                                println(shouldRenderBlackVariantsHere)
+                                println("\n___________\n")
+
+
+                                if (shouldRenderBlackVariantsHere) { // CASE 2, el blanco tiene más de 1 hijo
+                                    val children = white!!.childrenIds.mapNotNull { id ->
                                         Globals.movesNodesBuffer.value.find { it.id == id }
                                     }
                                     if (children.size > 1) {
@@ -181,7 +200,9 @@ fun MovesPanel(
                                     }
                                 }
 
-                                if (black != null && hasWhiteSiblingsFromBlack) {
+
+
+                                if (black != null && hasWhiteSiblingsFromBlack) { // Para el CASE 1, el negro tiene hijos añadimos el salto ...
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
