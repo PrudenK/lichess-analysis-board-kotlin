@@ -58,7 +58,7 @@ fun MovesPanel(
 
                                 WhiteSiblingVariantsUnderBlack(parentOfWhite, hasWhiteSiblingsFromBlack)
 
-                                if (black != null && hasWhiteSiblingsFromBlack) { // Para el CASE 1, el negro tiene hijos añadimos el salto ...
+                                if (black != null && hasWhiteSiblingsFromBlack) {
                                     MainLineRowComponentForCase1(steps, black)
                                 }
 

@@ -12,7 +12,7 @@ object VariantHelper {
 
     fun getIfhasWhiteSiblings(white: MoveNode?, parentOfWhite: MoveNode?): Boolean{
         return  white != null &&
-                (parentOfWhite?.isWhiteMove == false || parentOfWhite?.id == "root") && // CASE 3 root es el padre y tiene más de 1 hijo
+                (parentOfWhite?.isWhiteMove == false || parentOfWhite?.id == "root") &&
                 (parentOfWhite.childrenIds.size > 1)
     }
 
