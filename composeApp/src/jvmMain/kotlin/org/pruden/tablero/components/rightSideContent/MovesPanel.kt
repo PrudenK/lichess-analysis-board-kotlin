@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.processNextEventInCurrentThread
 import org.pruden.tablero.components.rightSideContent.movesTexts.MainLineText
 import org.pruden.tablero.components.rightSideContent.variants.renderBranch
 import org.pruden.tablero.components.rightSideContent.variants.renderWhiteSiblingVariantsUnderBlack
@@ -172,33 +173,9 @@ fun MovesPanel(
                                         (parentOfWhite.childrenIds.size > 1)
 
                                 if (parentOfWhite != null && hasWhiteSiblingsFromBlack) { // CASE 1, es el negro quien tiene hijos
-                                    renderWhiteSiblingVariantsUnderBlack(parentOfWhite, depth = 1)
+                                    renderWhiteSiblingVariantsUnderBlack(parentOfWhite, depth = 10)
                                 }
 
-
-
-                                val shouldRenderBlackVariantsHere = white != null && white.childrenIds.size > 1
-
-                                // reivsar
-
-                                println("\n---- shouldRenderBlackVariantsHere----\n")
-                                println(shouldRenderBlackVariantsHere)
-                                println("\n___________\n")
-
-
-                                if (shouldRenderBlackVariantsHere) { // CASE 2, el blanco tiene más de 1 hijo
-                                    val children = white!!.childrenIds.mapNotNull { id ->
-                                        Globals.movesNodesBuffer.value.find { it.id == id }
-                                    }
-                                    if (children.size > 1) {
-                                        val variants = children.drop(1)
-                                        Column {
-                                            for (variant in variants) {
-                                                renderBranch(variant, depth = 1)
-                                            }
-                                        }
-                                    }
-                                }
 
 
 
@@ -252,6 +229,32 @@ fun MovesPanel(
                                         )
                                     }
                                 }
+
+
+                                val shouldRenderBlackVariantsHere = white != null && white.childrenIds.size > 1
+
+                                // reivsar
+
+                                println("\n---- shouldRenderBlackVariantsHere----\n")
+                                println(shouldRenderBlackVariantsHere)
+                                println(white)
+                                println("\n___________\n")
+
+
+                                if (shouldRenderBlackVariantsHere) { // CASE 2, el blanco tiene más de 1 hijo
+                                    val children = white!!.childrenIds.mapNotNull { id ->
+                                        Globals.movesNodesBuffer.value.find { it.id == id }
+                                    }
+                                    if (children.size > 1) {
+                                        val variants = children.drop(1)
+                                        Column {
+                                            for (variant in variants) {
+                                                renderBranch(variant, depth = 1)
+                                            }
+                                        }
+                                    }
+                                }
+
                             }
                         }
                     }
