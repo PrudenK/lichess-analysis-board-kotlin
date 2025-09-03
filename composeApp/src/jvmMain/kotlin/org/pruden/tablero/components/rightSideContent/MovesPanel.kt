@@ -120,7 +120,7 @@ fun MovesPanel(
                                     println("\n___________\n")
 
                                     val hasWhiteSiblingsFromBlack = white != null &&
-                                            parentOfWhite?.isWhiteMove == false &&
+                                            (parentOfWhite?.isWhiteMove == false || parentOfWhite?.id == "root") &&
                                             (parentOfWhite.childrenIds.size > 1)
 
 
@@ -169,7 +169,7 @@ fun MovesPanel(
                                 }
 
                                 val hasWhiteSiblingsFromBlack = white != null &&
-                                        parentOfWhite?.isWhiteMove == false &&
+                                        (parentOfWhite?.isWhiteMove == false || parentOfWhite?.id == "root") && // CASE 3 root es el padre y tiene más de 1 hijo
                                         (parentOfWhite.childrenIds.size > 1)
 
                                 if (parentOfWhite != null && hasWhiteSiblingsFromBlack) { // CASE 1, es el negro quien tiene hijos
